@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>
-hello world 1231123
+hello world 123112312
 </h1>
 <form action="hospitalDetail.do" method="get">
 	<button>º´¿ø</button>
