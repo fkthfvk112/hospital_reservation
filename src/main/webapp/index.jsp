@@ -1,17 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>index</title>
 </head>
 <body>
-<h1>
-hello world 123112312
-</h1>
+<%
+	response.sendRedirect("login.do");
+%>
+<!-- 
 <form action="hospitalDetail.do" method="get">
-	<button>병원</button>
+	<button>蹂묒썝</button>
 </form>
+ -->
 </body>
 </html>
