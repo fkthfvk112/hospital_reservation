@@ -18,9 +18,18 @@
 
 	<select id="login" parameterType="component.dto.UserDto"
 		resultType="component.dto.UserDto">
-		select id, name, email, auth, warning, myHospital_id
+		select id, pw, name, email, auth, warning, myHospital_id
 		from user
-		where id=#{id} and pw=#{pw}
+		where id=#{id} and pw=SHA2(#{pw}, 256)
 	</select>
+	
+	<select id="findId" parameterType="java.lang.String"
+		resultType="java.lang.String">
+    	select id
+    	from user
+    	where email = #{email}
+	</select>
+
+	
 
 </mapper>

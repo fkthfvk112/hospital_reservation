@@ -6,8 +6,7 @@
 <meta charset="UTF-8">
 <title>로그인</title>
 <!-- 제이쿼리 -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- 쿠키 -->
 <script src="http://lab.alexcican.com/set_cookies/cookie.js"
 	type="text/javascript"></script>
@@ -130,8 +129,8 @@ body {
 				<tr>
 					<td>
 						<a href="regi.do" class="regi">회원가입</a>
-						<a href="" id="findPw" class="findIdPw">비밀번호 찾기</a>
-						<a href="" id="findId" class="findIdPw">아이디찾기</a>
+						<a href="findPw.do" id="findPw" class="findIdPw">비밀번호 찾기</a>
+						<a href="findId.do" id="findId" class="findIdPw">아이디찾기</a>
 					</td>
 				</tr>
 				<tr class="centerTr">
@@ -141,6 +140,9 @@ body {
 			</table>
 		</form>
 	</div>
+
+
+
 
 	<script type="text/javascript">
 	let user_id = $.cookie("user_id");

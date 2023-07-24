@@ -12,6 +12,7 @@
         <configuration>
           <release>17</release>
         </configuration>
+        
       </plugin>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>

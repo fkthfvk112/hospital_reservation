@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>회원가입</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
 <style>
 body {
 	display: flex;
@@ -49,7 +50,6 @@ table {
 	background-color: #E8F0FE;
 	font-size: 15px;
 	border: 0;
-
 }
 .logo {
 	display: block;
@@ -77,7 +77,7 @@ table {
 </head>
 <body>
 	<div class="div">
-		<form action="regiAf.do" method="post">
+		<form action="regiAf.do" id="regiForm" method="post">
 			<table>
 				<tr>
 					<td colspan="2"><img src="img/logo1.PNG" alt="로고" class="logo"></td>
@@ -85,33 +85,35 @@ table {
 				<tr id="idTr" class="centerTr">
 					<th>아이디</th>
 					<td><input type="text" size="20" id="id" name="id"
-						class="text">
+						class="text" required>
 						<input type="button" id="id_chk_btn" value="중복확인">
 						<br>
 						<p id="idcheck" style="font-size: 8px"></p></td>
-					
+
 				</tr>
 				<tr class="centerTr">
 					<th>비밀번호</th>
 					<td><input type="password" size="20" id="pw" name="pw"
-						class="text"></td>
+						class="text" placeholder="영문, 숫자, 특수문자 조합 9자리 이상" required></td>
 				</tr>
 				<tr class="centerTr">
 					<th>비밀번호 확인</th>
 					<td><input type="password" size="20" id="chk_pw"
-						name="chk_pw" class="text">
+						name="chk_pw" class="text" required>
 						<br>
 						<p id="pwcheck" style="font-size: 8px"></p></td>
 				</tr>
+				<!-- 비밀번호 해시화를 위한 hidden input -->
+            	<input type="hidden" id="hashed_pw" name="hashed_pw">
 				<tr class="centerTr">
 					<th>이름</th>
 					<td><input type="text" size="20" id="name" name="name"
-						class="text"></td>
+						class="text" required></td>
 				</tr>
 				<tr class="centerTr">
 					<th>이메일</th>
 					<td><input type="text" size="20" id="email" name="email"
-						class="text">
+						class="text" required>
 						<br>
 						<p id="emailcheck" style="font-size: 8px"></p></td>
 				</tr>
@@ -122,7 +124,7 @@ table {
 			</table>
 		</form>
 	</div>
-	
+
 	<script>
 		$(document).ready(function(){
 			// 중복확인
@@ -165,7 +167,21 @@ table {
 					$("#pwcheck").css("color", "#ff0000");
 					$("#pwcheck").text("비밀번호가 일치하지 않습니다.");
 					$("#pw").focus();
-				}
+				} else {
+			        // 비밀번호가 일치할때 형식 확인
+			        var pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*])[A-Za-z\d@$!%*#?&]{9,}$/;
+			        if (!pwPattern.test(pw)) {
+			        	event.preventDefault(); // 폼 제출을 막음
+			            $("#pwcheck").css("color", "#ff0000");
+			            $("#pwcheck").text("유효하지 않은 비밀번호 형식입니다.");
+			            $("#pw").focus();
+			          
+			            
+			        } else {
+			            $("#pwcheck").css("color", "#0000ff");
+			            $("#pwcheck").text("올바른 비밀번호 형식입니다.");
+			          }
+			   		}
 			});
 			
 			// 이메일 형식 확인
@@ -182,7 +198,8 @@ table {
 					$("#emailcheck").text("올바른 이메일 형식입니다.");
 				}
 			});
-		});
+		});	
+		
 	</script>
 </body>
 </html>

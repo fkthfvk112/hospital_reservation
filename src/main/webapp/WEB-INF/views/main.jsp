@@ -1,5 +1,10 @@
+<%@page import="component.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%
+	UserDto dto = (UserDto)session.getAttribute("login");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,15 +23,24 @@
         var userId = "<%= session.getAttribute("userId") %>";
         var nickname = "<%= session.getAttribute("nickname") %>";
         var email = "<%= session.getAttribute("email") %>";
+        
+        var dto = "<%= (UserDto)session.getAttribute("login")%>";
 
         <%-- 콘솔에 세션 정보 출력 --%>
+        console.log("카카오 로그인시")
         console.log("User ID: " + userId);
         console.log("Nickname: " + nickname);
         console.log("Email: " + email);
+        
+        console.log("로컬 로그인시")
+        console.log("dto: " +dto);
     }
-
-    // 페이지 로드 시 세션 정보 출력
-    showSession();
+    // request.getSession().getAttribute("login")
+    	// 세션 겟어트리뷰트로 로그인
+    	// 페이지 로드 시 세션 정보 출력
+		showSession();
+    
+    
 </script>
 
 </body>
