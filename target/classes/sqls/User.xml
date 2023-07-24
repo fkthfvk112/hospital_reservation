@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<mapper namespace="User">
+
+<select id="idcheck" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*)
+		from user
+		where id=#{id}
+	</select>
+
+	<insert id="adduser" parameterType="component.dto.UserDto">
+		insert into user(id, pw, name, email, auth, warning, myHospital_id)
+		values(#{id}, #{pw}, #{name}, #{email}, 1, 0, 0)
+	</insert>
+
+	<select id="login" parameterType="component.dto.UserDto"
+		resultType="component.dto.UserDto">
+		select id, name, email, auth, warning, myHospital_id
+		from user
+		where id=#{id} and pw=#{pw}
+	</select>
+
+
+</mapper>

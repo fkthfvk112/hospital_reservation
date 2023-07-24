@@ -11,13 +11,5 @@
 response.sendRedirect("home.do");
 %>
 
-<!-- 
-<h1>
-	hello world2
-</h1>
-<form action="hospitalDetail.do" method="get">
-	<button>¹öÆ°</button>
-</form> 
--->
 </body>
 </html>
