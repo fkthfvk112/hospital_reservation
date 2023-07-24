@@ -45,12 +45,37 @@ public class LikeInfoController {
 		return "mypage";
 	}
 	
+	/*
 	@ResponseBody
 	@GetMapping("canclelike.do")
 	public boolean canclelike(LikeInfoDto dto) {
 		System.out.println("LikeInfoController canclelike() " + new Date());
-		
+		System.out.println("컨트롤러로 넘어온 클릭된 병원 정보 : "+dto);
+		// System.out.println("컨트롤러  : "+service.canclelike(dto));
 		return service.canclelike(dto);
 	}
+	*/
+	
+	@GetMapping("canclelike.do")
+	public String canclelike(LikeInfoDto dto,Model model) {
+		System.out.println("LikeInfoController canclelike() " + new Date());
+		System.out.println("컨트롤러로 넘어온 클릭된 병원 정보 : "+dto);
+		// System.out.println("컨트롤러  : "+service.canclelike(dto));
+		boolean isS = service.canclelike(dto);
+
+		String result="NO"; 
+		String nextpage = "mylike.do";
+		if(isS == true) { // 게시글 작성 성공
+			result="YES"; 
+			 
+		}
+		
+		 model.addAttribute("target","찜 해제");
+		 model.addAttribute("result",result);
+		 model.addAttribute("nextpage",nextpage);
+		 
+		 return "alert"; 
+	}
+	
 	
 }

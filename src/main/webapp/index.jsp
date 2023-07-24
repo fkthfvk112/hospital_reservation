@@ -7,11 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>
-	hello world2
-</h1>
+<%
+	response.sendRedirect("login.do");
+%>
+<!-- 
 <form action="hospitalDetail.do" method="get">
-	<button>버튼</button>
+	<button>병원</button>
 </form>
+ -->
 </body>
 </html>

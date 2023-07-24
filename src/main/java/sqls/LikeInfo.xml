@@ -13,10 +13,10 @@
 			where user_id=#{userid})
 	</select>
 
-<!--  해당 코드를 쓰면 404 뜸
+<!--  해당 코드를 쓰면 404 뜸 // 진성님 unset 병원 컨트롤러 참고해도 됨-->
 	<delete id="canclelike" parameterType="component.dto.LikeInfoDto">
 		delete from likeinfo
 		where user_id=#{userId} and hospital_id=#{hospitalId}
 	</delete>
--->	
+
 </mapper>

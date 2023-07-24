@@ -26,7 +26,6 @@ public class LikeInfoDaoImpl implements LikeInfoDao{
 	@Override
 	public int canclelike(LikeInfoDto dto) {
 		System.out.println("해제할 찜 : "+dto);
-		System.out.println("해제할 찜 : "+session.delete(ns+"canclelike",dto));
 		return session.delete(ns+"canclelike",dto);
 	}
 
