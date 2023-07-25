@@ -108,16 +108,52 @@ public class UserController {
 		return "mypage";
 	}
 	
+	//TODO 마이페이지 - 기존 비밀번호 확인 (ajax)
+	@ResponseBody
+	@PostMapping("checkoriginpw.do")
+	public String checkoriginpw(String originpw,String userid, HttpServletRequest request) { // 리턴값이 jsp 파일며잉 아니라 ajax의 결과값이기에 리턴자료형이 String이 아니어도 됨
+		System.out.println("UserController checkoriginpw() " + new Date());
+		
+		String hashedoriginpw = sha256(originpw); // 비밀번호 변경 페이지에서 입력받은 비밀번호 해쉬화
+		String sessionpw = ((UserDto)request.getSession().getAttribute("login")).getPw(); // 로그인 시 세션에 저장된 유저 비밀번호
+		
+		if (hashedoriginpw == sessionpw) {
+			return "YES";
+		}
+		
+		return "No"; // ajax가 있는 jsp파일로 보낼 데이터
+	}
+	
+	//TODO 마이페이지 - 새 비밀번호 조합 확인 (ajax)
+	@ResponseBody
+	@PostMapping("checknewpw.do")
+	public boolean checknewpw(String pw) { // 리턴값이 jsp 파일며잉 아니라 ajax의 결과값이기에 리턴자료형이 String이 아니어도 됨
+		System.out.println("UserController checknewpw() " + new Date());
+		
+		// 비밀번호 조합 검사
+		// 최소 9자리 이상, 하나 이상의 영문자+숫자+특문(특수문자는 ~!@#$%^&* 중 하나)
+	    String pwRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*])[A-Za-z\\d@$!%*#?&]{9,}$";
+	    if (!Pattern.matches(pwRegex,pw.trim())) {
+	        return false; // 비밀번호가 조합 조건을 만족하지 않을 경우 false를 반환
+	    }
+		
+		return true; // ajax가 있는 jsp파일로 보낼 데이터
+	}
+	
+		
 	//TODO 마이페이지 - 비밀번호 변경 (ajax)
 	@ResponseBody
 	@PostMapping("changepw.do")
-	public boolean changepw(UserDto dto,Model model) { // 리턴값이 jsp 파일며잉 아니라 ajax의 결과값이기에 리턴자료형이 String이 아니어도 됨
+	public boolean changepw(UserDto userdto) { // 리턴값이 jsp 파일며잉 아니라 ajax의 결과값이기에 리턴자료형이 String이 아니어도 됨
 		System.out.println("UserController changepw() " + new Date());
 		
+		boolean isS = service.changepw(userdto);
 		
-		model.addAttribute("content", "profile"); // mypage 페이지 가서 내용으로 띄울 jsp 파일명
-		// 내 정보는 db서 가져오는 게 아니라 로그인 세션에서 받으면 될 듯?
-		return service.changepw(dto); // ajax가 있는 jsp파일로 보낼 데이터
+		if(isS == true) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	
