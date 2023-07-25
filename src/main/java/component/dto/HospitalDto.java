@@ -5,6 +5,16 @@ import java.io.Serializable;
 import org.springframework.context.annotation.ComponentScan;
 
 public class HospitalDto implements Serializable{
+
+	private int id;
+	private String title;
+	private String description;
+	private String sort;
+	private String location_latitude;
+	private String location_longitude;
+	private String staff_id;
+	private String del_date;
+	private String opertime;
 	public int getId() {
 		return id;
 	}
@@ -22,12 +32,6 @@ public class HospitalDto implements Serializable{
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public int getPhoto_id() {
-		return photo_id;
-	}
-	public void setPhoto_id(int photo_id) {
-		this.photo_id = photo_id;
 	}
 	public String getSort() {
 		return sort;
@@ -47,16 +51,10 @@ public class HospitalDto implements Serializable{
 	public void setLocation_longitude(String location_longitude) {
 		this.location_longitude = location_longitude;
 	}
-	public boolean isHasStaff() {
-		return hasStaff;
-	}
-	public void setHasStaff(boolean hasStaff) {
-		this.hasStaff = hasStaff;
-	}
-	public int getStaff_id() {
+	public String getStaff_id() {
 		return staff_id;
 	}
-	public void setStaff_id(int staff_id) {
+	public void setStaff_id(String staff_id) {
 		this.staff_id = staff_id;
 	}
 	public String getDel_date() {
@@ -65,15 +63,18 @@ public class HospitalDto implements Serializable{
 	public void setDel_date(String del_date) {
 		this.del_date = del_date;
 	}
-	private int id;
-	private String title;
-	private String description;
-	private int photo_id;
-	private String sort;
-	private String location_latitude;
-	private String location_longitude;
-	private boolean hasStaff;
-	private int staff_id;
-	private String del_date;
+	public String getOpertime() {
+		return opertime;
+	}
+	public void setOpertime(String opertime) {
+		this.opertime = opertime;
+	}
+	@Override
+	public String toString() {
+		return "HospitalDto [id=" + id + ", title=" + title + ", description=" + description + ", sort=" + sort
+				+ ", location_latitude=" + location_latitude + ", location_longitude=" + location_longitude
+				+ ", staff_id=" + staff_id + ", del_date=" + del_date + ", opertime="
+				+ opertime + "]";
+	}
 	
 }

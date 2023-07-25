@@ -5,13 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import component.dto.HospitalDto;
-import component.service.HospitalService;
+import component.service.HospitalServiceImpl;
 
 @Controller
 public class HospitalController {
 	
 	@Autowired
-	HospitalService service;
+	HospitalServiceImpl service;
 	
 	@GetMapping("hospitalDetail.do")
 	public void hospitalDetail() {

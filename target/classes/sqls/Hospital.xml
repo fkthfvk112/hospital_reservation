@@ -7,4 +7,6 @@
 		from hospital
 		where id = #{id}
 	</select>
+	
+
 </mapper>

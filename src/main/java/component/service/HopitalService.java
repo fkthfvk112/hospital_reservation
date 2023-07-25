@@ -1,8 +1,8 @@
-package component.dao;
+package component.service;
 
 import component.dto.HospitalDto;
 
-public interface HospitalDao {
+public interface HopitalService {
 
 	HospitalDto hospitalDetail(int id);
 }
