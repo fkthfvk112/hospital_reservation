@@ -15,6 +15,12 @@
 		insert into user(id, pw, name, email, auth, warning, myHospital_id)
 		values(#{id}, #{pw}, #{name}, #{email}, 1, 0, 0)
 	</insert>
+	
+	<select id="getUserById" parameterType="java.lang.String" resultType="component.dto.UserDto">
+    	select id, pw, name, email, auth, warning, myHospital_id
+		from user
+		where id=#{id}
+	</select>
 
 	<select id="login" parameterType="component.dto.UserDto"
 		resultType="component.dto.UserDto">
@@ -43,6 +49,5 @@
 	    SET pw=#{pw}
 	    WHERE id=#{id}
   	</update>
-	
 
 </mapper>

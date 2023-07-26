@@ -45,7 +45,7 @@ public class UserController {
 	}
 
 	@PostMapping("loginAf.do")
-	public String login(UserDto user, Model model, HttpServletRequest request) {
+	public String login(@RequestParam(name = "preUrl", required = false) String preUrl, UserDto user, Model model, HttpServletRequest request) {
 		System.out.println("UserController loginAf() " + new Date());
 
 		UserDto dto = service.login(user);
@@ -65,11 +65,28 @@ public class UserController {
 
 		model.addAttribute("loginmsg", loginmsg);
 
-		return "message";
+		// 세션에 preUrl이 존재하면 해당 페이지로 리디렉션하고 세션에서 삭제
+	    if (preUrl != null && !preUrl.isEmpty()) {
+	        request.getSession().removeAttribute("preUrl");
+	        return "redirect:" + preUrl;
+	    } else {
+	        return "message";
+	    }
+	}
+	
+	// 로그인을 해야하는 페이지를 만났을때
+	@RequestMapping("protectedPage.do")
+	public String protectedPage(HttpServletRequest request) {
+	    // 사용자가 접근하려는 보호된 페이지 URL을 preUrl로 세션에 저장
+	    String preUrl = request.getRequestURI();
+	    request.getSession().setAttribute("preUrl", preUrl);
+
+	    return "redirect:/login.do"; // 로그인 페이지로 리디렉션
 	}
 
+
 	@PostMapping("kakaoLogin.do")
-	public String kakaoLogin(@RequestParam("access_token") String accessToken, HttpSession session,
+	public String kakaoLogin(Model model,@RequestParam("access_token") String accessToken, HttpSession session,
 			RedirectAttributes redirectAttributes) {
 		// 카카오 API를 이용하여 사용자 정보를 가져오는 URL
 		String apiUrl = "https://kapi.kakao.com/v2/user/me";
@@ -99,9 +116,52 @@ public class UserController {
 				session.setAttribute("nickname", nickname);
 				session.setAttribute("email", email);
 				System.out.println("kakaoLogin Success (5)");
+				
+				// 사용자 아이디가 이미 데이터베이스에 존재하는지 확인
+	            boolean userExists = service.idcheck(userId);
+	            UserDto user = new UserDto();
+	            if (userExists) {
+	                // 사용자가 이미 존재하면 데이터베이스에서 사용자 정보를 가져옴
+	                UserDto existingUser = service.getUserById(userId);
+	                System.out.println("카카오 아이디가 존재할때 사용자 정보 갖고오기");
+	                // 세션에 사용자 정보 저장
+	                user.setPw(null);
+	                session.setAttribute("login", existingUser);
+	                System.out.println("갖고온 정보 세션에 정보 저장");
+	            } else {
+	                // 사용자가 존재하지 않으면 새로운 사용자 생성 후 데이터베이스에 저장
+	                user.setId(userId);
+	                user.setName(nickname);
+	                user.setEmail(email);
+	                user.setPw(null);
 
+	                boolean isAdded = service.adduser(user);
+	                if (isAdded) {
+	                    System.out.println("카카오 아이디가 없을때 db에 저장");
+	                    // 세션에 사용자 정보 저장
+	                    session.setAttribute("login", user);
+	                    System.out.println("카카오 아이디가 없을때 세션에 정보 저장");
+	                } else {
+	                    // 실패 시 처리
+	                    System.out.println("사용자 추가에 실패했습니다.");
+	                }
+	            }
+
+	            System.out.println("KaKaoLogin Success (6)");
+			    
+			    // UserDto에 담긴 사용자 정보를 데이터베이스에 저장
+			    
+			    String kakaologinmsg = "kakao_YES";
+				if (!userExists) {
+					kakaologinmsg = "kakao_NO";
+				}
+				model.addAttribute("kakaologinmsg", kakaologinmsg);
+		        System.out.println("KaKaoLogin Success (7)");
+		        
+			    
+			    
 				// 로그인 성공 후 메인 페이지로
-				return "redirect:/main.do";
+				return "message";
 			} else {
 				// 요청에 실패한 경우, 실패 메시지를 RedirectAttributes에 담아서 리다이렉트
 				redirectAttributes.addFlashAttribute("errorMsg", "카카오 로그인에 실패했습니다.");

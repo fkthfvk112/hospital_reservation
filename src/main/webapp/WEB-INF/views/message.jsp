@@ -21,8 +21,30 @@ if(message != null && message.equals("") == false){
 		<%
 	}	
 }
+%>
 
+<%
+String kakaologinmsg = (String)request.getAttribute("kakaologinmsg");
+if(kakaologinmsg != null && kakaologinmsg.equals("") == false){
+	if(kakaologinmsg.equals("kakao_YES")){
+		%>
+		<script>
+		alert("카카오 로그인이 되었습니다 !");
+		location.href = "main.do";
+		</script>
+		<%	
+	}else{
+		%>
+		<script>
+		alert("카카오 로그인에 실패하였습니다 ..........");
+		location.href = "login.do";
+		</script>
+		<%
+	}	
+}
+%>
 
+<%
 String loginmsg = (String) request.getAttribute("loginmsg");
 if (loginmsg != null && !loginmsg.isEmpty()) {
     if (loginmsg.equals("LOGIN_YES")) {

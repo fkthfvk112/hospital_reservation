@@ -12,6 +12,7 @@ public interface UserService {
 	String findId(String email);
 	
 	UserDto login(UserDto dto);
+	UserDto getUserById(String id);
 	
 	// 메일
 	UserDto findUserByNameIdEmail(String name, String id, String email);

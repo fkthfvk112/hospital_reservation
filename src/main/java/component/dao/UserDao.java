@@ -1,7 +1,5 @@
 package component.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 import component.dto.UserDto;
@@ -14,6 +12,7 @@ public interface UserDao {
 	String findId(String email);
 	
 	UserDto login(UserDto dto);
+	UserDto getUserById(String id);
 	
 	// 메일
 	UserDto findUserByNameIdEmail(@Param("name") String name, @Param("id") String id, @Param("email") String email);

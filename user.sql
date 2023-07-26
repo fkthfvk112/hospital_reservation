@@ -10,6 +10,10 @@ create table user(
 	myHospital_id int
 );
 
+-- pw 컬럼의 속성을 수정하여 NULL을 허용하도록 변경
+ALTER TABLE user MODIFY pw varchar(100) NULL;
+
+
 insert into user(id, pw, name, email, auth, warning, myHospital_id)
 values ('testId', '123', 'testName', 'testEmail@naver.com', 1, 0, 0);
 
@@ -22,6 +26,6 @@ select pw from user
 where id="qwe";
 
 delete from user
-where id='testI1d';
+where id='2924185105';
 
 update user set pw = SHA2(pw, 256);

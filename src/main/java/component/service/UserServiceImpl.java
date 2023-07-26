@@ -28,6 +28,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+    public UserDto getUserById(String id) {
+        return dao.getUserById(id);
+    }
+	
+	@Override
 	public String findId(String email) {
 		return dao.findId(email);
 	}
