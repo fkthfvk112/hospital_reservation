@@ -130,7 +130,7 @@ body {
 					<td>
 						<a href="regi.do" class="regi">회원가입</a>
 						<a href="findPw.do" id="findPw" class="findIdPw">비밀번호 찾기</a>
-						<a href="findId.do" id="findId" class="findIdPw">아이디찾기</a>
+						<a href="findId.do" id="findId" class="findIdPw">아이디 찾기</a>
 					</td>
 				</tr>
 				<tr class="centerTr">
