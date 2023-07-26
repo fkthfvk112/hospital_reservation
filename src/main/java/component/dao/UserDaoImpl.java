@@ -22,6 +22,12 @@ public class UserDaoImpl implements UserDao{
 		int count = session.selectOne(ns+ "idcheck", id);
 		return count;
 	}
+	
+	@Override
+	public int emailcheck(String email) {
+		int count = session.selectOne(ns+ "emailcheck", email);
+		return count;
+	}
 
 	@Override
 	public int adduser(UserDto dto) {

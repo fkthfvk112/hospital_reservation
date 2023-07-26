@@ -26,6 +26,6 @@ select pw from user
 where id="qwe";
 
 delete from user
-where id='2924185105';
+where id='qcd';
 
 update user set pw = SHA2(pw, 256);

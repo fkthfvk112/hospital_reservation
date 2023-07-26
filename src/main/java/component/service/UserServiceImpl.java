@@ -16,6 +16,11 @@ public class UserServiceImpl implements UserService{
 	public boolean idcheck(String id) {
 		return dao.idcheck(id)>0?true:false;
 	}
+	
+	@Override
+	public boolean emailcheck(String email) {
+		return dao.emailcheck(email)>0?true:false;
+	}
 
 	@Override
 	public boolean adduser(UserDto dto) {

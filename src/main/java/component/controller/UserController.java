@@ -257,9 +257,22 @@ public class UserController {
 		System.out.println("UserController idcheck() " + new Date());
 
 		boolean isS = service.idcheck(id);
-		String msg = "YES";
+		String msg = "id_YES";
 		if (isS == true) {
-			msg = "NO";
+			msg = "id_NO";
+		}
+		return msg;
+	}
+	
+	@ResponseBody
+	@PostMapping("emailcheck.do")
+	public String emailcheck(String email) {
+		System.out.println("UserController emailcheck() " + new Date());
+
+		boolean isS = service.emailcheck(email);
+		String msg = "email_YES";
+		if (isS == true) {
+			msg = "email_NO";
 		}
 		return msg;
 	}

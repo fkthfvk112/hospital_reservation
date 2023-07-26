@@ -7,6 +7,7 @@ import component.dto.UserDto;
 public interface UserDao {
 	
 	int idcheck(String id);
+	int emailcheck(String email);
 	int adduser(UserDto dto);
 	
 	String findId(String email);

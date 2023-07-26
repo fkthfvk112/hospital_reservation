@@ -26,7 +26,7 @@ body {
 	display: flex;
 	justify-content: center;
 }
-#idTr{
+#idTr, #emailTr{
 	margin-left: 70px;
 }
 th {
@@ -58,7 +58,7 @@ table {
 	height: 180px;
 	margin-bottom: 30px;
 }
-#id_chk_btn{
+#id_chk_btn, #email_chk_btn{
 	background-color: #D9D9D9;
     width: 65px;
     height: 50px;
@@ -103,17 +103,16 @@ table {
 						<br>
 						<p id="pwcheck" style="font-size: 8px"></p></td>
 				</tr>
-				<!-- 비밀번호 해시화를 위한 hidden input -->
-            	<input type="hidden" id="hashed_pw" name="hashed_pw">
 				<tr class="centerTr">
 					<th>이름</th>
 					<td><input type="text" size="20" id="name" name="name"
 						class="text" required></td>
 				</tr>
-				<tr class="centerTr">
+				<tr id="emailTr" class="centerTr">
 					<th>이메일</th>
 					<td><input type="text" size="20" id="email" name="email"
 						class="text" required>
+						<input type="button" id="email_chk_btn" value="중복확인">
 						<br>
 						<p id="emailcheck" style="font-size: 8px"></p></td>
 				</tr>
@@ -127,22 +126,14 @@ table {
 
 	<script>
 		$(document).ready(function(){
-			// 중복확인
+			// 아이디 중복확인
 			$("#id_chk_btn").click(function(){
 				$.ajax({
 					url:"idcheck.do",
 					type:"post",
 					data:{ "id":$("#id").val() },
 					success:function(answer){
-						// 빈칸일때 중복확인 눌리는 경우 
-						/* 안해도 나옴
-						if( $("#id").val().trim()=="" ){
-							$("#idcheck").css("color", "#ff0000");
-							$("#idcheck").text("사용할 수 없는 아이디입니다!!!!!");
-							$("#id").focus();
-						}
-						 */
-						if(answer == "YES"){
+						if(answer == "id_YES"){
 							$("#idcheck").css("color", "#0000ff");
 							$("#idcheck").text("사용할 수 있는 아이디입니다.");
 						}else{
@@ -157,11 +148,33 @@ table {
 				});
 			});
 			
-			// 비밀번호 확인
-			$("form").submit(function(event) {
+			$("#email_chk_btn").click(function(){
+	            $.ajax({
+	                url:"emailcheck.do",
+	                type:"post",
+	                data:{ "email":$("#email").val() },
+	                success:function(answer){
+	                    if(answer == "email_YES"){
+	                        $("#emailcheck").css("color", "#0000ff");
+	                        $("#emailcheck").text("사용할 수 있는 이메일입니다.");
+	                    }else{
+	                        $("#emailcheck").css("color", "#ff0000");
+	                        $("#emailcheck").text("사용할 수 없는 이메일입니다.");
+	                        $("#email").val("");
+	                    }
+	                },
+	                error:function(){
+	                    alert("error");
+	                }
+	            });
+	        });
+			
+			
+			$("#regiForm").submit(function(event) {
 				var pw = $("#pw").val().trim();
 				var chkPw = $("#chk_pw").val().trim();
-	
+				
+				// 비밀번호 확인
 				if (pw !== chkPw) {
 					event.preventDefault(); // 폼 제출을 막음
 					$("#pwcheck").css("color", "#ff0000");
@@ -176,12 +189,27 @@ table {
 			            $("#pwcheck").text("유효하지 않은 비밀번호 형식입니다.");
 			            $("#pw").focus();
 			          
-			            
 			        } else {
 			            $("#pwcheck").css("color", "#0000ff");
 			            $("#pwcheck").text("올바른 비밀번호 형식입니다.");
 			          }
 			   		}
+				
+				// id 중복확인 버튼을 안눌렸을떄
+				if (!$("#idcheck").text()) {
+		            event.preventDefault();
+		            $("#idcheck").css("color", "red");
+		            $("#idcheck").text("아이디 중복을 확인해주세요.");
+		            $("#id_chk_btn").focus();
+		        }
+				
+				// email 중복확인 버튼을 안눌렸을떄
+				if ($("#emailcheck").text() !== "사용할 수 있는 이메일입니다.") {
+		            event.preventDefault();
+		            $("#emailcheck").css("color", "red");
+		            $("#emailcheck").text("이메일 중복을 확인해주세요.");
+		            $("#email_chk_btn").focus();
+		        }
 			});
 			
 			// 이메일 형식 확인
@@ -190,15 +218,20 @@ table {
 				var emailPattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 				
 				if(!emailPattern.test(email)){
-					event.preventDefault(); // 폼 제출을 막음
 					$("#emailcheck").css("color", "#ff0000");
 					$("#emailcheck").text("유효하지 않은 이메일 형식입니다.");
+					// 이메일 형식이 올바르지 않으면 이메일 중복확인 버튼 비활성화
+		            $("#email_chk_btn").prop("disabled", true);
 				} else{
 					$("#emailcheck").css("color", "#0000ff");
 					$("#emailcheck").text("올바른 이메일 형식입니다.");
+					// 이메일 형식이 올바르면 이메일 중복확인 버튼 활성화
+		            $("#email_chk_btn").prop("disabled", false);
 				}
 			});
-		});	
+		});
+		
+		
 		
 	</script>
 </body>
