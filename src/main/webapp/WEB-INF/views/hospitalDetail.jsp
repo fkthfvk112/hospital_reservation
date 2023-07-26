@@ -1,3 +1,4 @@
+<%@page import="utils.HosUtils"%>
 <%@page import="component.dto.UserDto"%>
 <%@page import="component.dto.HospitalDto"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
@@ -8,10 +9,23 @@
 	String latitude = hosDto.getLocation_latitude();
 	String longitude = hosDto.getLocation_longitude();
 	int hosId= hosDto.getId();
+	
+	
+	String ownerId = hosDto.getStaff_id();
 	UserDto userDto =  (UserDto)session.getAttribute("login");
 	String userId = userDto.getId();
 	
 	System.out.println(hosDto.toString());
+	
+	String operationTime = hosDto.getOpertime();
+	String[] times = operationTime.split(",");
+	operationTime = times[0] + "시부터 " +  (Integer.parseInt(times[1]) +1) + "시까지";
+
+	//------------for validation-------------------
+	boolean isOwner = userId.equals(ownerId)?true:false;
+	System.out.println("유저 아이디 " + userId);
+	System.out.println("오너 아이디 " + ownerId);
+
 %>
 <!DOCTYPE html>
 <html>
@@ -23,7 +37,9 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
-
+	<input type="text" value="<%=hosId %>" id="hosId" name="hospitalId"  style="display:none;"/> <!-- 수정 -->
+	<input type="text" value="<%=userId %>" id ="userId" name="userId"  style="display:none;"/>
+	<!-- userId 발리데이션 수정 -->
     <div id="mainSection">
             <div class="mainContents">
             <div class="imgAndMapSection">
@@ -41,29 +57,202 @@
                         </button>
                     </div>
                     <div><%=hosDto.getTitle() %></div>
-                    <div>평점</div>
-                    <div>찜 횟수</div>
+                    <div>
+                    	<span style="color:#FFCB12;">★</span>
+                    	<span>평점</span>
+                    </div>
+                    <div>
+                    	<span style="color:red">♥</span>
+                    	<span class="likeCnt"></span>
+                    </div>
                 </div>
                 <hr />
                 <div class="content">
-                    <div><%=hosDto.getDescription() %></div>
+                    <div>
+                    	<%=hosDto.getDescription() %>
+                    	<%if(isOwner){ %>
+                    	<button type="button" class="editBtn" id="descEditBtn">수정</button>
+                    	<%} %>
+                    	<div id="descEditContainer" class="mt-3 editContainer" style="display:none;"> <!-- display none으로 수정 -->
+                    		<textarea cols="50" id="descEditTextAtrea" placeholder="수정 사항 입력"></textarea>
+                    		<br />
+                    		<button class="editCompleteBtn" id="descCompleteBtn">수정 완료</button>
+                    	</div>
+                    </div>
                 </div>
                 <hr />
                 <div class="content">
-                    <div>영업시간</div>
-                    <hr />
-                    <div>영업시간입니다.</div>
+                  	<%if(isOwner){ %>
+                    <div>영업시간<button type="button" class="editBtn" id="timeEditBtn">수정</button></div>
+                    <%} %>
+                    <div><%=HosUtils.passOperationTime(hosDto.getOpertime()) %></div>
+                    <div id="timeEditContainer" class="mt-3 editContainer" style="display:none;"> <!-- display none으로 수정 -->
+                  			<select id="startTime" class="mt-3">
+								<option value="9">09:00</option>
+								<option value="10">10:00</option>
+								<option value="11">11:00</option>
+								<option value="13">13:00</option>
+								<option value="14">14:00</option>
+								<option value="15">15:00</option>
+								<option value="16">16:00</option>
+								<option value="17">17:00</option>
+							</select> 부터
+							<select id="closeTime">
+								<option value="10">10:00</option>
+								<option value="11">11:00</option>
+								<option value="13">13:00</option>
+								<option value="14">14:00</option>
+								<option value="15">15:00</option>
+								<option value="16">16:00</option>
+								<option value="17">17:00</option>
+								<option value="18">18:00</option>
+							</select> 까지
+							<br />
+                    	<button class="editCompleteBtn" id="timeCompleteBtn">수정 완료</button>
+                   	</div>
                 </div>
+                 <hr />
                 <div class="content">
-                    <div>진료과목</div>
-                    <hr />
-                    <div><%=hosDto.getSort() %></div>
+                    <div>
+                    	진료과목
+                    	<%if(isOwner){ %>
+                    	<button type="button" class="editBtn" id="sortEditBtn">수정</button>
+                    	<%} %>
+                    	<div id="sortEditContainer" class="mt-3 editContainer" style="display:none;"> <!-- display none으로 수정 -->
+                   	
+			               <div class="mt-3" style="width:100%">
+								<lable>진료과</lable>
+								<input type="text" class="form-control" name="sort" id="sort" readonly/>
+								<button class="editCompleteBtn" id="sortCompleteBtn">수정 완료</button>	
+								
+								 <!-- 안보이도록 프로세싱 -->
+								<details class="text-center" id="sortDetail">
+								<summary>진료과 선택</summary>
+								<div id="sortSection">
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="가정의학과" id="s1">
+										  <label class="form-check-label" for="s1">
+										    가정의학과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="감염내과" id="s2">
+										  <label class="form-check-label" for="s2">
+										    감염내과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="치과" id="s3">
+										  <label class="form-check-label" for="s3">
+										    치과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="비뇨기과" id="s4">
+										  <label class="form-check-label" for="s4">
+										    비뇨기과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="산부인과" id="s5">
+										  <label class="form-check-label" for="s5">
+										    산부인과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="병리과" id="s6">
+										  <label class="form-check-label" for="s6">
+										    병리과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="성형외과" id="s7">
+										  <label class="form-check-label" for="s7">
+										    성형외과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="소아기내과" id="s8">
+										  <label class="form-check-label" for="s8">
+										    소아기내과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="신경과" id="s9">
+										  <label class="form-check-label" for="s9">
+										    신경과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="안과" id="s10">
+										  <label class="form-check-label" for="s10">
+										    안과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="이비인후과" id="s11">
+										  <label class="form-check-label" for="s11">
+											이비인후과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="재활의학과" id="s12">
+										  <label class="form-check-label" for="s12">
+										    재활의학과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="정형외과" id="s13">
+										  <label class="form-check-label" for="s13">
+										    정형외과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="피부과" id="s14">
+										  <label class="form-check-label" for="s14">
+										    피부과
+										  </label>
+										</div>
+										
+										<div class="form-check">
+										  <input class="form-check-input" type="checkbox" value="흉부외과" id="s15">
+										  <label class="form-check-label" for="s15">
+										    흉부외과
+										  </label>
+										</div>
+										<button type="button" id="sBtn" class="btn btn-success m-3">선택 완료</button>
+									</div>
+								</details>
+							</div>     
+                    	</div>                    	
+                    </div>
+					<div id="sortContainer" class="mt-3">
+						<% for(String sort:HosUtils.getStringList_seperByDelim(hosDto.getSort(), ",")){ %>
+							<span class="sortBadge" style="border:2px solid <%=HosUtils.getColorFromAscii(sort) %>"><%=sort %></span>
+						<%} %>
+					</div>
                 </div>
                 <div class="p-3 m-3" align="center" >
-                    <button type="button" class="btn btn-primary reservBtn m-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">진료 예약</button>
+                    <button type="button" class="btn reservBtn m-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">진료 예약</button>
                 </div>
             </div>
         </div>
+        <!-- 리뷰 -->
+        <jsp:include page="review.jsp"></jsp:include>
+        
         <div style="width:90%; margin:1em;">
             <div class="reviewBar"></div>
             <div class="p-3">
@@ -71,8 +260,7 @@
                 <div>평점</div>
                 <div>리뷰 제목</div>
                 <div>리뷰 내용 ㅁㅁㅇㅁㄴㅇㅁㄴㅇ</div>
-            </div>
-            
+            </div>            
         </div>
     </div>
     
@@ -91,8 +279,8 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body text-center">
-	      		<input type="text" value="<%=hosId %>" name="hospitalId"/> <!-- 수정 -->
-	      		<input type="text" value="<%=userId %>" name="userId" />
+	      		<input type="text" value="<%=hosId %>" id="hosId" name="hospitalId"  style="display:none;"/> <!-- 수정 -->
+	      		<input type="text" value="<%=userId %>" id = "userId" name="userId"  style="display:none;"/>
 	      		
 	        날짜를 선택해주세요. <input class="dateInput" type="date" name="reservDate" value=null/>
 	        <div class="mt-3">
@@ -140,16 +328,21 @@
       
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	        <button type="submimt" class="btn btn-primary">예약하기</button>
+	        <button type="submimt" class="btn btn-primary">예약하기</button>	        
 	      </div>
 	    </div>
 	  </div>
-	</form>
+	</form>	
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 <script>
+	$(document).ready(()=>{
+		//countHosLike();
+	})
+
+
 	//데이터 받아와서 예약 가능한지 표시하기
 	const dateInput = document.querySelector(".dateInput");
 	
@@ -263,9 +456,15 @@
 	function likeSet(){
 		let hosId = Number(<%=hosDto.getId()%>);
 		<%-- let userId = <%=userDto.getId()%> 수정 --%>
-		let userId = "abc123";
+		let userId = "<%= userId%>";
+		
+		//로그인 안 했을 때 처리
+		if(userId === null || userId === undefined){
+			handleNotLogin();
+		}
+
 		let likeData = {
-			userId:"abc123",
+			userId:userId,
 			hospitalId:hosId
 		};
 		
@@ -275,8 +474,8 @@
             data: likeData,
             dataType: 'json',
             success: function(response) {
-                
                 console.log("성공", response);
+                countHosLike();//좋아요 띄우기
             },
             error: function(error) {
                 
@@ -284,7 +483,10 @@
             }
         });
 	}
-	
+	//--------------------로그인 안 했을 시 처리-----------
+	function handleNotLogin(){
+		location.href = "login.do";
+	}
 	
 	//-----맵 띄우기-------------
 	let container = document.getElementById('map');
@@ -320,17 +522,47 @@
         position: new kakao.maps.LatLng(<%=latitude%>, <%=longitude%>)
     });
     clusterer.addMarker(marker);
+    
+    
+    
+    //---------------------
+    
+    	//like 집계
+	function countHosLike(){
+    	let hosId = <%=hosDto.getId()%>
+  
+		console.log("here")
+		$.ajax({
+            url: 'countHosLike.do',
+            type: 'GET',
+            data:{ hosId: hosId },
+            dataType: 'json',
+            success: function(response) {
+                console.log("성공", response);
+                $(".likeCnt").html(Number(response));
+            },
+            error: function(error) {
+                
+                console.error("실패", error);
+            }
+        });
+	}
 </script>
+<script src="./jsComponents/hospitalDetailEdit.js" type="text/javascript"></script>
 
 <style>
-
+	body{
+		background-color: #E2F0F7;
+	}
 	object {
     	pointer-events: none;
 	}
 	#mainSection{
-		border:3px solid red;
+		border:3px solid #e1e1e1;
 		border-radius: 18px;
 		margin:2em;
+		padding-top:2em;
+		background-color:white;
 	}
 	.mainContents{
 		display: flex;
@@ -399,6 +631,42 @@
     	cursor: pointer;
     	padding: 5px;
     }
+    
+    .sortBadge{
+		padding:0.3em;
+		border-radius:1em;
+		white-space: nowrap;
+		margin:0.2em;
+		font-size:0.8rem;
+	}
+	
+	#sortContainer{
+		display:flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
    
+   
+   .editBtn{
+	   	border-radius: 2em;
+	   	background-color: white;
+	   	border:1.2px solid skyblue;
+	   	margin:0em 0.3em 0em 0.3em;
+   }
+   
+   .editCompleteBtn{
+   	   	border-radius: 0.5em;
+	   	background-color: blue;
+	   	border:none;
+	   	margin:0.3em 0.3em 0em 0.3em;
+	   	color:white;
+   }
+   
+   .editContainer{
+   	background-color: #e1e1e1;
+   	padding:1em;
+   	text-align: center;
+   }
 </style>
 </html>

@@ -7,7 +7,13 @@ import component.dto.ReviewDto;
 public interface ReviewService {
 
 	boolean reviewWrite(ReviewDto dto);
-	List<ReviewDto> recentList(ReviewDto dto);
-	List<ReviewDto> scoreUplist(ReviewDto dto);
-	List<ReviewDto> scoreDownlist(ReviewDto dto);
+	
+	List<ReviewDto> recentList(int hosId);
+	
+	List<ReviewDto> scoreUplist(int hosId);
+	
+	List<ReviewDto> scoreDownlist(int hosId);
+	
+	boolean reviewDelete(ReviewDto dto);
+	
 }

@@ -30,7 +30,8 @@ FROM review
 where hospital_id=1
 GROUP BY id
 order by AVG(score) desc;
-
+    
+    
 병원아이디 기준) 평점 낮은순
 SELECT id, hospital_id, user_id, content, wdate, score, AVG(score) 
 FROM review
@@ -40,7 +41,7 @@ order by AVG(score) asc;
 
 
 delete from review;
-where id=1;
+where id=4;
 
 drop table review;
 

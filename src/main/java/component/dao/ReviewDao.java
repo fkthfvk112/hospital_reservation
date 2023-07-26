@@ -8,9 +8,11 @@ public interface ReviewDao {
 	
 	int reviewWrite(ReviewDto dto);
 	
-	List<ReviewDto> recentList(ReviewDto dto);
+	List<ReviewDto> recentList(int hosId);
 	
-	List<ReviewDto> scoreUplist(ReviewDto dto);
+	List<ReviewDto> scoreUplist(int hosId);
 	
-	List<ReviewDto> scoreDownlist(ReviewDto dto);
+	List<ReviewDto> scoreDownlist(int hosId);
+	
+	int reviewDelete(ReviewDto dto);
 }

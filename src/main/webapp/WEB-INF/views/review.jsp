@@ -1,3 +1,4 @@
+<%@page import="org.codehaus.jackson.map.util.JSONPObject"%>
 <%@page import="component.dto.HospitalDto"%>
 <%@page import="component.dto.ReviewDto"%>
 <%@page import="java.util.List"%>
@@ -6,7 +7,9 @@
     pageEncoding="EUC-KR"%>
 <%
 	UserDto login = (UserDto)session.getAttribute("login");
-	List<ReviewDto> list = (List<ReviewDto>)request.getAttribute("list");
+	
+	HospitalDto hosDto = (HospitalDto)request.getAttribute("hospitalDto");
+	String sortType = (String)request.getAttribute("sort_type");
 	
 %>
 
@@ -18,18 +21,21 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 <style>
+a{
+	text-decoration: none;
+	color:black;
+}
+
 .reviewWrap{
 	display: flex;
     flex-direction: column;
     align-items: center;
-    
-
 }
 
 /* 리뷰상단 */
 .reviewTitle{
 	height: 50px;
-	width: 50%;
+	width: 95%;
 	background-color: #B5E2FA;
 	margin-top: 20px;
     display: flex;
@@ -149,62 +155,155 @@
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
+
 <body>
-
-<jsp:include page="header.jsp" flush="false"/>
- <jsp:include page="nav.jsp" flush="false"/>
-
 
 <!-- 리뷰전체맵 -->
 <div class="reviewWrap">
 		
 		<!-- 리뷰 타이틀 -->
         <div class="reviewTitle">
-            <div class=""><a href="review.do?hospital_id=1">최신순</a>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp</div>   
-            <div class=""><a href="scoreUplist.do?hospital_id=1">평점높은순</a>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp</div>
-            <div class=""><a href="scoreDownlist.do?hospital_id=1">평점낮은순</a></div>  	  
-        </div>
+            <div class=""><a href=<%="hospitalDetail.do?id="+hosDto.getId()+"&type=recent" %>>최신순</a>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp</div>   
+            <div class=""><a href=<%="hospitalDetail.do?id="+hosDto.getId()+"&type=scoreup" %>>평점높은순</a>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp</div>
+            <div class=""><a href=<%="hospitalDetail.do?id="+hosDto.getId()+"&type=scoredown" %>>평점낮은순</a></div>
+            
+           <%--  <a href="" onclick="recentReview(<%=hosDto.getId() %>)">최신순</a> --%>
+     
+        </div>  
+          
+        <script> 
+        function scoreUplist(id) {
+			alert("id" + id);
+        	//var hospitalId = 1; // 임시로 설정한 아이디
+            $.ajax({
+              url: "scoreUplist.do?hosId="+id, 
+              success: function(data) {
+                // 성공적으로 응답을 받았을 때 실행할 콜백 함수
+                console.log("서버에서 받은 데이터: ", data);
+              },
+              error: function(xhr, status, error) {
+                // 요청이 실패했을 때 실행할 콜백 함수
+                console.error("에러 발생: ", status, error);
+              }
+            });
+		}
+        
+        function scoreDownlist(id) {
+			//alert("test");
+        	//var hospitalId = 1; // 임시로 설정한 아이디
+            $.ajax({
+              url: "scoreDownlist.do?hosId="+id, 
+              success: function(data) {
+                // 성공적으로 응답을 받았을 때 실행할 콜백 함수
+                console.log("서버에서 받은 데이터: ", data);
+              },
+              error: function(xhr, status, error) {
+                // 요청이 실패했을 때 실행할 콜백 함수
+                console.error("에러 발생: ", status, error);
+              }
+            });
+		}
+</script>
+
     
         <!-- 리뷰목록 -->
-        <%
-        if(list == null || list.size() == 0){
-        	%>
-        	작성된 리뷰가 없습니다.
-        	<%
-        }else{
-        	for(int i=0; i<list.size(); i++){
-        		ReviewDto review = list.get(i);
-        		%>
-            	<div class="review">
-            		<div>
-		                <input type="hidden" name="<%=review.getId() %>">
-				        <input type="hidden" name="<%=review.getHospital_id() %>">  
-		            </div>
-				    <div class="reviewUserId"><%=review.getUser_id() %></div>
-				    <div class="reviewScore"><%=review.getScore() %></div>
-				    <div class="reviewDate"><%=review.getWdate() %></div>
-				    <div class="reviewContent">
-				        <%=review.getContent() %>
-				    </div>
-				    <div class="jb-division-line"></div>
-		        </div>
-            	<%
-        	}
-        }
+        <div class="review" id="result">
         
-        %>
+        </div>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript">
+		  $(document).ready(function() {
+		    // AJAX 요청을 보낼 URL을 설정합니다.
+		    var url = `<%="review.do?hosId="+hosDto.getId() +"&type="+sortType%>`; // 병원ID에 실제 값을 넣어주어야 합니다.
+		    //alert(url);
+			var htmlContent = "";
+			let userId = `<%=((UserDto)session.getAttribute("login")).getId() %>`;
+			//alert(userId);
+		    $.getJSON(url, function(data) {
+		      console.log(data);
+		      
+		      if(!data){
+		    	  htmlContent += "<p>아직 입력된 리뷰가 없습니다.</p>";
+		    	  
+		      }else{
+		    	  //console.log("data" + data[0].id);
+		    	  for (var i = 0; i < data.length; i++) {	  
+		    		  
+		    		//리뷰아이디
+		    	      htmlContent += "<div>";
+		    	      htmlContent += "<input type='hidden' name='id' value='" + data[i].id + "'>";
+		    	      htmlContent += "</div>";
+		    	      
+		    	      
+		    	      //병원아이디
+		    	      htmlContent += "<div>";
+		    	      htmlContent += "<input type='hidden' name='hospital_id' value='" + data[i].hospital_id + "'>";
+		    	      htmlContent += "</div>";
+		    		  
+		    	      //리뷰아이디
+		    	      htmlContent += "<div>";
+		    	      htmlContent += "<input type='text' name='id' value='" + data[i].id + "'>";
+		    	      htmlContent += "</div>";
+		    	      
+		    	      //작성자
+		    	      htmlContent += "<div class='reviewUserId'>작성자 " + data[i].user_id + "</div>";
+		    	      
+		    	      //평점
+		    	      htmlContent += "<div class='reviewScore'>평점 " + data[i].score + "</div>";
+		    	      
+		    	      //작성일
+		    	      htmlContent += "<div class='reviewDate'>작성일 " + data[i].wdate + "</div>";
+		    	      
+		    	      //내용
+		    	      htmlContent += "<div class='reviewContent'>" + data[i].content + "</div>";
 
-		<!-- 리뷰등록 -->
-		<%
-		
-		if(login != null){ // 로그인 된 상태에서만 리뷰작성 가능하게
-			%>
+		    	      //삭제버튼
+		    	      if(userId==data[i].user_id){
+		    	      htmlContent += "<div>";
+		    	      htmlContent += "<button type='button' class='deleteBtn' data-id='" + data[i].id + "'>삭제</button>";
+		    	      // 여기에 글번호 등 추가적인 데이터를 data[i]에서 가져와서 삽입 가능
+		    	      htmlContent += "</div>";	  
+		    	      }
+
+		    	      // 구분선 추가
+		    	      htmlContent += "<div class='jb-division-line'></div>";
+		    	    }
+		    	  
+		    	    // 결과를 해당 HTML 요소에 붙입니다.
+		    	    $("#result").html(htmlContent);
+		      }
+		    });
+		    
+		    $(document).on("click", ".deleteBtn", function() {
+		    	var reviewId = $(this).data("id");
+		    	if(reviewId){
+		    		if (confirm("정말로 이 리뷰를 삭제하시겠습니까?")) {
+			            // 확인 버튼을 눌렀을 때 삭제를 진행하는 AJAX 요청
+			            $.ajax({
+			                url: "reviewDelete.do",
+			                type: "GET",
+			                data: { id: reviewId },
+			                success: function(data) {
+			                	console.log(data);
+			                	location.href="hospitalDetail.do?id="+"<%=hosDto.getId() %>";
+			                },
+			                error: function(error) {
+			                    console.error("리뷰 삭제 에러:", error);
+			                }
+			            });
+			        }
+		    	}
+    		  });
+		    
+		  });
+		</script>
+
+		<!-- 리뷰등록 OK -->
 			<div class="reviewAddWrap">
 				<form action="reviewWriteAf.do" method="post" accept-charset="UTF-8" class="mb-3" name="myform" id="myform">
-				<input type="hidden" name="hospital_id" value="2"><!-- 임시: 원래 병원번호가 따라와야됨 -->
-				<input type="hidden" name="user_id" value="asdf1"><!-- 임시: 원래 유저아디가 따라와야됨 -->
-				<input type="hidden" value="<%=login.getId() %>">
-	
+				<input type="hidden" name="hospital_id" value="<%=hosDto.getId() %>"><!-- 임시: 원래 병원번호가 따라와야됨 -->
+				<input type="hidden" name="user_id" value="<%=login.getId() %>"><!-- 임시: 원래 유저아디가 따라와야됨 -->
+				
 	            <div class="reviewAddTop">
 	            	<!-- 평점 -->
 	            	<div class="scoreWrap">
@@ -224,7 +323,7 @@
 	                </div>
 	                
 	                 <div>
-	                        <button type="submit" class="addBtn">리뷰등록</button>
+	                        <button type="button" class="addBtn" onclick="checkLogin()">리뷰등록</button>
 	                </div>
 	            </div>
 	            
@@ -234,17 +333,46 @@
 	         
 	        </form>
         </div> 
-			<%
-		}
-		%>
+        
+<!-- 로그인 체크하는 JavaScript 함수 -->
+<script>
+	
+  function checkLogin() {
+    var isLoggedIn = <%= (session.getAttribute("login") != null) %>;
+    if (!isLoggedIn) {
+      alert("로그인 후 이용할 수 있는 서비스입니다. 로그인해주세요.");
+    } else {
+      document.getElementById("myform").submit();
+    }
+  }
+</script>   
+</div>
 
-    </div>
-    
 
-<jsp:include page="footer.jsp" flush="false"/>  
+<%-- 
+<button id = "loadDataBtn">버튼</button> 
 </body>
-</html>
+<script>
+  $(document).ready(()=>{
+	  let reviewDatas = [];
+	  
+	  $.ajax({
+          url: 'review.do',
+          type: 'GET',
+          data: { hosId: <%=hosDto.getId()%>},
+          dataType: 'json',
+          success: function(response) {
+          	console.log("데이터 응답 성공", response);
+          	reviewDatas = response;
+          },
+          error: function(error) {
+             console.error("실패", error);
+          }
+      });
+  })
+</script> --%>
 
+</html>
 
 
 

@@ -160,8 +160,8 @@ public class UserController {
 	}
 	
 	@GetMapping("home.do")
-	public String main() {
-		System.out.println("UserController main() " + new Date());
+	public String home() {
+		System.out.println("UserController home() " + new Date());
 		return "home";
 	}
 	

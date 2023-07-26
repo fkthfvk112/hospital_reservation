@@ -23,21 +23,27 @@ public class ReviewDaoImpl implements ReviewDao{
 
 
 	@Override
-	public List<ReviewDto> recentList(ReviewDto dto) {
-		return session.selectList(ns + "recentList", dto);
+	public List<ReviewDto> recentList(int hosId) {
+		return session.selectList(ns + "recentList", hosId);
 	}
 
 
 	@Override
-	public List<ReviewDto> scoreUplist(ReviewDto dto) {
-		return session.selectList(ns + "scoreUplist", dto);
+	public List<ReviewDto> scoreUplist(int hosId) {
+		return session.selectList(ns + "scoreUplist", hosId);
 	}
 
 
 	
 	@Override
-	public List<ReviewDto> scoreDownlist(ReviewDto dto) {
-		return session.selectList(ns+ "scoreDownlist", dto);
+	public List<ReviewDto> scoreDownlist(int hosId) {
+		return session.selectList(ns+ "scoreDownlist", hosId);
+	}
+
+
+	@Override
+	public int reviewDelete(ReviewDto dto) {
+		return session.delete(ns + "reviewDelete", dto);
 	}
 
 

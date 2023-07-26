@@ -29,12 +29,12 @@
         <div class="navLeft">
             <ul>
                 <a href="home.do"><li>Hosital Mate 소개</li></a>
-                <a href="#"><li>병원찾기</li></a>
+                <a href="hosList.do"><li>병원찾기</li></a>
                 <a href="askBoard.do"><li>질문게시판</li></a>
                 <!-- 임시로 병원번호를 설정함 -->
                 <a href="review.do?hospital_id=1"><li>리뷰</li></a>
                 <!-- <a href="hospitalDetail.do"><li>병원디테일</li></a> -->
-                <!-- <a href="toHosCreate.do"><li>병원등록</li></a> -->
+                <a href="toHosCreate.do"><li>병원등록</li></a>
             </ul>
         </div>
         <%	

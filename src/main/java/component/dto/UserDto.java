@@ -78,6 +78,13 @@ public class UserDto {
 	public void setMyHospital_id(int myHospital_id) {
 		this.myHospital_id = myHospital_id;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDto [id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + ", auth=" + auth
+				+ ", warning=" + warning + ", myHospital_id=" + myHospital_id + "]";
+	}
+	
 	
 	
 }

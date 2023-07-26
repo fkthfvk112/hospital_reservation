@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Hospital">
+	<!-- 병원 한 개 get -->
+	<select id="getHospital" parameterType="java.lang.Integer" resultType="component.dto.HospitalDto">
+		select *
+		from hospital
+		where id = #{id}
+	</select>
+	
+	<!-- 병원 여러개 개 get -->
+	<select id="getAllHospital" resultType="component.dto.HospitalDto">
+		select *
+		from hospital
+	</select>
+	
+
+	<!-- 병원 생성 -->
+ 	<insert id="createHospital" parameterType="component.dto.HospitalDto">
+		insert into hospital 
+		(
+			title,
+			description,
+			sort,
+			location_latitude,
+			location_longitude,
+			staff_id,
+			opertime
+		)
+		values (#{title}, #{description}, #{sort}, #{location_latitude}, #{location_longitude}, #{staff_id}, #{opertime})
+	</insert>
+	<!-- 수정 -->
+	<update id="updateDescription" parameterType="java.util.Map">
+		update hospital 
+		set description = #{content}
+		where id = #{hosId}
+	</update>
+	
+	<update id="updateOperTime" parameterType="java.util.Map">
+		update hospital 
+		set opertime = #{content}
+		where id = #{hosId}
+	</update>
+	
+	<update id="updateSort" parameterType="java.util.Map">
+		update hospital 
+		set sort = #{content}
+		where id = #{hosId}
+	</update>
+	
+	<!-- like처리 -->
+	<select id="countLikeCondition" parameterType="component.dto.LikeDto" resultType="java.lang.Integer">
+		select count(*) from likeinfo 
+		where user_id = #{userId} and hospital_id = #{hospitalId}
+	</select>
+	
+	<insert id="setLike" parameterType="component.dto.LikeDto" >
+		insert into likeinfo (user_id, hospital_id)
+    	values (#{userId}, #{hospitalId})
+	</insert>
+	
+	<delete id="unsetLike" parameterType="component.dto.LikeDto" >
+		delete from likeinfo
+		where user_id = #{userId} and hospital_id = #{hospitalId}
+	</delete>
+	
+	<!-- 병원 like 집계 -->
+	<select id="countHosLike" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(*) from likeinfo 
+		where hospital_id = #{hosId}
+	</select>
+</mapper>

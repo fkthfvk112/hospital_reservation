@@ -8,7 +8,7 @@
 <insert id="reviewWrite" parameterType="component.dto.ReviewDto">
 INSERT INTO review 
 	(id, hospital_id, user_id, content, wdate, score) 
-VALUES (${id}, #{hospital_id}, #{user_id }, #{content}, now(), #{score})		
+VALUES (#{id}, #{hospital_id}, #{user_id}, #{content}, now(), #{score})
 </insert>
 
 <!-- 리뷰보기(최신순) -->
@@ -21,7 +21,7 @@ order by wdate desc
 
 
 <!-- 리뷰보기(평점높은순) -->
-<select id="scoreUplist" parameterType="component.dto.ReviewDto" resultType="component.dto.ReviewDto">
+<select id="scoreUplist" parameterType="Integer" resultType="component.dto.ReviewDto">
 SELECT id, hospital_id, user_id, content, wdate, score, AVG(score) 
 FROM review
 where hospital_id=#{hospital_id}
@@ -31,7 +31,7 @@ order by AVG(score) desc
 
 
 <!-- 리뷰보기(평점낮은순) -->
-<select id="scoreDownlist" parameterType="component.dto.ReviewDto" resultType="component.dto.ReviewDto">
+<select id="scoreDownlist" parameterType="Integer" resultType="component.dto.ReviewDto">
 SELECT id, hospital_id, user_id, content, wdate, score, AVG(score) 
 FROM review
 where hospital_id=#{hospital_id}
@@ -40,55 +40,10 @@ order by AVG(score) asc
 </select>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-<select id="list"  parameterType="Integer"
-	resultType="component.dto.ReviewDto">
-select id, hospital_id, user_id, content, wdate, score
-from (select id, hospital_id, user_id, content, wdate, score, 
-ROW_NUMBER() OVER(<include refid="sort" />) AS RNUM 
-from review
-where 1=1
-</select>
-
-<sql id="sort">
-<if test="sort == null">
-ORDER BY review DESC
-</if>
-<if test="sort == 'maxScore'">
-ORDER BY maxScore DESC
-</if>
-<if test="sort == 'minScore'">
-ORDER BY minScore DESC
-</if>
-</sql>
- -->
-
 <!-- 리뷰삭제 -->
-<delete id="reviewDelete">
+<delete id="reviewDelete" parameterType="component.dto.ReviewDto">
 delete from review
 where id=#{id}
-and hospital_id=${hospital_id}
 </delete>
 
 </mapper>

@@ -22,19 +22,25 @@ public class ReviewServiceImpl implements ReviewService{
 
 	
 	@Override
-	public List<ReviewDto> recentList(ReviewDto dto) {
-		return dao.recentList(dto);
+	public List<ReviewDto> recentList(int hosId) {
+		return dao.recentList(hosId);
 	}
 	
 	@Override
-	public List<ReviewDto> scoreUplist(ReviewDto dto) {
-		return dao.scoreUplist(dto);
+	public List<ReviewDto> scoreUplist(int hosId) {
+		return dao.scoreUplist(hosId);
 	}
 
 
 	@Override
-	public List<ReviewDto> scoreDownlist(ReviewDto dto) {
-		return dao.scoreDownlist(dto);
+	public List<ReviewDto> scoreDownlist(int hosId) {
+		return dao.scoreDownlist(hosId);
+	}
+
+
+	@Override
+	public boolean reviewDelete(ReviewDto dto) {
+		return dao.reviewDelete(dto)>0?true:false;
 	}
 
 
