@@ -42,3 +42,17 @@ if (loginmsg != null && !loginmsg.isEmpty()) {
     }
 }
 %>
+<%
+String NewPwmsg = (String) request.getAttribute("NewPwmsg");
+if (NewPwmsg != null && !NewPwmsg.isEmpty()) { %>
+        <script>
+            alert("비밀번호가 재설정 되었습니다.");
+            location.href = "login.do";
+        </script>
+    <% } %>
+
+
+
+
+
+

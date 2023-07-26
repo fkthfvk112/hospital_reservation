@@ -4,78 +4,87 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>비밀번호 찾기</title>
+<style>
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color : #E2F0F7;
+	margin: 0;
+}
+.div {
+	width: 550px;
+	height: 700px;
+	border: 0;
+	background-color : white;
+}
+.content{
+	font-family: sans-serif;
+	font-size: 15px;
+	text-align: left;
+	margin-left: 30px;
+	margin-top: 80px;
+	margin-bottom: 60px;
+	color: #7F7F7F;
+}
+.content b {
+    font-weight: bold;
+    color: black;
+}
+.text{
+	width: 400px;
+	height: 50px;
+	border: 0;
+	background-color: #DDDDDD;
+	margin-left: 75px;
+	margin-top : 20px;
+	font-size: 24px;
+}
+
+.findPwBtn{
+	width: 407px;
+	height: 54px;
+	background-color: #505567;
+	color: white;
+	margin-top: 130px;
+	margin-left: 75px;
+	font-size: 24px;
+}
+
+</style>
 </head>
 <body>
 <!-- 비밀번호 찾기 양식 -->
 <div class="div">
-    <form action="" id="findPasswordForm" method="post">
+
+	<p class="content">비밀번호의 경우 <b>암호화</b> 저장되어 분실 시 찾아드릴 수 없는 정보 입니다.<br>
+	<b>본인 확인을</b>을 통해 비밀번호를 재설정 하실 수 있습니다.</p>
+
+    <form action="findPwAf.do" id="findPasswordForm" method="post">
         <table>
             <tr class="centerTr">
-                <th>이름</th>
-                <td><input type="text" size="20" id="name" name="name" class="text" required></td>
+                
+                <td><input type="text" size="20" id="name" name="name" class="text" placeholder="이름을 입력하세요" required></td>
             </tr>
             <tr class="centerTr">
-                <th>아이디</th>
-                <td><input type="text" size="20" id="id" name="id" class="text" required></td>
+                
+                <td><input type="text" size="20" id="id" name="id" class="text" placeholder="아이디를 입력하세요" required></td>
             </tr>
             <tr class="centerTr">
-                <th>이메일</th>
-                <td><input type="text" size="20" id="email" name="email" class="text" required></td>
+                
+                <td><input type="text" size="20" id="email" name="email" class="text" placeholder="이메일을 입력하세요" required></td>
             </tr>
             <tr class="centerTr">
-                <td colspan="2">
-                    <input type="button" value="비밀번호 찾기" class="findPasswordBtn" onclick="sendVerificationCode()">
+                <td>
+                    <input type="submit" value="비밀번호 찾기" class="findPwBtn">
                 </td>
             </tr>
         </table>
     </form>
 </div>
 
-<!-- 인증번호 입력 양식 -->
-<div class="div" id="verificationDiv" style="display: none;">
-    <form action="" id="verificationForm" method="post">
-        <table>
-            <tr class="centerTr">
-                <th>인증번호</th>
-                <td><input type="text" size="20" id="verificationCode" name="verificationCode" class="text" required></td>
-            </tr>
-            <tr class="centerTr">
-                <td colspan="2">
-                    <input type="button" value="인증 완료" class="findPasswordBtn" onclick="verifyCodeAndRedirect()">
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
-
-<script>
-function sendVerificationCode() {
-    const name = $("#name").val().trim();
-    const id = $("#id").val().trim();
-    const email = $("#email").val().trim();
-
-    $.ajax({
-        url: "sendVerificationCode.do",
-        type: "post",
-        data: { "name": name, "id": id, "email": email },
-        success: function (response) {
-            if (response === "SUCCESS") {
-                // 인증번호를 보낸 후 인증번호 입력 양식을 보여줍니다.
-                $("#findPasswordForm").hide();
-                $("#verificationDiv").show();
-            } else {
-                alert("입력한 정보와 일치하는 계정을 찾을 수 없습니다.");
-            }
-        },
-        error: function () {
-            alert("서버와 통신 중 오류가 발생했습니다.");
-        }
-    });
-}
-
-
-</script>
 
 </body>
 </html>

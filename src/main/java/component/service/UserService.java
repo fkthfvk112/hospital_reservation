@@ -12,4 +12,8 @@ public interface UserService {
 	String findId(String email);
 	
 	UserDto login(UserDto dto);
+	
+	// 메일
+	UserDto findUserByNameIdEmail(String name, String id, String email);
+    void updatePassword(UserDto dto);
 }

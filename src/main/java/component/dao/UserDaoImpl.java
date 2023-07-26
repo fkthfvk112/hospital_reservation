@@ -1,5 +1,8 @@
 package component.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -33,6 +36,20 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public String findId(String email) {
 		return session.selectOne(ns + "findId", email);
+	}
+
+	@Override
+	public UserDto findUserByNameIdEmail(String name, String id, String email) {
+	    Map<String, String> params = new HashMap<>();
+	    params.put("name", name);
+	    params.put("id", id);
+	    params.put("email", email);
+	    return session.selectOne(ns + "findUserByNameIdEmail", params);
+	}
+
+	@Override
+	public void updatePassword(UserDto dto) {
+		session.update(ns + "updatePassword", dto);
 	}
 
 }

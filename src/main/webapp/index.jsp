@@ -10,10 +10,5 @@
 <%
 	response.sendRedirect("login.do");
 %>
-<!-- 
-<form action="hospitalDetail.do" method="get">
-	<button>병원</button>
-</form>
- -->
 </body>
 </html>

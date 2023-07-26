@@ -1,7 +1,5 @@
 package component.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +30,16 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public String findId(String email) {
 		return dao.findId(email);
+	}
+
+	@Override
+	public UserDto findUserByNameIdEmail(String name, String id, String email) {
+		 return dao.findUserByNameIdEmail(name, id, email);
+	}
+
+	@Override
+	public void updatePassword(UserDto dto) {
+		dao.updatePassword(dto);
 	}
 
 }

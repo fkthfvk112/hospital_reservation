@@ -11,9 +11,11 @@ public class UserDto implements Serializable{
 	private int warning;
 	private int myHopital_id;
 	
+	private String newPassword;
+	
 	public UserDto() {
 	}
-
+	
 	public UserDto(String id, String pw, String name, String email, int auth, int warning, int myHopital_id) {
 		super();
 		this.id = id;
@@ -85,6 +87,14 @@ public class UserDto implements Serializable{
 	public String toString() {
 		return "UserDto [id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + ", auth=" + auth
 				+ ", warning=" + warning + ", myHopital_id=" + myHopital_id + "]";
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 }
 
