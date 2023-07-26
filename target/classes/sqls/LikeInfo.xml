@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="LikeInfo">
+
+	<select id="gethospitaldetaillist" parameterType="java.lang.String" resultType="component.dto.HospitalDto">
+		select *
+		from hospital
+		where id in 
+			(select hospital_id
+			from likeinfo
+			where user_id=#{userid})
+	</select>
+
+<!--  해당 코드를 쓰면 404 뜸 // 진성님 unset 병원 컨트롤러 참고해도 됨-->
+	<delete id="canclelike" parameterType="component.dto.LikeInfoDto">
+		delete from likeinfo
+		where user_id=#{userId} and hospital_id=#{hospitalId}
+	</delete>
+
+</mapper>
