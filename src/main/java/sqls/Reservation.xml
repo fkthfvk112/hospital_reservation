@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="Reservation">
+
+	<select id="getreservlist" parameterType="component.dto.ReservationGetList" resultType="component.dto.ReservationDto">
+		select id, wdate, state, user_id, hospital_id, description
+		from
+			(	select row_number()over(partition by substr(wdate,1,8) order by wdate asc) as rnum, id, wdate, state, user_id, hospital_id, description
+				from reservation
+				where user_id= #{id} and substr(wdate,1,7) = #{yyyymm} ) a
+		where rnum between 1 and 5
+	</select>
+
+	<select id="getreservdetail" parameterType="int" resultType="component.dto.ReservationDetailDto">
+		select r.id as rid, r.wdate as rdate, r.state as rstate, r.description as rdescription,
+			r.user_id as userId, r.hospital_id as hospitalId, h.title as htitle, h.sort as hsort
+		from reservation r, hospital h
+		where r.id = #{reservationId} and h.id = r.hospital_id
+		
+	</select>
+	
+	<delete id="deletereserv" parameterType="int">
+		delete from reservation
+		where id=#{reservId}
+	</delete>
+</mapper>
