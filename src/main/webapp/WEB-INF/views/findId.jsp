@@ -51,6 +51,7 @@ body {
 	margin-top: 130px;
 	margin-left: 75px;
 	font-size: 24px;
+	cursor: pointer;
 }
 </style>
 </head>

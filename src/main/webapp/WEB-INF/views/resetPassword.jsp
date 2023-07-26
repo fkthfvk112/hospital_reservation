@@ -60,6 +60,7 @@ th {
 	margin-top: 150px;
 	margin-left: 75px;
 	font-size: 24px;
+	cursor: pointer;
 }
 </style>
 </head>

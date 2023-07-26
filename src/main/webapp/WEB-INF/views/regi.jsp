@@ -63,6 +63,7 @@ table {
     width: 65px;
     height: 50px;
     border: 0;
+    cursor: pointer;
 }
 .regi{
 	width: 385px;
@@ -71,6 +72,7 @@ table {
 	color: white;
 	margin-top: 30px;
 	font-size: 24px;
+	cursor: pointer;
 }
 </style>
 

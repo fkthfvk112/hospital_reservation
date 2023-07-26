@@ -56,16 +56,24 @@ body {
 	color: white;
 	margin-bottom: 18px;
 	font-size: 26px;
+	cursor: pointer;
 }
 
 .kakao{
+	display: flex;
+    align-items: center;
 	width: 407px;
 	height: 54px;
-	background-color: #FEEA33;
+	background-color: #FAE80C;
 	color: black;
 	border: 0;
 	margin-top: 28px;
 	font-size: 26px;
+	cursor: pointer;
+}
+.kakao-link {
+	color: #000;
+	text-decoration: none;
 }
 
 .regi {
@@ -102,6 +110,11 @@ body {
 #pw{
 	margin-bottom: 13px;
 }
+.kakaopng{
+	width: 54px;
+	height: 54px;
+	margin-right: 10px;
+}
 </style>
 
 </head>
@@ -134,8 +147,14 @@ body {
 					</td>
 				</tr>
 				<tr class="centerTr">
-					<td><a href="javascript:kakaoLogin();">
-					<input type="button" class="kakao" value="카카오톡 계정으로 로그인"></a></td>
+					<td>
+				        <a href="javascript:kakaoLogin();" class="kakao-link">
+				            <button type="button" class="kakao">
+				                <img src="img/kakao.PNG" alt="카카오" class="kakaopng">
+				                  카카오톡 계정으로 로그인
+				            </button>
+				        </a>
+				    </td>
 				</tr>
 			</table>
 		</form>

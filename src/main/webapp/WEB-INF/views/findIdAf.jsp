@@ -45,6 +45,7 @@ body {
 	margin-top: 50px;
 	margin-left: 75px;
 	font-size: 24px;
+	cursor: pointer;
 }
 hr{
      border: none;
