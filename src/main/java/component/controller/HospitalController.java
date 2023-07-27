@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import component.dto.HospitalDto;
 import component.dto.LikeDto;
 import component.dto.ReviewDto;
+import component.dto.SearchDto;
 import component.dto.UpdateSelector;
 import component.service.HospitalService;
 import component.service.ReviewService;
@@ -91,6 +92,7 @@ public class HospitalController {
 		System.out.println("컨트롤러");
 		return "hosList";
 	}
+	
 	//---------------------------------------------
 	@PostMapping("handleLike.do")
 	@ResponseBody
@@ -117,5 +119,22 @@ public class HospitalController {
 		System.out.println("--------countHosLike Controller----------------");
 
 		return service.countHosLike(hosId);
+	}
+	
+	@GetMapping("searchHospital.do")
+	public String searchHospital(SearchDto searchDto, Model model) {
+		System.out.println("--------searchHospital Controller----------------");
+		List<HospitalDto> dtoList = service.searchHospital(searchDto); 
+		model.addAttribute("hospitalDtoList", dtoList);
+		
+		return "hosList";
+	}
+	
+	@GetMapping("hosStarAvg.do")
+	@ResponseBody
+	public Double hosStarAvg(int hosId) {
+		System.out.println("--------countHosLike Controller----------------");
+
+		return service.hosStarAvg(hosId);
 	}
 }

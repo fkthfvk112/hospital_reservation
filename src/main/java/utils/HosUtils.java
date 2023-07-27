@@ -52,5 +52,10 @@ public class HosUtils {
 		
 		return resultColor;
 	}
-
+	
+	public static double getUclidienDistance(double a1, double a2, double b1, double b2) {
+		double dX = a1 - b1;
+		double dY = a2 - b2;
+        return Math.sqrt(dX * dX + dY * dY);
+	}
 }

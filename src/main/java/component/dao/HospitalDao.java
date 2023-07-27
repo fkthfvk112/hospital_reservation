@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import component.dto.HospitalDto;
 import component.dto.LikeDto;
+import component.dto.SearchDto;
 import component.dto.UpdateSelector;
 
 public interface HospitalDao {
@@ -24,4 +25,6 @@ public interface HospitalDao {
 	int updateHospital(UpdateSelector dto);
 	int handleLike(LikeDto dto);
 	int countHosLike(int hosId);
+	List<HospitalDto> searchHospital(SearchDto dto);
+	Double hosStarAvg(int hosId);
 }

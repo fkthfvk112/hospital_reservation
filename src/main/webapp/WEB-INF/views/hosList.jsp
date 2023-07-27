@@ -21,13 +21,31 @@ for(HospitalDto dto:dtoList){
  <jsp:include page="header.jsp" flush="false"/>
  <jsp:include page="nav.jsp" flush="false"/>
 <div class="m-3" style="text-align: center;">
-	<div style="text-align: left;">
-		<select>
-			
-		</select>
+	<div>
+		<div id="searchContainer">
+			<form action="searchHospital.do" method="get" id="searchFrom" accept-charset="UTF-8">
+					<input type="hidden" id ="userLocation" name="userLocation"/>
+					<select name="conditionOne">
+						<option value="default" selected>최신순</option>
+						<option value="highScore">평점 높은 순</option>
+						<option value="lowScore">평점 낮은 순</option>
+						<option value="highReview">리뷰 많은 순</option>
+						<option value="lowReview">리뷰 적은 순</option>
+					</select>
+					<select name="conditionTwo" id ="conditionTwo">
+						<option value="-1" selected>상관 없음</option>
+						<option value="1">거리 1km 이하</option>
+						<option value="3">거리 3km 이하 </option>
+						<option value="10">거리 10km 이하</option>
+						<option value="30">거리 30km 이하</option>
+						<option value="100">거리 100km 이하</option>
+					</select>
+				<input  placeholder='이름, 진료과' type="text" name="conditionThree" style="width:300px;"/>
+				<button type="button" id="filterBtn">검색</button>
+			</form>
+		</div>
 	</div>
-	<input type="text" />
-	<button>검색</button>
+
 </div>
 <section>
 <%if(dtoList != null) {%>
@@ -41,7 +59,11 @@ for(HospitalDto dto:dtoList){
 					<strong class="mt-1"><%=dto.getTitle() %></strong>
 					<div class="mt-2">
 						<span style="color:#FFCB12; font-size:1.2em">★</span>
-						<sapn">평점(리뷰 점수 취합)</sapn>
+						<%if(dto.getStarAvg() != null){ %>
+						<sapn><%=Math.round(dto.getStarAvg() * 100.0) / 100.0 %></sapn>
+						<%}else{ %>
+						<sapn">평점 없음</sapn>
+						<%} %>
 					</div>
 					<div class="mt-3">
 						<div>영업시간</div>
@@ -141,5 +163,45 @@ for(HospitalDto dto:dtoList){
 	#descriptionContainer{
 		padding:1em;
 	}
+	
+	#searchContainer{
+	
+	}
+	
 </style>
+
+<script>
+const conditionTwo = document.querySelector("#conditionTwo");
+const userLocation = document.querySelector("#userLocation");
+const searchFrom = document.querySelector("#searchFrom");
+
+filterBtn.addEventListener('click', async()=>{
+    if(conditionTwo.value != -1){
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+      } else {
+        alert("브라우저에서 현재 위치 정보를 지원하지 않습니다.")
+        console.log("Geolocation is not supported by this browser.");
+      }
+
+       function successCallback(position) {
+        const location = {
+          latitude:position.coords.latitude,
+          longitude:position.coords.longitude
+        }
+        console.log("Latitude: " + position.coords.latitude +
+        ", Longitude: " + position.coords.longitude);
+        console.log(JSON.stringify(location));
+        userLocation.value = JSON.stringify(location);
+        searchFrom.submit();
+      }
+
+      function errorCallback(error) {
+        console.log("Unable to retrieve your location due to " + error.code + ": " + error.message);
+      }
+    }
+    else{
+    	searchFrom.submit();
+    }
+  })</script>
 </html>

@@ -1,5 +1,6 @@
 package component.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import component.dao.HospitalDao;
 import component.dao.HospitalDaoImpl;
 import component.dto.HospitalDto;
 import component.dto.LikeDto;
+import component.dto.SearchDto;
 import component.dto.UpdateSelector;
+import utils.HosUtils;
 
 @Service
 public class HospitalServiceImpl implements HospitalService{
@@ -53,5 +56,48 @@ public class HospitalServiceImpl implements HospitalService{
 		System.out.println("-------------updateHospital service----------");
 
 		return dao.updateHospital(dto);
+	}
+
+	@Override
+	public List<HospitalDto> searchHospital(SearchDto searchDto) {
+		List<HospitalDto> processedDto = new ArrayList<HospitalDto>();
+		List<HospitalDto> preDtos = dao.searchHospital(searchDto);
+		if(searchDto.getUserLocation() != null && searchDto.getUserLocation() !="") {
+			String location[] = searchDto.getUserLocation().split(",");
+			String longTemp = location[1].split(":")[1];
+
+			String userLatitude_s = location[0].split(":")[1];
+			String userLongitude_s = longTemp.substring(0, longTemp.length() - 1);
+
+			for(HospitalDto hosDto:preDtos) {
+				String hosLatitude_s = hosDto.getLocation_latitude();
+				String hosLongitude_s = hosDto.getLocation_longitude();
+				
+				Double userLatitude = Double.parseDouble(userLatitude_s);
+				Double userLongitude = Double.parseDouble(userLongitude_s);
+				
+				Double hosLatitude = Double.parseDouble(hosLatitude_s);
+				Double hosLongitude = Double.parseDouble(hosLongitude_s);
+				
+				Double uclidienDis = HosUtils.getUclidienDistance(userLatitude, userLongitude, hosLatitude, hosLongitude);
+				System.out.println("거리 ㅣㅣㅣㅣㅣ" + uclidienDis);
+				
+				if(uclidienDis <= searchDto.getConditionTwo()) {
+					System.out.println("추가 되는 것" + hosDto.toString());
+					processedDto.add(hosDto);
+				}
+			}
+		}
+		else {
+			processedDto = preDtos;
+		}
+		
+			
+		return processedDto;
+	}
+
+	@Override
+	public Double hosStarAvg(int hosId) {
+		return dao.hosStarAvg(hosId);
 	}
 }
