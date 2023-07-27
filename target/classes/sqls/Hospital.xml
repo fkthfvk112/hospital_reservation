@@ -71,4 +71,72 @@
 		where hospital_id = #{hosId}
 	</select>
 	
+	<!-- 병원 별점 집계 -->
+	<select id="hosStarAvg" parameterType="java.lang.Integer" resultType="java.lang.Double">
+			select avg(r.score) as avgScore
+				from hospital as h
+				join review as r on h.id = r.hospital_id
+				where hospital_id =  #{hosId}
+				group by h.id;
+	</select>
+	
+	<!-- 병원 검색 -->
+	<select id="searchHospitalStarDesc" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
+		select h.id, h.title, h.description, h.sort, 
+				h.location_latitude, h.location_longitude, h.del_date, 
+		        h.opertime, h.staff_id, avg(r.score) as avgScore
+		from hospital as h
+		join review as r on h.id = r.hospital_id
+		where h.sort like concat('%', #{conditionThree}, '%')
+		    or h.title like concat('%', #{conditionThree}, '%')
+		    or h.description like concat('%', #{conditionThree}, '%')
+		group by h.id
+		order by avgScore desc;
+	</select>
+	
+	<select id="searchHospitalStarAsc" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
+		select h.id, h.title, h.description, h.sort, 
+				h.location_latitude, h.location_longitude, h.del_date, 
+		        h.opertime, h.staff_id, avg(r.score) as avgScore
+		from hospital as h
+		join review as r on h.id = r.hospital_id
+		where h.sort like concat('%', #{conditionThree}, '%')
+		    or h.title like concat('%', #{conditionThree}, '%')
+		    or h.description like concat('%', #{conditionThree}, '%')
+		group by h.id
+		order by avgScore asc;
+	</select>
+	
+	<select id="searchHospitalReviewDesc" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
+		select h.id, h.title, h.description, h.sort, 
+				h.location_latitude, h.location_longitude, h.del_date, 
+		        h.opertime, h.staff_id, count(r.id) as reviewCnt
+		from hospital as h
+		join review as r on h.id = r.hospital_id
+		where h.sort like concat('%', #{conditionThree}, '%')
+		    or h.title like concat('%', #{conditionThree}, '%')
+		    or h.description like concat('%', #{conditionThree}, '%')
+		group by h.id
+		order by reviewCnt desc;
+	</select>
+	
+	<select id="searchHospitalReviewAsc" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
+		select h.id, h.title, h.description, h.sort, 
+				h.location_latitude, h.location_longitude, h.del_date, 
+		        h.opertime, h.staff_id, count(r.id) as reviewCnt
+		from hospital as h
+		join review as r on h.id = r.hospital_id
+		where h.sort like concat('%', #{conditionThree}, '%')
+		    or h.title like concat('%', #{conditionThree}, '%')
+		    or h.description like concat('%', #{conditionThree}, '%')
+		group by h.id
+		order by reviewCnt asc;
+	</select>
+	
+	<select id="searchHospitalDefault" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
+		select * from hospital as h
+		  where h.sort like concat('%', #{conditionThree}, '%')
+		    or h.title like concat('%', #{conditionThree}, '%')
+		    or h.description like concat('%', #{conditionThree}, '%')		
+	</select>
 </mapper>

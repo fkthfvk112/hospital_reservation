@@ -1,6 +1,7 @@
 package component.dao;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import component.dto.HospitalDto;
 import component.dto.LikeDto;
+import component.dto.SearchDto;
 import component.dto.UpdateSelector;
 
 @Repository
@@ -26,8 +28,15 @@ public class HospitalDaoImpl implements HospitalDao{
 	
 	public List<HospitalDto> getAllHospital() {
 		System.out.println("-----getAllHospital dao---------");
+		List<HospitalDto> hosDtoList = session.selectList(ns + "getAllHospital");
+		
+		for(HospitalDto hosDto:hosDtoList) {
+			Double starAvg = session.selectOne(ns + "hosStarAvg", hosDto.getId());
+			System.out.println("별점" + starAvg);
+			hosDto.setStarAvg(starAvg);
+		}
 
-		return session.selectList(ns + "getAllHospital");
+		return hosDtoList;
 	}
 	
 	public int createHospital(HospitalDto dto) {
@@ -81,7 +90,47 @@ public class HospitalDaoImpl implements HospitalDao{
 	public int countHosLike(int hosId) {
 		return session.selectOne(ns + "countHosLike", hosId);
 	}
-	
 
+	@Override
+	public List<HospitalDto> searchHospital(SearchDto searchDto) {
+		List<HospitalDto> hosDtoList = null;
+		
+		System.out.println("---------------search Dto-----" + searchDto.toString());
+		switch(searchDto.getConditionOne()) {
+			case "default":
+				System.out.println("-------디폴트");
+				hosDtoList = session.selectList(ns + "searchHospitalDefault", searchDto);
+				break;
+				
+			case "highScore":
+				hosDtoList = session.selectList(ns + "searchHospitalStarDesc", searchDto);
+				break;
+				
+			case "lowScore":
+				hosDtoList = session.selectList(ns + "searchHospitalStarAsc", searchDto);
+				break;
+				
+			case "highReview":
+				hosDtoList = session.selectList(ns + "searchHospitalReviewDesc", searchDto);
+				break;
+				
+			case "lowReview":
+				hosDtoList = session.selectList(ns + "searchHospitalReviewAsc", searchDto);
+				break;
+		}
+		
+		for(HospitalDto hosDto:hosDtoList) {
+			Double starAvg = session.selectOne(ns + "hosStarAvg", hosDto.getId());
+			System.out.println("별점" + starAvg);
+			hosDto.setStarAvg(starAvg);
+		}
+		
+		return hosDtoList;
+	}
+
+	@Override
+	public Double hosStarAvg(int hosId) {
+		return session.selectOne(ns + "hosStarAvg", hosId);
+	}
 }
 

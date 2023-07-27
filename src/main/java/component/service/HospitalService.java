@@ -4,6 +4,7 @@ import java.util.List;
 
 import component.dto.HospitalDto;
 import component.dto.LikeDto;
+import component.dto.SearchDto;
 import component.dto.UpdateSelector;
 
 public interface HospitalService {
@@ -14,4 +15,6 @@ public interface HospitalService {
 	int handleLike(LikeDto dto);
 	int countHosLike(int hosId);
 	int updateHospital(UpdateSelector dto);
+	List<HospitalDto> searchHospital(SearchDto dto);
+	Double hosStarAvg(int hosId);
 }
