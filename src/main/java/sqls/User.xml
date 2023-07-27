@@ -10,18 +10,54 @@
 		from user
 		where id=#{id}
 	</select>
+	
+	<select id="emailcheck" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*)
+		from user
+		where email=#{email}
+	</select>
 
 	<insert id="adduser" parameterType="component.dto.UserDto">
 		insert into user(id, pw, name, email, auth, warning, myHospital_id)
 		values(#{id}, #{pw}, #{name}, #{email}, 1, 0, 0)
 	</insert>
+	
+	<select id="getUserById" parameterType="java.lang.String" resultType="component.dto.UserDto">
+    	select id, pw, name, email, auth, warning, myHospital_id
+		from user
+		where id=#{id}
+	</select>
 
 	<select id="login" parameterType="component.dto.UserDto"
 		resultType="component.dto.UserDto">
-		select id, name, email, auth, warning, myHospital_id
+		select id, pw, name, email, auth, warning, myHospital_id
 		from user
-		where id=#{id} and pw=#{pw}
+		where id=#{id} and pw=SHA2(#{pw}, 256)
 	</select>
+	
+	<select id="findId" parameterType="java.lang.String"
+		resultType="java.lang.String">
+    	select id
+    	from user
+    	where email = #{email}
+	</select>
+	
+	<!-- 이름, 아이디, 이메일을 기준으로 사용자를 찾는 SQL 쿼리 -->
+  	<select id="findUserByNameIdEmail" parameterType="java.util.Map" resultType="component.dto.UserDto">
+	    SELECT id, pw, name, email, auth, warning, myHospital_id
+	    FROM user
+	    WHERE name=#{name} AND id=#{id} AND email=#{email}
+  	</select>
+
+  	<!-- 사용자의 비밀번호를 업데이트하는 SQL 쿼리 -->
+  	<update id="updatePassword" parameterType="component.dto.UserDto">
+	    UPDATE user
+	    SET pw=#{pw}
+	    WHERE id=#{id}
+  	</update>
+  	
+  	
 	<!-- 우지예 -->
 	
 	<update id="changepw" parameterType="component.dto.UserDto">

@@ -6,8 +6,7 @@
 <meta charset="UTF-8">
 <title>로그인</title>
 <!-- 제이쿼리 -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- 쿠키 -->
 <script src="http://lab.alexcican.com/set_cookies/cookie.js"
 	type="text/javascript"></script>
@@ -57,16 +56,24 @@ body {
 	color: white;
 	margin-bottom: 18px;
 	font-size: 26px;
+	cursor: pointer;
 }
 
 .kakao{
+	display: flex;
+    align-items: center;
 	width: 407px;
 	height: 54px;
-	background-color: #FEEA33;
+	background-color: #FAE80C;
 	color: black;
 	border: 0;
 	margin-top: 28px;
-	font-size: 26px;
+	font-size: 20px;
+	cursor: pointer;
+}
+.kakao-link {
+	color: #000;
+	text-decoration: none;
 }
 
 .regi {
@@ -103,6 +110,11 @@ body {
 #pw{
 	margin-bottom: 13px;
 }
+.kakaopng{
+	width: 54px;
+	height: 54px;
+	margin-right: 40px;
+}
 </style>
 
 </head>
@@ -130,17 +142,26 @@ body {
 				<tr>
 					<td>
 						<a href="regi.do" class="regi">회원가입</a>
-						<a href="" id="findPw" class="findIdPw">비밀번호 찾기</a>
-						<a href="" id="findId" class="findIdPw">아이디찾기</a>
+						<a href="findPw.do" id="findPw" class="findIdPw">비밀번호 찾기</a>
+						<a href="findId.do" id="findId" class="findIdPw">아이디 찾기</a>
 					</td>
 				</tr>
 				<tr class="centerTr">
-					<td><a href="javascript:kakaoLogin();">
-					<input type="button" class="kakao" value="카카오톡 계정으로 로그인"></a></td>
+					<td>
+				        <a href="javascript:kakaoLogin();" class="kakao-link">
+				            <button type="button" class="kakao">
+				                <img src="img/kakao.PNG" alt="카카오" class="kakaopng">
+				                  카카오톡 계정으로 로그인
+				            </button>
+				        </a>
+				    </td>
 				</tr>
 			</table>
 		</form>
 	</div>
+
+
+
 
 	<script type="text/javascript">
 	let user_id = $.cookie("user_id");
@@ -169,9 +190,12 @@ body {
 	<!-- 카카오 로그인 -->
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>
-		window.Kakao.init("0f68cc5f7d6a8996495dbcd980cb7595");
+
 		
 		function kakaoLogin() {
+			window.Kakao.init("0f68cc5f7d6a8996495dbcd980cb7595");
+			window.Kakao.isInitialized();
+			
 	        window.Kakao.Auth.login({
 	            scope: 'profile_nickname, account_email',
 	            success: function(authObj){
