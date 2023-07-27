@@ -82,9 +82,9 @@ public class LikeInfoController {
 	public String gethosphoto(int hosid) {
 		System.out.println("LikeInfoController gethosphoto() " + new Date());
 		
-		String url = service.gethosphoto(hosid);
+		String url2 = service.gethosphoto(hosid);
 		//System.out.println("url: "+url);
 		
-		return url;
+		return url2;
 	}
 }

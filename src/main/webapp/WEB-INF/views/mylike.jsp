@@ -54,11 +54,11 @@
 								$.ajax({
 									url:"gethosphoto.do",
 									data:{hosid:"<%=dto.getId()%>"},
-									success:function(url){
+									success:function(url2){
 										//alert("success");
 										//alert(url);
-										
-										$("img").attr("src", url);
+										console.log("url: "+url2);
+										$("img").attr("src", url2);
 									}
 								})
 							})

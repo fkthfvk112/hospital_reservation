@@ -57,7 +57,7 @@
  
 </head>
 <body>
-
+ 
 <div>
 	<div> 아이디 : <%=dto.getId() %></div>
 	<div> 이름 : <%=dto.getName() %></div>
@@ -186,5 +186,7 @@
 	
 	// 회원 탈퇴하기 <- ajax로 구현
 </script>
+
+
 </body>
 </html>
