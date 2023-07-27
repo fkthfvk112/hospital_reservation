@@ -77,5 +77,14 @@ public class LikeInfoController {
 		 return "alert"; 
 	}
 	
-	
+	@ResponseBody
+	@GetMapping("gethosphoto.do")
+	public String gethosphoto(int hosid) {
+		System.out.println("LikeInfoController gethosphoto() " + new Date());
+		
+		String url = service.gethosphoto(hosid);
+		//System.out.println("url: "+url);
+		
+		return url;
+	}
 }

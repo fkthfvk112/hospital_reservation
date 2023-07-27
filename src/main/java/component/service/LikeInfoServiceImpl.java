@@ -25,6 +25,11 @@ public class LikeInfoServiceImpl implements LikeInfoService{
 		return dao.canclelike(dto) > 0;
 	}
 
+	@Override
+	public String gethosphoto(int hosid) {
+		return dao.gethosphoto(hosid);
+	}
+
 	
 	
 }

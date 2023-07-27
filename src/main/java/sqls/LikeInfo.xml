@@ -19,4 +19,12 @@
 		where user_id=#{userId} and hospital_id=#{hospitalId}
 	</delete>
 
+	<!-- 마이페이지 - 찜한 병원 - 병원 대표 사진 추출 -->
+	<select id="gethosphoto" parameterType="int" resultType="String">
+		select url
+		from photo
+		where hospital_id=#{hosid}
+		limit 1;
+	</select>
+	
 </mapper>
