@@ -10,7 +10,7 @@
 	String siteId = dto.getId();
 	String siteName = dto.getName();
 %>
->>>>>>> wjy
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,22 +18,15 @@
 <title>main</title>
 </head>
 <body>
-<h1>메인 페이지 입니다~~</h1>
-<<<<<<< HEAD
-<h2>콘솔에 세션 확인됩니다</h2>
 
-=======
 
-<a href="mypage.do">마이 페이지로 가기</a>
->>>>>>> wjy
 
 <script>
     // 세션 정보를 콘솔에 출력하는 함수
     function showSession() {
-<<<<<<< HEAD
-=======
+
     	// 카카오톡
->>>>>>> wjy
+
         <%-- 세션 정보를 JavaScript 변수에 저장 --%>
         var userId = "<%= session.getAttribute("userId") %>";
         var nickname = "<%= session.getAttribute("nickname") %>";
@@ -43,15 +36,14 @@
         console.log("User ID: " + userId);
         console.log("Nickname: " + nickname);
         console.log("Email: " + email);
-<<<<<<< HEAD
-=======
+
         
         console.log("siteId: " + "<%= siteId %>");
         console.log("siteName: " + "<%= siteName %>"); // session을 우리가 톰캣에 저장하는거라? 브라우저 개발자 도구에 session Storage에는 안 보임
         
        
        
->>>>>>> wjy
+
     }
 
     // 페이지 로드 시 세션 정보 출력

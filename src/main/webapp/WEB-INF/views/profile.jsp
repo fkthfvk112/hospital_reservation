@@ -63,7 +63,7 @@
 	<div> 이름 : <%=dto.getName() %></div>
 	<div> 이메일 : <%=dto.getEmail() %></div>
 	<div> 비밀번호 <button type="button" id="modalOpen">변경하기</button></div>
-	<div> <button id = "delUser" type="button" onclick="delUser()">회원 탈퇴하기</button></div>
+	<!-- <div> <button id = "delUser" type="button" onclick="delUser()">회원 탈퇴하기</button></div> -->
 </div>
 
 <div id="modal">
