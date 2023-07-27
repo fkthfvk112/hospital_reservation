@@ -8,7 +8,6 @@ import component.dto.SearchDto;
 import component.dto.UpdateSelector;
 
 public interface HospitalService {
-
 	HospitalDto hospitalDetail(int id);
 	List<HospitalDto>  getAllHospital();
 	int createHospital(HospitalDto dto);
@@ -17,4 +16,5 @@ public interface HospitalService {
 	int updateHospital(UpdateSelector dto);
 	List<HospitalDto> searchHospital(SearchDto dto);
 	Double hosStarAvg(int hosId);
+	HospitalDto getHospitalIdByName(String hosName);
 }

@@ -10,15 +10,16 @@
 	String latitude = hosDto.getLocation_latitude();
 	String longitude = hosDto.getLocation_longitude();
 	int hosId= hosDto.getId();
-	
+
 	
 	String ownerId = hosDto.getStaff_id();
 	UserDto userDto =  (UserDto)session.getAttribute("login");
-	System.out.println("디티오" + userDto);
+
 	String userId = null;
 	if(userDto != null){
 		userId = userDto.getId();
 	}
+	
 	
 	//System.out.println(hosDto.toString());
 	
@@ -688,6 +689,7 @@
 	   	border-radius: 2em;
 	   	background-color: white;
 	   	border:1.2px solid skyblue;
+	   	padding:0em 0.5em 0em 0.5em;
 	   	margin:0em 0.3em 0em 0.3em;
    }
    
@@ -703,6 +705,11 @@
    	background-color: #e1e1e1;
    	padding:1em;
    	text-align: center;
+   }
+   
+   .heartBtn{
+   	border:none;
+   	background-color: white;
    }
 </style>
 </html>

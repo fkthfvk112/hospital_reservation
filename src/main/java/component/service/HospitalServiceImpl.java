@@ -100,4 +100,9 @@ public class HospitalServiceImpl implements HospitalService{
 	public Double hosStarAvg(int hosId) {
 		return dao.hosStarAvg(hosId);
 	}
+
+	@Override
+	public HospitalDto getHospitalIdByName(String hosName) {
+		return dao.getHospitalIdByName(hosName);
+	}
 }

@@ -1,7 +1,22 @@
+<%@page import="component.dto.UserDto"%>
+<%@page import="component.dao.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-String userId = "abc123";//세션 받아오게 수정 //폼 validation check하기
+UserDto userDto =  (UserDto)session.getAttribute("login");
+
+String userId = null;
+if(userDto != null){
+	userId = userDto.getId();
+}
+else{
+%>
+<script>
+alert("병원 생성 권한이 없습니다!");
+window.location.href = "home.do";
+</script>
+<%
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -20,17 +35,17 @@ String userId = "abc123";//세션 받아오게 수정 //폼 validation check하�
 			<input type="hidden" name="staff_id" value="<%=userId %>" />
 			<div style="width:100%">
 				<lable class="mt-3">병원 이름</lable>
-				<input id="hosNameInput" class="form-control" data-bs-toggle="modal" data-bs-target="#locationModal"  type="text" name="title"  required>
+				<input id="hosNameInput" class="form-control" data-bs-toggle="modal" data-bs-target="#locationModal"  type="text" name="title"  readonly="readonly">
 			    <br />
 			    <lable class="mt-3">병원 위치</lable>
-			    <input id="hosLocationInput" class="form-control" data-bs-toggle="modal" data-bs-target="#locationModal" type="text"  required>
+			    <input id="hosLocationInput" class="form-control" data-bs-toggle="modal" data-bs-target="#locationModal" type="text"  readonly="readonly">
 				<div class='mt-3' id="map" style="width:100%;height:10rem;"></div>
 				<input type="hidden" id="inputLatitude" name="location_latitude" />
 				<input type="hidden" id="inputlongitude" name="location_longitude" />
 			</div>
 			<div class="mt-3" algin="left" style="width:100%">
 				<lable class="mt-3">병원 소개</lable>
-				<textarea  class="form-control" rows="3" name="description"></textarea>
+				<textarea  class="form-control" rows="3" name="description" id="hosDescription" maxlength="250"></textarea>
 			</div>
 			<div class="mt-3" style="width:100%">
 				<lable>진료과</lable>
@@ -244,8 +259,28 @@ String userId = "abc123";//세션 받아오게 수정 //폼 validation check하�
 <script>
 	$("#creatBtn").on("click", () => {
 	    // Validation Check
+
+	    if($("#hosNameInput").val().length === 0){
+	    	alert("병원 이름을 기입해주세요.");
+	    	$("#hosNameInput")[0].focus();
+	    	return;
+	    }
+	    
+	    if ($("#hosDescription").val().length <= 10 || $("#hosDescription").val().length >= 250) {
+	    	alert("내용이 너무 짧거나 깁니다. (10자 이상 250자 이하)");
+	    	$("#hosDescription")[0].focus();
+	    	return;
+	    }
+	    
+	    if($("#sort").val().length <= 1){
+	    	alert("진료과를 입력해주세요.");
+	    	$("#sort")[0].focus();
+	    	return;
+	    }
+	    
 	    if (Number($("#startTime").val()) >= Number($("#closeTime").val())) {
 	        alert("진료 시작 시간이 진료 종료 시간보다 크거나 같습니다.");
+	    	$("#startTime")[0].focus();
 	        return;
 	    }
 	    
@@ -275,6 +310,7 @@ String userId = "abc123";//세션 받아오게 수정 //폼 validation check하�
 			 $("#sort").val(processedSort);
 		 }
 		$("#sort")[0].scrollIntoView({ behavior: "smooth" });
+		$("#sortDetail")[0].open = false;
 	})
 
 

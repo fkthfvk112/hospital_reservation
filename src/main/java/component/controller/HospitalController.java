@@ -106,11 +106,10 @@ public class HospitalController {
 	@PostMapping("createHospital.do")
 	public String createHospital(HospitalDto dto) {
 		System.out.println("--------createHospital----------------");
-		System.out.println(dto.toString());
-		
 		service.createHospital(dto);
-		
-		return "index";
+		HospitalDto createdDto = service.getHospitalIdByName(dto.getTitle());
+		int createdHosId = createdDto.getId();
+		return "redirect:hospitalDetail.do?id=" + createdHosId;
 	}
 	
 	@GetMapping("countHosLike.do")

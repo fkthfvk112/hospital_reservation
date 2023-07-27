@@ -132,5 +132,10 @@ public class HospitalDaoImpl implements HospitalDao{
 	public Double hosStarAvg(int hosId) {
 		return session.selectOne(ns + "hosStarAvg", hosId);
 	}
+	
+	@Override
+	public HospitalDto getHospitalIdByName(String hosName) {
+		return session.selectOne(ns + "getHospitalIdByName", hosName);
+	}
 }
 

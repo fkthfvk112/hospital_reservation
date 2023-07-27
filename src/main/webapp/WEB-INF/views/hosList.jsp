@@ -25,23 +25,27 @@ for(HospitalDto dto:dtoList){
 		<div id="searchContainer">
 			<form action="searchHospital.do" method="get" id="searchFrom" accept-charset="UTF-8">
 					<input type="hidden" id ="userLocation" name="userLocation"/>
-					<select name="conditionOne">
-						<option value="default" selected>최신순</option>
-						<option value="highScore">평점 높은 순</option>
-						<option value="lowScore">평점 낮은 순</option>
-						<option value="highReview">리뷰 많은 순</option>
-						<option value="lowReview">리뷰 적은 순</option>
-					</select>
-					<select name="conditionTwo" id ="conditionTwo">
-						<option value="-1" selected>상관 없음</option>
-						<option value="1">거리 1km 이하</option>
-						<option value="3">거리 3km 이하 </option>
-						<option value="10">거리 10km 이하</option>
-						<option value="30">거리 30km 이하</option>
-						<option value="100">거리 100km 이하</option>
-					</select>
-				<input  placeholder='이름, 진료과' type="text" name="conditionThree" style="width:300px;"/>
-				<button type="button" id="filterBtn">검색</button>
+					<div>
+						<select name="conditionOne">
+							<option value="default" selected>최신순</option>
+							<option value="highScore">평점 높은 순</option>
+							<option value="lowScore">평점 낮은 순</option>
+							<option value="highReview">리뷰 많은 순</option>
+							<option value="lowReview">리뷰 적은 순</option>
+						</select>
+						<select name="conditionTwo" id ="conditionTwo">
+							<option value="-1" selected>상관 없음</option>
+							<option value="1">거리 1km 이하</option>
+							<option value="3">거리 3km 이하 </option>
+							<option value="10">거리 10km 이하</option>
+							<option value="30">거리 30km 이하</option>
+							<option value="100">거리 100km 이하</option>
+						</select>
+					</div>
+					<div>
+						<input id="conditionThreeInput" placeholder='이름, 진료과, 설명' type="text" name="conditionThree""/>
+						<button type="button" id="filterBtn">검색</button>
+					</div>
 			</form>
 		</div>
 	</div>
@@ -164,10 +168,25 @@ for(HospitalDto dto:dtoList){
 		padding:1em;
 	}
 	
-	#searchContainer{
-	
+	#searchFrom{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	#conditionThreeInput{
+		border:5px solid #F7A072;
+		margin:1em 0em 1em 1em;
+		width:23em;
+		padding:0.5em 1.3em 0.5em 1.3em;
 	}
 	
+	#filterBtn{
+		border:none;
+		border-radius: 0.5em;
+		padding:0.5em 1em 0.5em 1em;
+		background-color: #F7A072;
+	}
 </style>
 
 <script>

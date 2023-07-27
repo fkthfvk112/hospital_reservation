@@ -27,4 +27,5 @@ public interface HospitalDao {
 	int countHosLike(int hosId);
 	List<HospitalDto> searchHospital(SearchDto dto);
 	Double hosStarAvg(int hosId);
+	HospitalDto getHospitalIdByName(String hosName);
 }

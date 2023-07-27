@@ -7,6 +7,10 @@
     pageEncoding="EUC-KR"%>
 <%
 	UserDto login = (UserDto)session.getAttribute("login");
+	String userId = null;
+	if(login != null){
+		userId = login.getId();
+	}
 	
 	HospitalDto hosDto = (HospitalDto)request.getAttribute("hospitalDto");
 	String sortType = (String)request.getAttribute("sort_type");
@@ -21,6 +25,58 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 <style>
+
+#reviewContainer{
+	display:grid;
+	grid-template-columns: 10em 1fr 1fr;
+	padding:2em;
+	width:95%;
+}
+
+.deleteBtn{
+	border:none;
+	border-radius:1em;
+	padding:0.2em 1em 0.2em 1em;
+	transition:0.2s;
+}
+
+.deleteBtn:hover{
+	background-color:black;
+	color:white;
+}
+
+.reviewContent{
+	grid-column: span 3;
+	background-color: #f0f0f0;
+	border-radius:1em;
+	padding:1em;
+	margin:0.3em;
+}
+
+.reviewDate{
+	font-size:0.6rem;
+	color:##bfbdbd;
+}
+
+.reviewScore{
+	grid-column: span 3;
+	font-size: 1.5rem;
+	margin-bottom: 0.3em;
+	color:#FFCB12;
+}
+
+.reviewBtnContainer{
+	text-align: right;
+	margin-right:1em;
+}
+
+.reviewUserId{
+	font-weight:bold;
+	padding:0.2em;
+}
+
+
+
 a{
 	text-decoration: none;
 	color:black;
@@ -52,9 +108,11 @@ a{
 
 /* 리뷰목록 */
 .review{
-    margin-top: 30px;
-    margin-bottom: 30px;
-    width: 50%;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+    width: 80%;
     height: 100%;
     
 }
@@ -68,12 +126,13 @@ a{
 .star-rating {
   display: flex;
   flex-direction: row-reverse;
-  font-size: 2.25rem;
-  line-height: 2.5rem;
+  font-size: 1.5rem;
+  line-height: 5rem;
   justify-content: space-around;
-  padding: 0 0.2em;
+  padding: 0.3em;
   text-align: center;
   width: 5em;
+  margin-bottom:0.3em;
 }
  
 .star-rating input {
@@ -82,18 +141,18 @@ a{
  
 .star-rating label {
   -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
-  -webkit-text-stroke-width: 2.3px;
+  -webkit-text-stroke-width: 1.3px;
   -webkit-text-stroke-color: #2b2a29;
   cursor: pointer;
 }
  
 .star-rating :checked ~ label {
-  -webkit-text-fill-color: #F7A072;
+  -webkit-text-fill-color: #FFCB12;
 }
  
 .star-rating label:hover,
 .star-rating label:hover ~ label {
-  -webkit-text-fill-color: #EDDEA4;
+  -webkit-text-fill-color: #f7db8d;
 }
 
 
@@ -101,11 +160,13 @@ a{
 .reviewAddWrap{
     margin-top: 30px;
     margin-bottom: 30px;
-    width: 50%;
+    width: 70%;
     height: 100%;
-    border: 1px solid #444444;
-    background-color: white;
+/*     border: 1px solid #444444;
+    border-radius:1em; */
    
+    background-color: white;
+    padding:0.5em;
 }
 .reviewAddTop{
     display: flex;
@@ -132,8 +193,7 @@ a{
     border-radius: 10px;
     width: 100px;
     height: 30px;
-    margin-top: 10px;
-    
+    color:white;    
 }
 .addBtn button{
 	color: white;
@@ -146,8 +206,7 @@ a{
     box-sizing: border-box;
     border: solid 1.5px #D3D3D3;
     border-radius: 5px;
-    text-align: center;
-    padding-top: 50px;
+    text-align: left;
     background-color: white;
     
 }
@@ -217,7 +276,7 @@ a{
 		    var url = `<%="review.do?hosId="+hosDto.getId() +"&type="+sortType%>`; // 병원ID에 실제 값을 넣어주어야 합니다.
 		    //alert(url);
 			var htmlContent = "";
-			let userId = `<%=((UserDto)session.getAttribute("login")).getId() %>`;
+			let userId = "<%=userId %>";
 			//alert(userId);
 		    $.getJSON(url, function(data) {
 		      console.log(data);
@@ -228,45 +287,51 @@ a{
 		      }else{
 		    	  //console.log("data" + data[0].id);
 		    	  for (var i = 0; i < data.length; i++) {	  
-		    		  
-		    		//리뷰아이디
-		    	      htmlContent += "<div>";
-		    	      htmlContent += "<input type='hidden' name='id' value='" + data[i].id + "'>";
-		    	      htmlContent += "</div>";
+			   			htmlContent += "<div id='reviewContainer'>";
+			    			 
+			    		//리뷰아이디
+			    	      htmlContent += "<input type='hidden' name='id' value='" + data[i].id + "'>";
+			    	      
+			    	      
+			    	      //병원아이디
+			    	      htmlContent += "<input type='hidden' name='hospital_id' value='" + data[i].hospital_id + "'>";
+			    	      
+			    	      //작성자
+			    	      htmlContent += "<div class='reviewUserId'>" + data[i].user_id + "</div>";
+			    	      //작성일
+			    	      htmlContent += "<div class='reviewDate'>" + data[i].wdate + "</div>";
+			    	     
+			    	      //삭제버튼
+			    	      if(userId==data[i].user_id){
+				    	      htmlContent += "<div class='reviewBtnContainer'>";
+				    	      htmlContent += "<button type='button' class='deleteBtn' data-id='" + data[i].id + "'>삭제</button>";
+				    	      // 여기에 글번호 등 추가적인 데이터를 data[i]에서 가져와서 삽입 가능
+				    	      htmlContent += "</div>";	  
+			    	      }
+			    	      else{
+				    	      htmlContent += "<div class='reviewBtnContainer'>";
+				    	      htmlContent += "</div>";
+			    	      }
+			    	      
+			    	      //평점
+			    	      htmlContent += "<div class='reviewScore'>";
+			    	      let starS ="";
+			    	      for(let j = 0; j < data[i].score; j++){
+			    	    	  starS += "★";
+			    	      }
+			    	      
+			    	      htmlContent += starS;			    	      
+			    	      htmlContent += "</div>";
+			    	      
+			    	      //내용
+			    	      htmlContent += "<div class='reviewContent'>" + data[i].content + "</div>";
+	
 		    	      
-		    	      
-		    	      //병원아이디
-		    	      htmlContent += "<div>";
-		    	      htmlContent += "<input type='hidden' name='hospital_id' value='" + data[i].hospital_id + "'>";
-		    	      htmlContent += "</div>";
-		    		  
-		    	      //리뷰아이디
-		    	      htmlContent += "<div>";
-		    	      htmlContent += "<input type='text' name='id' value='" + data[i].id + "'>";
-		    	      htmlContent += "</div>";
-		    	      
-		    	      //작성자
-		    	      htmlContent += "<div class='reviewUserId'>작성자 " + data[i].user_id + "</div>";
-		    	      
-		    	      //평점
-		    	      htmlContent += "<div class='reviewScore'>평점 " + data[i].score + "</div>";
-		    	      
-		    	      //작성일
-		    	      htmlContent += "<div class='reviewDate'>작성일 " + data[i].wdate + "</div>";
-		    	      
-		    	      //내용
-		    	      htmlContent += "<div class='reviewContent'>" + data[i].content + "</div>";
-
-		    	      //삭제버튼
-		    	      if(userId==data[i].user_id){
-		    	      htmlContent += "<div>";
-		    	      htmlContent += "<button type='button' class='deleteBtn' data-id='" + data[i].id + "'>삭제</button>";
-		    	      // 여기에 글번호 등 추가적인 데이터를 data[i]에서 가져와서 삽입 가능
-		    	      htmlContent += "</div>";	  
-		    	      }
+			    		htmlContent += "</div>";
 
 		    	      // 구분선 추가
-		    	      htmlContent += "<div class='jb-division-line'></div>";
+		    	      //htmlContent += "<div class='jb-division-line'></div>";
+		    	      
 		    	    }
 		    	  
 		    	    // 결과를 해당 HTML 요소에 붙입니다.
@@ -302,13 +367,12 @@ a{
 			<div class="reviewAddWrap">
 				<form action="reviewWriteAf.do" method="post" accept-charset="UTF-8" class="mb-3" name="myform" id="myform">
 				<input type="hidden" name="hospital_id" value="<%=hosDto.getId() %>"><!-- 임시: 원래 병원번호가 따라와야됨 -->
-				<input type="hidden" name="user_id" value="<%=login.getId() %>"><!-- 임시: 원래 유저아디가 따라와야됨 -->
+				<input type="hidden" name="user_id" value="<%=userId %>"><!-- 임시: 원래 유저아디가 따라와야됨 -->
 				
 	            <div class="reviewAddTop">
 	            	<!-- 평점 -->
 	            	<div class="scoreWrap">
-	                    <div><h3>평점</h3></div>
-	                    <div class="star-rating space-x-4 mx-auto">
+	                    <div class="star-rating space-x-4 mx-auto ">
 	                        <input type="radio" id="5-stars" name="score" value="5" v-model="ratings"/>
 	                        <label for="5-stars" class="star pr-4">★</label>
 	                        <input type="radio" id="4-stars" name="score" value="4" v-model="ratings"/>
@@ -321,10 +385,7 @@ a{
 	                        <label for="1-star" class="star">★</label>
 	                    </div>
 	                </div>
-	                
-	                 <div>
-	                        <button type="button" class="addBtn" onclick="checkLogin()">리뷰등록</button>
-	                </div>
+					<button type="button" class="addBtn" onclick="checkLogin()">리뷰 등록</button>
 	            </div>
 	            
 	            <div class="reviewAddContent" >
@@ -338,38 +399,15 @@ a{
 <script>
 	
   function checkLogin() {
-    var isLoggedIn = <%= (session.getAttribute("login") != null) %>;
-    if (!isLoggedIn) {
-      alert("로그인 후 이용할 수 있는 서비스입니다. 로그인해주세요.");
+    let userId = "<%=userId %>";
+    console.log("유저 아이디", userId);
+    if (userId == null || userId == undefined || userId == "null" || userId == "undefined") {
+      	alert("로그인 후 이용할 수 있는 서비스입니다. 로그인해주세요.");
     } else {
-      document.getElementById("myform").submit();
+    	console.log("폼 제출");
+      	document.getElementById("myform").submit();
     }
   }
 </script>   
 </div>
-
-
-<%-- 
-<button id = "loadDataBtn">버튼</button> 
-</body>
-<script>
-  $(document).ready(()=>{
-	  let reviewDatas = [];
-	  
-	  $.ajax({
-          url: 'review.do',
-          type: 'GET',
-          data: { hosId: <%=hosDto.getId()%>},
-          dataType: 'json',
-          success: function(response) {
-          	console.log("데이터 응답 성공", response);
-          	reviewDatas = response;
-          },
-          error: function(error) {
-             console.error("실패", error);
-          }
-      });
-  })
-</script> --%>
-
 </html>

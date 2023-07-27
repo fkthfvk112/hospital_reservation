@@ -139,4 +139,11 @@
 		    or h.title like concat('%', #{conditionThree}, '%')
 		    or h.description like concat('%', #{conditionThree}, '%')		
 	</select>
+	
+	<select id="getHospitalIdByName" parameterType="java.lang.String" resultType="component.dto.HospitalDto">
+		select * 
+		from hospital
+		where title = #{hosName}
+		limit 1
+	</select>
 </mapper>
