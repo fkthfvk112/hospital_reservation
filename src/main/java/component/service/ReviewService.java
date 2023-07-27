@@ -2,6 +2,7 @@ package component.service;
 
 import java.util.List;
 
+import component.dto.MyReviewDto;
 import component.dto.ReviewDto;
 
 public interface ReviewService {
@@ -16,4 +17,5 @@ public interface ReviewService {
 	
 	boolean reviewDelete(ReviewDto dto);
 	
+	List<MyReviewDto> getreviewdetaillist(String userid);
 }

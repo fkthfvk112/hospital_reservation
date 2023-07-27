@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import component.dto.MyReviewDto;
 import component.dto.ReviewDto;
 
 @Repository
@@ -44,5 +45,11 @@ public class ReviewDaoImpl implements ReviewDao{
 	@Override
 	public int reviewDelete(ReviewDto dto) {
 		return session.delete(ns + "reviewDelete", dto);
+	}
+
+
+	@Override
+	public List<MyReviewDto> getreviewdetaillist(String userid) {
+		return session.selectList(ns+"getreviewdetaillist",userid);
 	}
 }

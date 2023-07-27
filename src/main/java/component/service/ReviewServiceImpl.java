@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import component.dao.ReviewDao;
+import component.dto.MyReviewDto;
 import component.dto.ReviewDto;
 
 @Service
@@ -41,6 +42,12 @@ public class ReviewServiceImpl implements ReviewService{
 	@Override
 	public boolean reviewDelete(ReviewDto dto) {
 		return dao.reviewDelete(dto)>0?true:false;
+	}
+
+
+	@Override
+	public List<MyReviewDto> getreviewdetaillist(String userid) {
+		return dao.getreviewdetaillist(userid);
 	}
 	
 }
