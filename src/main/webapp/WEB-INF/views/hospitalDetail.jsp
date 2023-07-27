@@ -45,8 +45,6 @@
 <body>
  <jsp:include page="header.jsp" flush="false"/>
  <jsp:include page="nav.jsp" flush="false"/>
-	<input type="text" value="<%=hosId %>" id="hosId" name="hospitalId"  style="display:none;"/> <!-- 수정 -->
-	<input type="text" value="<%=userId %>" id ="userId" name="userId"  style="display:none;"/>
 	<!-- userId 발리데이션 수정 -->
     <div id="mainSection">
             <div class="mainContents">
@@ -67,7 +65,7 @@
                     <div><%=hosDto.getTitle() %></div>
                     <div>
                     	<span style="color:#FFCB12;">★</span>
-                    	<span>평점</span>
+                    	<span class="starAvg"></span>
                     </div>
                     <div>
                     	<span style="color:red">♥</span>
@@ -343,6 +341,7 @@
 <script>
 	$(document).ready(()=>{
 		countHosLike();
+		avgHosStar();
 	})
 
 
@@ -556,6 +555,26 @@
             }
         });
 	}
+    
+    function avgHosStar(){
+    	let hosId = <%=hosDto.getId()%>
+    	  
+		console.log("here")
+		$.ajax({
+            url: 'hosStarAvg.do',
+            type: 'GET',
+            data:{ hosId: hosId },
+            dataType: 'json',
+            success: function(response) {
+                console.log("성공", response);
+                $(".starAvg").html(response.toFixed(2));
+            },
+            error: function(error) {
+                
+                console.error("실패", error);
+            }
+        });
+    }
 </script>
 <script src="./jsComponents/hospitalDetailEdit.js" type="text/javascript"></script>
 

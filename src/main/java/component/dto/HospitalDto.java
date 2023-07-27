@@ -14,6 +14,8 @@ public class HospitalDto implements Serializable{
 	private String staff_id;
 	private String del_date;
 	private String opertime;
+	private Double starAvg;
+	
 	public int getId() {
 		return id;
 	}
@@ -68,12 +70,18 @@ public class HospitalDto implements Serializable{
 	public void setOpertime(String opertime) {
 		this.opertime = opertime;
 	}
+	public Double getStarAvg() {
+		return starAvg;
+	}
+	public void setStarAvg(Double starAvg) {
+		this.starAvg = starAvg;
+	}
 	@Override
 	public String toString() {
 		return "HospitalDto [id=" + id + ", title=" + title + ", description=" + description + ", sort=" + sort
 				+ ", location_latitude=" + location_latitude + ", location_longitude=" + location_longitude
-				+ ", staff_id=" + staff_id + ", del_date=" + del_date + ", opertime=" + opertime + "]";
+				+ ", staff_id=" + staff_id + ", del_date=" + del_date + ", opertime=" + opertime + ", starAvg="
+				+ starAvg + "]";
 	}
-
 	
 }
