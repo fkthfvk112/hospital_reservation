@@ -68,7 +68,7 @@ body {
 	color: black;
 	border: 0;
 	margin-top: 28px;
-	font-size: 26px;
+	font-size: 20px;
 	cursor: pointer;
 }
 .kakao-link {
@@ -113,7 +113,7 @@ body {
 .kakaopng{
 	width: 54px;
 	height: 54px;
-	margin-right: 10px;
+	margin-right: 40px;
 }
 </style>
 
@@ -190,9 +190,12 @@ body {
 	<!-- 카카오 로그인 -->
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>
-		window.Kakao.init("0f68cc5f7d6a8996495dbcd980cb7595");
+
 		
 		function kakaoLogin() {
+			window.Kakao.init("0f68cc5f7d6a8996495dbcd980cb7595");
+			window.Kakao.isInitialized();
+			
 	        window.Kakao.Auth.login({
 	            scope: 'profile_nickname, account_email',
 	            success: function(authObj){

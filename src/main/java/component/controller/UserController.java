@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import component.dto.UserDto;
 import component.service.EmailService;
 import component.service.UserService;
+import utils.KakaoLogoutUtil;
 
 @Controller
 public class UserController {
@@ -112,9 +115,12 @@ public class UserController {
 				System.out.println("kakaoLogin Success (4)");
 
 				// 세션에 사용자 정보 저장
-				session.setAttribute("userId", userId);
-				session.setAttribute("nickname", nickname);
-				session.setAttribute("email", email);
+				//session.setAttribute("userId", userId);
+				//session.setAttribute("nickname", nickname);
+				//session.setAttribute("email", email);
+				// 토큰 저장
+				session.setAttribute("accessToken", accessToken);
+	            
 				System.out.println("kakaoLogin Success (5)");
 				
 				// 사용자 아이디가 이미 데이터베이스에 존재하는지 확인
@@ -174,6 +180,25 @@ public class UserController {
 			return "login";
 		}
 	}
+	
+	@GetMapping("logout.do")
+    public String logout(HttpServletRequest request, HttpSession session) {
+        // 로컬 로그아웃 처리를 여기에 구현
+
+        // 카카오 계정과 함께 로그아웃 API 호출
+        String kakaoAccessToken = (String) session.getAttribute("accessToken");
+        KakaoLogoutUtil.kakaoLogout(kakaoAccessToken);
+
+        // 세션 삭제
+        // session.invalidate();
+        
+        session.removeAttribute("login");
+        session.removeAttribute("accessToken");
+
+        // 로그인 페이지로 리다이렉트 또는 메인 페이지로 리다이렉트 등
+        return "redirect:/main.do";
+    }
+
 
 	@GetMapping("regi.do")
 	public String regi() {

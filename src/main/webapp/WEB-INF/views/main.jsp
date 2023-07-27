@@ -24,6 +24,7 @@
         var userId = "<%= session.getAttribute("userId") %>";
         var nickname = "<%= session.getAttribute("nickname") %>";
         var email = "<%= session.getAttribute("email") %>";
+        var accT = "<%= session.getAttribute("accessToken") %>";
         /* 로컬 */
         var dto = "<%= (UserDto)session.getAttribute("login")%>";
 
@@ -34,8 +35,9 @@
         console.log("Nickname: " + nickname);
         console.log("Email: " + email);
          */
-        console.log("로그인 된 세션")
+        console.log("로그인 된 세션");
         console.log("dto: " +dto);
+        console.log("토큰 확인 : " + accT);
     }
     // request.getSession().getAttribute("login")
     	// 세션 겟어트리뷰트로 로그인
@@ -43,7 +45,13 @@
 		showSession();
     
     
+    
 </script>
+
+    
+    <button onclick="location.href='logout.do'">로그아웃</button>
+    
+    <button onclick="location.href='login.do'">로그인</button>
 
 </body>
 </html>
