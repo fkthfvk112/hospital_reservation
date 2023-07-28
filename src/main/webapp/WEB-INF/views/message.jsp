@@ -51,7 +51,7 @@ if (loginmsg != null && !loginmsg.isEmpty()) {
 %>
     <script>
         alert("로그인 되었습니다");
-        location.href = "main.do";
+        location.href = "home.do";
     </script>
 <%
     } else {
