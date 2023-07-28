@@ -24,6 +24,14 @@
 		<head>
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+		
+		<style type="text/css">
+			.clickitem{
+				cursor: pointer;
+			}
+		</style>
 		</head>
 		<body>
 		
@@ -42,9 +50,9 @@
 					<tbody>
 						<tr> 
 							<td><%= i+1 %></td>
-							<td id="hospitalName" onClick="location.href='hospitalDetail.do?id='+<%=reviewDto.getHospital_id()%>"><%=reviewDto.getHtitle()%></td> <!-- 병원 상세 페이지로 링크 수정하기 -->
+							<td id="hospitalName" class = "clickitem" onClick="location.href='hospitalDetail.do?id='+<%=reviewDto.getHospital_id()%>"><%=reviewDto.getHtitle()%></td> <!-- 병원 상세 페이지로 링크 수정하기 -->
 							<td>
-								<select>
+								<select class = "clickitem">
 								<% 
 									String[] sort= reviewDto.getHsort().split(",");
 								System.out.println("sort: "+sort);
@@ -66,8 +74,8 @@
 							</td>
 							<td><%=reviewDto.getRwdate().substring(0,10)%></td>
 							<td><%=reviewDto.getRscore()%></td>
-							<td  onClick="location.href='hospitalDetail.do?id='+<%=reviewDto.getHospital_id()%>"><%=reviewDto.getRcontent()%></td>
-							<td><button onclick="location.href='reviewDelete.do?id='+<%=reviewDto.getRid()%>">삭제</button></td>
+							<td class = "clickitem" onClick="location.href='hospitalDetail.do?id='+<%=reviewDto.getHospital_id()%>"><%=reviewDto.getRcontent()%></td>
+							<td><button class = "clickitem" onclick="delreview(<%=reviewDto.getRid()%>)">삭제</button></td>
 						</tr>
 							
 					</tbody>
@@ -79,11 +87,23 @@
 		</div>
 		
 		<script type="text/javascript">
-			$(document).ready(function() {
+			function delreview(reviewid){
 				$.ajax({
+					url:"reviewDelete.do?id="+reviewid,
+					success:function(result){
+						
+						if(JSON.parse(result).success == "success"){
+							alert("리뷰 삭제 성공");
+						}else{
+							alert("리뷰 삭제 실패");
+						}
+						
+					},error: function(){
+						alert("error");
+					}
 					
 				})
-			})
+			}
 		</script>
 		</body>
 		</html>
