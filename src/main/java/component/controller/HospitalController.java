@@ -1,8 +1,13 @@
 package component.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,19 +15,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import component.dto.HospitalDto;
 import component.dto.LikeDto;
 import component.dto.ReviewDto;
 import component.dto.SearchDto;
 import component.dto.UpdateSelector;
+import component.dto.UploadPhotoDto;
 import component.service.HospitalService;
+import component.service.PhotoService;
 import component.service.ReviewService;
+import com.cloudinary.*;
+import com.cloudinary.utils.ObjectUtils;
 
 @Controller
+@PropertySource("classpath:properties/cloudinary.properties")
 public class HospitalController {
 
 	@Autowired
 	HospitalService service;
+	
+	@Autowired
+	PhotoService photoService;
 
 	//-----------이동----------------------
 	@GetMapping("hospitalDetail.do")
@@ -33,8 +48,10 @@ public class HospitalController {
 		System.out.println("-----hospitalDetail 1:2---------");
 		
 		HospitalDto dto = service.hospitalDetail(id);
+		List<UploadPhotoDto> photoDtos = photoService.getAllPhotoByHosId(id);
 		model.addAttribute("hospitalDto", dto);
 		model.addAttribute("sort_type", type);
+		model.addAttribute("photoDtos", photoDtos);
 		System.out.println("-----hospitalDetail 2:2---------");
 		
 		return "hospitalDetail";
@@ -102,13 +119,50 @@ public class HospitalController {
 		return service.handleLike(dto);
 	}
 
-	
+	@Value("${cloudinary.cloud-name}")
+    private String cloudName;
+
+    @Value("${cloudinary.api-key}")
+    private String apiKey;
+
+    @Value("${cloudinary.api-secret}")
+    private String apiSecret;
+    
 	@PostMapping("createHospital.do")
-	public String createHospital(HospitalDto dto) {
+	public String createHospital(HospitalDto dto, List<MultipartFile> imgFiles) {
+
 		System.out.println("--------createHospital----------------");
+		
 		service.createHospital(dto);
 		HospitalDto createdDto = service.getHospitalIdByName(dto.getTitle());
 		int createdHosId = createdDto.getId();
+		
+		//-------------------이미지 처리 ---------------------
+		
+		Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret
+        ));
+		
+		for(MultipartFile imgFile : imgFiles) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("public_id", imgFile.getOriginalFilename());
+			param.put("folder", "hospitalImg");
+			try {
+				Map uploadResult = cloudinary.uploader().upload(imgFile.getBytes(), param);
+				
+				String imageUrl = (String) uploadResult.get("url");
+				String public_id = (String) uploadResult.get("public_id");
+				UploadPhotoDto photoDto = new UploadPhotoDto(createdHosId, imageUrl, public_id);
+				photoService.uploadPhoto(photoDto);
+			
+			} catch (IOException e) {
+				System.out.println("-------이미지 에러-----------");
+				e.printStackTrace();
+			}
+		}
+		
 		return "redirect:hospitalDetail.do?id=" + createdHosId;
 	}
 	

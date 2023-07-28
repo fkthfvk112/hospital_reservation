@@ -30,7 +30,7 @@ if(kakaologinmsg != null && kakaologinmsg.equals("") == false){
 		%>
 		<script>
 		alert("카카오 로그인이 되었습니다 !");
-		location.href = "main.do";
+		location.href = "home.do";
 		</script>
 		<%	
 	}else{
@@ -51,7 +51,7 @@ if (loginmsg != null && !loginmsg.isEmpty()) {
 %>
     <script>
         alert("로그인 되었습니다");
-        location.href = "main.do";
+        location.href = "home.do";
     </script>
 <%
     } else {

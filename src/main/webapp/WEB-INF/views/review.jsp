@@ -373,7 +373,7 @@ a{
 	            	<!-- 평점 -->
 	            	<div class="scoreWrap">
 	                    <div class="star-rating space-x-4 mx-auto ">
-	                        <input type="radio" id="5-stars" name="score" value="5" v-model="ratings"/>
+	                        <input type="radio" id="5-stars" name="score" value="5" v-model="ratings"  checked="checked"/>
 	                        <label for="5-stars" class="star pr-4">★</label>
 	                        <input type="radio" id="4-stars" name="score" value="4" v-model="ratings"/>
 	                        <label for="4-stars" class="star">★</label>
@@ -381,7 +381,7 @@ a{
 	                        <label for="3-stars" class="star">★</label>
 	                        <input type="radio" id="2-stars" name="score" value="2" v-model="ratings"/>
 	                        <label for="2-stars" class="star">★</label>
-	                        <input type="radio" id="1-star" name="score" value="1" v-model="ratings" />
+	                        <input type="radio" id="1-star" name="score" value="1" v-model="ratings"/>
 	                        <label for="1-star" class="star">★</label>
 	                    </div>
 	                </div>
@@ -389,7 +389,7 @@ a{
 	            </div>
 	            
 	            <div class="reviewAddContent" >
-	                <textarea placeholder="리뷰내용을 입력해주세요" name="content"></textarea>
+	                <textarea id="contetnArea" placeholder="리뷰내용을 입력해주세요" name="content"></textarea>
 	            </div>
 	         
 	        </form>
@@ -404,8 +404,13 @@ a{
     if (userId == null || userId == undefined || userId == "null" || userId == "undefined") {
       	alert("로그인 후 이용할 수 있는 서비스입니다. 로그인해주세요.");
     } else {
-    	console.log("폼 제출");
-      	document.getElementById("myform").submit();
+    	if($("#contetnArea").val().length >=5 ){
+        	console.log("폼 제출");
+          	document.getElementById("myform").submit();
+    	}
+    	else{
+    		alert("댓글을 5글자 이상 입력해주세요!");
+    	}
     }
   }
 </script>   

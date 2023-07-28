@@ -1,15 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
-<!-- 제이쿼리 -->
+<title>회원가입</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<!-- 쿠키 -->
-<script src="http://lab.alexcican.com/set_cookies/cookie.js"
-	type="text/javascript"></script>
+
 <style>
 body {
 	display: flex;
@@ -29,195 +26,215 @@ body {
 	display: flex;
 	justify-content: center;
 }
-
-.table {
-	width: 100%;
-}
-
-.idpw {
-	width: 400px;
-	height: 50px;
-	border: 0;
-	background-color: #E8F0FE;
-	font-size: 26px;
-}
-
-#chk_save_id {
+#idTr, #emailTr{
 	margin-left: 70px;
-	float: left;
-	font-size: 8px;
-	margin-bottom: 28px;
 }
-
-.login {
-	width: 407px;
-	height: 54px;
-	background-color: #505567;
-	color: white;
-	margin-bottom: 18px;
-	font-size: 26px;
-	cursor: pointer;
-}
-
-.kakao{
-	display: flex;
+th {
+    display: flex;
     align-items: center;
-	width: 407px;
-	height: 54px;
-	background-color: #FAE80C;
-	color: black;
+    float: left;
+    background-color: #D9D9D9;
+    width: 120px;
+    height: 48px;
+    font-size: 15px;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.text{
+	width: 250px; 
+	height: 47px;
+	background-color: #E8F0FE;
+	font-size: 15px;
 	border: 0;
-	margin-top: 28px;
-	font-size: 20px;
-	cursor: pointer;
 }
-.kakao-link {
-	color: #000;
-	text-decoration: none;
-}
-
-.regi {
-	float: left;
-	margin-left: 70px;
-	color: black;
-	text-decoration: none;
-	font-size: 18px;
-}
-
-.findIdPw {
-	float: right;
-	color: black;
-	text-decoration: none;
-	font-size: 18px;
-}
-#findPw{
-	margin-right: 70px;
-}
-#findId{
-	margin-right: 10px;
-}
-
 .logo {
 	display: block;
 	margin: 0 auto;
 	width: 540px;
 	height: 180px;
-	margin-bottom: 60px;
+	margin-bottom: 30px;
 }
-#id{
-	margin-bottom: 18px;
+#id_chk_btn, #email_chk_btn{
+	background-color: #D9D9D9;
+    width: 65px;
+    height: 50px;
+    border: 0;
+    cursor: pointer;
 }
-#pw{
-	margin-bottom: 13px;
-}
-.kakaopng{
-	width: 54px;
-	height: 54px;
-	margin-right: 40px;
+.regi{
+	width: 385px;
+	height: 45px;
+	background-color: #505567;
+	color: white;
+	margin-top: 30px;
+	font-size: 24px;
+	cursor: pointer;
 }
 </style>
 
 </head>
 <body>
 	<div class="div">
-		<form action="loginAf.do" method="post">
-			<table class="table">
-				<tr class="centerTr">
-					<td><img src="img/logo1.PNG" alt="로고" class="logo"></td>
-				</tr>
-				<tr class="centerTr">
-					<td><input type="text" id="id" name="id"
-						placeholder="아이디를 입력하세요." class="idpw"></td>
-				</tr>
-				<tr class="centerTr">
-					<td><input type="password" id="pw" name="pw" value=""
-						placeholder="비밀번호를 입력하세요." class="idpw"></td>
-				</tr>
+		<form action="regiAf.do" id="regiForm" method="post">
+			<table>
 				<tr>
-					<td><input type="checkbox" id="chk_save_id">아이디 기억</td>
+					<td colspan="2"><img src="img/logo1.PNG" alt="로고" class="logo"></td>
+				</tr>
+				<tr id="idTr" class="centerTr">
+					<th>아이디</th>
+					<td><input type="text" size="20" id="id" name="id"
+						class="text" required>
+						<input type="button" id="id_chk_btn" value="중복확인">
+						<br>
+						<p id="idcheck" style="font-size: 8px"></p></td>
+
 				</tr>
 				<tr class="centerTr">
-					<td><input type="submit" value="로그인" class="login"></td>
+					<th>비밀번호</th>
+					<td><input type="password" size="20" id="pw" name="pw"
+						class="text" placeholder="영문, 숫자, 특수문자 조합 9자리 이상" required></td>
 				</tr>
-				<tr>
-					<td>
-						<a href="regi.do" class="regi">회원가입</a>
-						<a href="findPw.do" id="findPw" class="findIdPw">비밀번호 찾기</a>
-						<a href="findId.do" id="findId" class="findIdPw">아이디 찾기</a>
+				<tr class="centerTr">
+					<th>비밀번호 확인</th>
+					<td><input type="password" size="20" id="chk_pw"
+						name="chk_pw" class="text" required>
+						<br>
+						<p id="pwcheck" style="font-size: 8px"></p></td>
+				</tr>
+				<tr class="centerTr">
+					<th>이름</th>
+					<td><input type="text" size="20" id="name" name="name"
+						class="text" required></td>
+				</tr>
+				<tr id="emailTr" class="centerTr">
+					<th>이메일</th>
+					<td><input type="text" size="20" id="email" name="email"
+						class="text" required>
+						<input type="button" id="email_chk_btn" value="중복확인">
+						<br>
+						<p id="emailcheck" style="font-size: 8px"></p></td>
+				</tr>
+				<tr class="centerTr">
+					<td colspan="2"><input type="submit" value="회원가입" class="regi">
 					</td>
-				</tr>
-				<tr class="centerTr">
-					<td>
-				        <a href="javascript:kakaoLogin();" class="kakao-link">
-				            <button type="button" class="kakao">
-				                <img src="img/kakao.PNG" alt="카카오" class="kakaopng">
-				                  카카오톡 계정으로 로그인
-				            </button>
-				        </a>
-				    </td>
 				</tr>
 			</table>
 		</form>
 	</div>
 
-
-
-
-	<script type="text/javascript">
-	let user_id = $.cookie("user_id");
-	
-	if(user_id != null){	// 저장한 id가 있을 시
-		$("#id").val(user_id);
-		$("#chk_save_id").prop("checked", true);
-	}
-
-	$("#chk_save_id").click(function(){
-		if($("#chk_save_id").is(":checked") == true){	// id를 cookie에 저장 
-			if( $("#id").val().trim() == "" ){			// 빈문자열이였을 경우 
-				alert("id를 입력하세요.");
-				$("#chk_save_id").prop("checked",false);
-				$("#id").focus();
-			}else{
-				// cookie에 저장
-				$.cookie("user_id", $("#id").val().trim(), {expires:7, path:"./"});
-			}
-		}else{	// cookie에 저장하지 않음(삭제)
-			$.removeCookie("user_id", { path:'./' });
-		}
-	});
-	</script>
-	
-	<!-- 카카오 로그인 -->
-	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>
-
-		
-		function kakaoLogin() {
-			window.Kakao.init("0f68cc5f7d6a8996495dbcd980cb7595");
-			window.Kakao.isInitialized();
+		$(document).ready(function(){
+			// 아이디 중복확인
+			$("#id_chk_btn").click(function(){
+				$.ajax({
+					url:"idcheck.do",
+					type:"post",
+					data:{ "id":$("#id").val() },
+					success:function(answer){
+						if(answer == "id_YES"){
+							$("#idcheck").css("color", "#0000ff");
+							$("#idcheck").text("사용할 수 있는 아이디입니다.");
+						}else{
+							$("#idcheck").css("color", "#ff0000");
+							$("#idcheck").text("사용할 수 없는 아이디입니다.");
+							$("#id").val("");
+						}
+					},
+					error:function(){
+						alert("error");
+					}
+				});
+			});
 			
-	        window.Kakao.Auth.login({
-	            scope: 'profile_nickname, account_email',
-	            success: function(authObj){
-	                // 카카오 로그인 성공 시, 액세스 토큰을 서버로 전송
-	                var accessToken = authObj.access_token;
-	                $.ajax({
-	                    url: "kakaoLogin.do",
-	                    type: "post",
-	                    data: { "access_token": accessToken },
-	                    success: function() {
-	                        // 로그인 성공 후 메인 페이지로 이동
-	                        window.location.href = "main.do";
-	                    },
-	                    error: function() {
-	                        alert("카카오 로그인에 실패했습니다.");
+			$("#email_chk_btn").click(function(){
+	            $.ajax({
+	                url:"emailcheck.do",
+	                type:"post",
+	                data:{ "email":$("#email").val() },
+	                success:function(answer){
+	                    if(answer == "email_YES"){
+	                        $("#emailcheck").css("color", "#0000ff");
+	                        $("#emailcheck").text("사용할 수 있는 이메일입니다.");
+	                    }else{
+	                        $("#emailcheck").css("color", "#ff0000");
+	                        $("#emailcheck").text("사용할 수 없는 이메일입니다.");
+	                        $("#email").val("");
 	                    }
-	                });
-	            }
+	                },
+	                error:function(){
+	                    alert("error");
+	                }
+	            });
 	        });
-	    }
+			
+			
+			$("#regiForm").submit(function(event) {
+				var pw = $("#pw").val().trim();
+				var chkPw = $("#chk_pw").val().trim();
+				
+				// 비밀번호 확인
+				if (pw !== chkPw) {
+					event.preventDefault(); // 폼 제출을 막음
+					$("#pwcheck").css("color", "#ff0000");
+					$("#pwcheck").text("비밀번호가 일치하지 않습니다.");
+					$("#pw").focus();
+				} else {
+			        // 비밀번호가 일치할때 형식 확인
+			        var pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*])[A-Za-z\d@$!%*#?&]{9,}$/;
+			        if (!pwPattern.test(pw)) {
+			        	event.preventDefault(); // 폼 제출을 막음
+			            $("#pwcheck").css("color", "#ff0000");
+			            $("#pwcheck").text("유효하지 않은 비밀번호 형식입니다.");
+			            $("#pw").focus();
+			          
+			        } else {
+			            $("#pwcheck").css("color", "#0000ff");
+			            $("#pwcheck").text("올바른 비밀번호 형식입니다.");
+			          }
+			   		}
+				
+				// id 중복확인 버튼을 안눌렸을떄
+				if (!$("#idcheck").text()) {
+		            event.preventDefault();
+		            $("#idcheck").css("color", "red");
+		            $("#idcheck").text("아이디 중복을 확인해주세요.");
+		            $("#id_chk_btn").focus();
+		        }
+				
+				// email 중복확인 버튼을 안눌렸을떄
+				if ($("#emailcheck").text() !== "사용할 수 있는 이메일입니다.") {
+		            event.preventDefault();
+		            $("#emailcheck").css("color", "red");
+		            $("#emailcheck").text("이메일 중복을 확인해주세요.");
+		            $("#email_chk_btn").focus();
+		        }
+			});
+			
+			// 이메일 형식 확인
+			$("#email").on("input", function(){
+				var email = $("#email").val().trim();
+				var emailPattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+				
+				if(!emailPattern.test(email)){
+					$("#emailcheck").css("color", "#ff0000");
+					$("#emailcheck").text("유효하지 않은 이메일 형식입니다.");
+					// 이메일 형식이 올바르지 않으면 이메일 중복확인 버튼 비활성화
+		            $("#email_chk_btn").prop("disabled", true);
+				} else{
+					$("#emailcheck").css("color", "#0000ff");
+					$("#emailcheck").text("올바른 이메일 형식입니다.");
+					// 이메일 형식이 올바르면 이메일 중복확인 버튼 활성화
+		            $("#email_chk_btn").prop("disabled", false);
+				}
+			});
+		});
+		
+		
+		
 	</script>
-
-
 </body>
 </html>

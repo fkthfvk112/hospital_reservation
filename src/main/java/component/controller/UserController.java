@@ -198,7 +198,7 @@ public class UserController {
         session.removeAttribute("accessToken");
 
         // 로그인 페이지로 리다이렉트 또는 메인 페이지로 리다이렉트 등
-        return "redirect:/main.do";
+        return "redirect:/home.do";
     }
 	
 	@GetMapping("regi.do")
