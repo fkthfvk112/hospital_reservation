@@ -19,6 +19,13 @@
 <head>
 <meta charset="UTF-8">
 <title>내 예약 내역</title>
+
+<style type="text/css">
+	.clickitem{
+		cursor: pointer;
+	}
+</style>
+		
 </head>
 <body>
 

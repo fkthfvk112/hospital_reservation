@@ -6,14 +6,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-	ul {
+	.mysidebar {
 		padding: 0px; /* padding 기본값으로 우측에 40이 잡혀서 자꾸 li가 ul 디브 밖으로 나감 */
 	}
-	li {
-		background: #F9F7F3;
+	.mymenuitem {
+		border: solid 2px #F9F7F3;
+		border-radius: 5px;
 		margin: 10px; /* li끼리 띄우기 */
 		list-style-type: none; /* ul의 li 점 지우기 */
 	  	text-align: center;
+	  	cursor:pointer;
 	}
 	a {
 	  	text-decoration-line: none; /* 밑줄 제거 */
@@ -24,9 +26,9 @@
 <body>
 
 <div id="sidebar">
-	<nav>
-		<ul>
-			<li>
+	
+		<ul class="mysidebar">
+			<li class="mymenuitem">
 				<!-- 현재 선택된 메뉴의 글자색을 다르게 하고 싶음
 				     클릭이 한 번 됬다고 기록마냥 바뀌는 게 아니라 
 				     다른 메뉴가 클릭되면 다시 검정색으로 바뀌어야함 
@@ -34,17 +36,17 @@
 				         나머지 태그의 글자색 다 검정으로 바꿔주고 그래야하나?-->
 				<a href="myprofile.do">프로필</a>
 			</li>
-			<li>
+			<li class="mymenuitem">
 				<a href="myreservation.do">예약</a>
 			</li>
-			<li>
+			<li class="mymenuitem">
 				<a href="mylike.do">찜</a>
 			</li>
-			<li>
+			<li class="mymenuitem">
 				<a href="myreview.do">리뷰</a>
 			</li>
 		</ul>
-	</nav>
+	
 </div>
 </body>
 </html>
