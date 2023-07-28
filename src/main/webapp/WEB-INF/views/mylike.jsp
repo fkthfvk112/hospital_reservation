@@ -40,6 +40,9 @@
 				width: 12em;
 				height:7em;
 			}
+			.clickitem{
+				cursor: pointer;
+			}
 			</style>
 			
 			 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -72,10 +75,20 @@
 			 --%>
 						<div class = "hospital">
 							<div class= "ho-left">
-								<img src=<%=hosphotos.get(i) %>><br> 
+								<%
+									if(hosphotos.get(i)==null || hosphotos.get(i).equals("")){
+										%>
+										<img src="./images/no_img.jpg" alt="병원 이미지"><br>
+										<%
+									}else{
+									%>
+									<img src=<%=hosphotos.get(i) %> alt="병원 이미지"><br> 
+									<%
+									}
+								%>
 								<div class = "ho-left-down">
-									<button type="button" onClick="location.href='hospitalDetail.do?id='+<%=dto.getId()%>">병원 상세 보기</button>
-									<button type="button" onclick="cancleLike(<%=dto.getId() %>)">찜 해제</button>
+									<button class = "clickitem" type="button" onClick="location.href='hospitalDetail.do?id='+<%=dto.getId()%>">병원 상세 보기</button>
+									<button class = "clickitem" type="button" onclick="cancleLike(<%=dto.getId() %>)">찜 해제</button>
 								</div>
 							</div>
 							
@@ -85,7 +98,7 @@
 								</div>
 								<div class="hosinfo">
 									종류 &nbsp;&nbsp; 
-									<select>
+									<select class = "clickitem">
 										<% 
 											String[] sort= dto.getSort().split(",");
 										System.out.println("sort: "+sort);
@@ -93,11 +106,11 @@
 											for(int j = 0; j <sort.length; j++){
 												if(j == 0){
 													%>
-													<option selected disabled><%= sort[j] %></option>
+													<option  selected disabled ><%= sort[j] %></option>
 													<%	
 												}else{
 													%>
-													<option disabled><%= sort[j] %></option>
+													<option  disabled><%= sort[j] %></option>
 													<%
 														System.out.println("srot:"+sort[j]);
 												}
