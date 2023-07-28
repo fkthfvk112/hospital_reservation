@@ -86,6 +86,8 @@
 	var newpw = document.getElementById('newpw');
 	var checkpw = document.getElementById('checkpw');
 	
+	boolean continue = true;
+	
 	// modal 창을 감춤
 	var closeRtn = function(){
 	  var modal = document.getElementById('modal');
@@ -110,64 +112,73 @@
 						originpw.value = null; 
 						newpw.value = null;
 						checkpw.value = null;
-						return; // 비번 틀리면 함수 나감
+						continue = false;
+						return; 
 					}
 				}
 			})
 		})
 		
-		
-		
 		// 변경할 비번과 확인 비번이 같은지 확인
-		if(newpw.value != checkpw.value){ 
+		if(continue == true & newpw.value != checkpw.value){ 
 			alert('새 비밀번호가 일치하지 않습니다.');
 			// 입력받은 값들 다시 초기화
 			originpw.value = null; 
 			newpw.value = null;
 			checkpw.value = null;
-			return; // 비번 틀리면 함수 나감
+			
+			continue = false;
+			return; 
 		}
 		
 		
 		$(document).ready(function() {
-			// newpw 비밀번호 조합 확인 해야함
-			$.ajax({
-				url: "checknewpw.do",
-				type:"post",
-				data:{pw:newpw.value}, // pw에 새 비번 대입
-				success:function(result){					
-					if(result == false){
-						alert("비밀번호는 하나 이상의 영문자+숫자+특문(특수문자는 ~!@#$%^&* 중 하나)로 구성되어야합니다.");
-						originpw.value = null; 
-						newpw.value = null;
-						checkpw.value = null;
-						return; // 조합 안 맞으면 함수 나감
-					}
-				}, error: function(){
-					alret("error");
-				}				
+			
+			if(continue == true{
+				
+				// newpw 비밀번호 조합 확인 해야함
+				$.ajax({
+					url: "checknewpw.do",
+					type:"post",
+					data:{pw:newpw.value}, // pw에 새 비번 대입
+					success:function(result){					
+						if(result == false){
+							alert("비밀번호는 하나 이상의 영문자+숫자+특문(특수문자는 ~!@#$%^&* 중 하나)로 구성되어야합니다.");
+							originpw.value = null; 
+							newpw.value = null;
+							checkpw.value = null;
+							continue = false;
+							return; 
+						}
+					}, error: function(){
+						alret("error");
+					}				
+				})
 			})
 			
-			// ajax로 화면 전환 없이 디비에 접근해서 비밀번호 변경 처리
-			$.ajax({
-				url: "changepw.do",
-				type:"post",
-				data:{id:<%=dto.getId()%>, pw:newpw.value}, // pw에 새 비번 대입
-				success:function(result){
-					alert('success');
-					
-					if(result == true){
-						alert("비밀번호가 변경되었습니다.");
-					}else{
-						alert("비밀번호가 변경을 실패했습니다.");
-					}
-					
-					// 모달 창 꺼짐
-					closeRtn;
-				}, error: function(){
-					alret("error");
-				}				
+			if(continue == true{
+				// ajax로 화면 전환 없이 디비에 접근해서 비밀번호 변경 처리
+				$.ajax({
+					url: "changepw.do",
+					type:"post",
+					data:{id:<%=dto.getId()%>, pw:newpw.value}, // pw에 새 비번 대입
+					success:function(result){
+						alert('success');
+						
+						if(result == true){
+							alert("비밀번호가 변경되었습니다.");
+						}else{
+							alert("비밀번호가 변경을 실패했습니다.");
+						}
+						
+						// 모달 창 꺼짐
+						closeRtn;
+					}, error: function(){
+						alret("error");
+					}				
+				})
 			})
+			
 		})
 	}
 	
