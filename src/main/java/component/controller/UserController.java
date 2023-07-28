@@ -500,8 +500,7 @@ public class UserController {
 		
 
 		
-		//String hashedoriginpw = sha256(originpw); // 비밀번호 변경 페이지에서 입력받은 비밀번호 해쉬화
-		String hashedoriginpw ="123";//수정:삭제
+		String hashedoriginpw = sha256(originpw); // 비밀번호 변경 페이지에서 입력받은 비밀번호 해쉬화
 		String sessionpw = ((UserDto)request.getSession().getAttribute("login")).getPw(); // 로그인 시 세션에 저장된 유저 비밀번호
 		
 		if (hashedoriginpw == sessionpw) {

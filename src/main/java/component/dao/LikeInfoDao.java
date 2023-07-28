@@ -10,4 +10,6 @@ public interface LikeInfoDao {
 	List<HospitalDto> gethospitaldetaillist(String userid);
 	 
 	int canclelike(LikeInfoDto dto);
+	
+	String gethosphoto(int hosid);
 }

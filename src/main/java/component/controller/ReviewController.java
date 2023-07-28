@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
+import component.dto.MyReviewDto;
 import component.dto.ReviewDto;
 import component.dto.UserDto;
 import component.service.ReviewService;
@@ -112,6 +115,22 @@ public class ReviewController {
 		String json = "{\"success\": \"success\"}";
 		return json;
 	}
+	
+	@GetMapping("myreview.do")
+	public String myreview(Model model, HttpServletRequest request) {
+		System.out.println("ReviewController myreview() " + new Date());
+		
+		String userid = ((UserDto)request.getSession().getAttribute("login")).getId();
+		
+		List<MyReviewDto> likeReviewDtoList = service.getreviewdetaillist(userid);
+		
+		model.addAttribute("likeReviewDtoList", likeReviewDtoList);
+		
+		model.addAttribute("content", "myreview");
+		
+		return "mypage";
+	}
+	
 }
 
 

@@ -9,6 +9,9 @@
 	String logid = ((UserDto)session.getAttribute("login")).getId();
 
 	List<HospitalDto>  likeHospitalList = (List<HospitalDto>)request.getAttribute("likeHospitalList");
+	List<String> hosphotos = (List<String>)request.getAttribute("hosphotos");
+	System.out.println("마이라이크.jsp hosphotos : "+hosphotos);
+			
 	if(likeHospitalList == null || likeHospitalList.size() == 0){
 		%>
 		<div> 찜한 병원이 없습니다.</div>
@@ -28,8 +31,15 @@
 			
 			.ho-left{
 				margin-right: 1em;
+				
 			}
-			
+			.ho-left-down{
+				align-items:center;
+			}
+			img{
+				width: 12em;
+				height:7em;
+			}
 			</style>
 			
 			 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -39,27 +49,68 @@
 			
 			<div>
 				<%
-					for( HospitalDto dto: likeHospitalList){
+					for( int i = 0; i <likeHospitalList.size(); i++){
+						HospitalDto dto = likeHospitalList.get(i);
 						%>
-						
+						<%-- 
+						<script type="text/javascript">
+							$(document).ready(function() {
+								console.log("마이라이크.jsp hospitalId: "+<%=dto.getId()%>);
+								$.ajax({
+									url:"gethosphoto.do",
+									data:{hosid:"<%=dto.getId()%>"},
+									async:false,
+									success:function(url2){
+										//alert("success");
+										//alert(url);
+										console.log("url: "+url2);
+										$("img").attr("src", url2);
+									}
+								})
+							})
+						</script>
+			 --%>
 						<div class = "hospital">
 							<div class= "ho-left">
-								이미지<br> 
-								<button type="button" onclick="moveHospitalDetail()">병원 상세 보기</button>
-								<%--1.jquery로 클릭이벤트 처리
-								 <button type="button" id = "canclelike" value="<%=dto.getId() %>">찜 해제</button> --%>
-								<button type="button" onclick="cancleLike(<%=dto.getId() %>)">찜 해제</button>
+								<img src=<%=hosphotos.get(i) %>><br> 
+								<div class = "ho-left-down">
+									<button type="button" onClick="location.href='hospitalDetail.do?id='+<%=dto.getId()%>">병원 상세 보기</button>
+									<button type="button" onclick="cancleLike(<%=dto.getId() %>)">찜 해제</button>
+								</div>
 							</div>
 							
 							<div class= "ho-right">
-								<div class="hosinfo">
+								<div class="hosinfo" >
 									병원명 &nbsp;&nbsp; <%= dto.getTitle() %>
 								</div>
 								<div class="hosinfo">
-									종류 &nbsp;&nbsp; <%= dto.getSort() %>
+									종류 &nbsp;&nbsp; 
+									<select>
+										<% 
+											String[] sort= dto.getSort().split(",");
+										System.out.println("sort: "+sort);
+											
+											for(int j = 0; j <sort.length; j++){
+												if(j == 0){
+													%>
+													<option selected disabled><%= sort[j] %></option>
+													<%	
+												}else{
+													%>
+													<option disabled><%= sort[j] %></option>
+													<%
+														System.out.println("srot:"+sort[j]);
+												}
+											}
+										%>
+										</select>
+								
 								</div>
 								<div class="hosinfo">
-									운영시간 &nbsp;&nbsp; <%= dto.getOpertime() %>
+									<%
+										String time[] = dto.getOpertime().split(",");
+									%>
+									운영시간 &nbsp;&nbsp; <%= time[0] %>:00시 ~ <%= time[1] %>:00시
 								</div>
 								<div class="hosinfo">
 									설명 &nbsp;&nbsp; <%= dto.getDescription() %>

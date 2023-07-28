@@ -418,14 +418,12 @@
 
 	dateInput.addEventListener("input", function(event) {
 	  const inputValue = event.target.value;
-	  console.log("Input 값이 변경되었습니다:", inputValue);
 		$.ajax({
             url: 'getReservByDate.do',
             type: 'GET',
             data: { date_s: event.target.value, hosId: <%=hosId%>},
             dataType: 'json',
             success: function(response) {
-            	console.log("데이터 응답 성공");
             	setScheduleList(response);
             },
             error: function(error) {

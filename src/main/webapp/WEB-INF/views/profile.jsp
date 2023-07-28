@@ -57,13 +57,13 @@
  
 </head>
 <body>
-
+ 
 <div>
 	<div> 아이디 : <%=dto.getId() %></div>
 	<div> 이름 : <%=dto.getName() %></div>
 	<div> 이메일 : <%=dto.getEmail() %></div>
 	<div> 비밀번호 <button type="button" id="modalOpen">변경하기</button></div>
-	<div> <button id = "delUser" type="button" onclick="delUser()">회원 탈퇴하기</button></div>
+	<!-- <div> <button id = "delUser" type="button" onclick="delUser()">회원 탈퇴하기</button></div> -->
 </div>
 
 <div id="modal">
@@ -94,19 +94,16 @@
 	
 	// 비밀번호 체크
 	function pwCheck(){
-		
 		$(document).ready(function() {
 			$.ajax({
 				url: "checkoriginpw.do",
 				type:"post",
 				data:{originpw: originpw.value, userid:"<%=dto.getId()%>"},
 				success:function(result){
-					alert("success");
-					alert(result);
-					// alert(result.str);
-					
+
 					if(result=="No"){
 						alert('잘못된 비밀번호입니다.');
+						outCondition = true;
 						console.log(originpw.value);
 						console.log("<%=dto.getPw()%>");
 						// 입력받은 값들 다시 초기화
@@ -118,6 +115,7 @@
 				}
 			})
 		})
+		
 		
 		
 		// 변경할 비번과 확인 비번이 같은지 확인
@@ -137,9 +135,7 @@
 				url: "checknewpw.do",
 				type:"post",
 				data:{pw:newpw.value}, // pw에 새 비번 대입
-				success:function(result){
-					alert('success);
-					
+				success:function(result){					
 					if(result == false){
 						alert("비밀번호는 하나 이상의 영문자+숫자+특문(특수문자는 ~!@#$%^&* 중 하나)로 구성되어야합니다.");
 						originpw.value = null; 
@@ -186,5 +182,7 @@
 	
 	// 회원 탈퇴하기 <- ajax로 구현
 </script>
+
+
 </body>
 </html>

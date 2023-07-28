@@ -9,7 +9,10 @@ create table user(
 	warning	int not null,
 	myHospital_id int
 );
+
 insert into user(id, pw, name, email, auth, warning, myHospital_id)
 values ('asdf', '1234', 'testName', 'testEmail@naver.com', 1, 0, 0);
 
 select * from user;
+
+delete from user;

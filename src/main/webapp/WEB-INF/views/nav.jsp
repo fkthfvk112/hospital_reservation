@@ -43,7 +43,7 @@
 	        	%>
 	        	<div class="navRight">
             		<ul>
-		                <a href="myPage.do"><li>마이페이지</li></a>
+		                <a href="mypage.do"><li>마이페이지</li></a>
 		                <a href="logout.do"><li>로그아웃</li></a>
 		            </ul>
         		</div>

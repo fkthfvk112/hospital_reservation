@@ -2,6 +2,7 @@ package component.dao;
 
 import java.util.List;
 
+import component.dto.MyReviewDto;
 import component.dto.ReviewDto;
 
 public interface ReviewDao {
@@ -15,4 +16,6 @@ public interface ReviewDao {
 	List<ReviewDto> scoreDownlist(int hosId);
 	
 	int reviewDelete(ReviewDto dto);
+	
+	List<MyReviewDto> getreviewdetaillist(String userid);
 }

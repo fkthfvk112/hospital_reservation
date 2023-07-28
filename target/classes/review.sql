@@ -45,24 +45,15 @@ where id=4;
 
 drop table review;
 
+insert into review(wdate,score,content,user_id,hospital_id)
+values(now(),3,"친절해요.","abc123",2);
+insert into review(wdate,score,content,user_id,hospital_id)
+values(now(),5,"한번에 두군데 진찰 쌉가능~","abc123",4);
 
-
-hospital 테이블
-create table hospital(
-	id	int primary key auto_increment, 
-	title varchar(50),
-	description	varchar(300),
-	sort	varchar(50),
-	location_latitude	varchar(150),
-	location_longitude	varchar(150),
-	staff_id	varchar(100),
-	del_date	timestamp,
-	opertime	varchar(200)
-);
-
-select * from hospital;
-
-delete from hospital;
-where id=2;
-
-drop table hospital;
+select r.id as rid, r.wdate as rwdate, r.score as rscore, r.content as rcontent,
+	   hospital_id, user_id,
+	   h.title as htitle, h.sort as hsort,
+	   location_latitude, location_longitude
+from review r, hospital h
+where user_id = "abc123"
+      and r.hospital_id = h.id;

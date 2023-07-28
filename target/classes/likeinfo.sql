@@ -1,3 +1,4 @@
+drop table likeinfo;
 
 create table likeinfo(
 	id	int primary key auto_increment,

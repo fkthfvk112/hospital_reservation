@@ -29,5 +29,10 @@ public class LikeInfoDaoImpl implements LikeInfoDao{
 		return session.delete(ns+"canclelike",dto);
 	}
 
+	@Override
+	public String gethosphoto(int hosid) {
+		return session.selectOne(ns+"gethosphoto", hosid);
+	}
+
 	
 }

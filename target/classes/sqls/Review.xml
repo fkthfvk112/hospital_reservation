@@ -46,4 +46,15 @@ delete from review
 where id=#{id}
 </delete>
 
+<!-- 마이페이지 - 내 리뷰 리스트 -->
+<select id="getreviewdetaillist" parameterType="String" resultType="component.dto.MyReviewDto">
+	select r.id as rid, r.wdate as rwdate, r.score as rscore, r.content as rcontent,
+	   hospital_id, user_id,
+	   h.title as htitle, h.sort as hsort,
+	   location_latitude, location_longitude
+	from review r, hospital h
+	where user_id = #{userid}
+	      and r.hospital_id = h.id;
+</select>
+
 </mapper>

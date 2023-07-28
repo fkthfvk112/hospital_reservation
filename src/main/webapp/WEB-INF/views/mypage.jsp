@@ -31,7 +31,7 @@
 </style>
 </head>
 <body>
-
+ 
 <div id="total">
 	<div id="sidemenubar">
 		<jsp:include page="mypagemenu.jsp" flush="false"/>
@@ -40,5 +40,7 @@
 		<jsp:include page='<%= content + ".jsp" %>' flush="false"/>
 	</div>
 </div>
+
+
 </body>
 </html>

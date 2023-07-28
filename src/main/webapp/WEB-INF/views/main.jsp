@@ -5,6 +5,7 @@
 <%
 	UserDto dto = (UserDto)session.getAttribute("login");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +13,6 @@
 <title>main</title>
 </head>
 <body>
-<h1>메인 페이지 입니다~~</h1>
-<h2>콘솔에 세션 확인됩니다</h2>
 
 
 <script>
@@ -30,7 +29,7 @@
 
         <%-- 콘솔에 세션 정보 출력 --%>
         /*
-        console.log("카카오 로그인시")
+        console.log("카카오 로그인시")a
         console.log("User ID: " + userId);
         console.log("Nickname: " + nickname);
         console.log("Email: " + email);
@@ -43,8 +42,6 @@
     	// 세션 겟어트리뷰트로 로그인
     	// 페이지 로드 시 세션 정보 출력
 		showSession();
-    
-    
     
 </script>
 

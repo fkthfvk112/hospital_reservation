@@ -1,5 +1,6 @@
+drop table reservation;
 
-create table reservation(
+create table user_reservation(
 	id int auto_increment primary key,
 	wdate timestamp not null,
 	state int not null,
