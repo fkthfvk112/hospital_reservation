@@ -62,6 +62,7 @@ public class UserDaoImpl implements UserDao{
 	public void updatePassword(UserDto dto) {
 		session.update(ns + "updatePassword", dto);
 	}
+	
 	@Override
 	public int changepw(UserDto dto) {
 		return session.update(ns+"changepw", dto);
