@@ -9,6 +9,9 @@
 	String logid = ((UserDto)session.getAttribute("login")).getId();
 
 	List<HospitalDto>  likeHospitalList = (List<HospitalDto>)request.getAttribute("likeHospitalList");
+	List<String> hosphotos = (List<String>)request.getAttribute("hosphotos");
+	System.out.println("마이라이크.jsp hosphotos : "+hosphotos);
+			
 	if(likeHospitalList == null || likeHospitalList.size() == 0){
 		%>
 		<div> 찜한 병원이 없습니다.</div>
@@ -46,14 +49,17 @@
 			
 			<div>
 				<%
-					for( HospitalDto dto: likeHospitalList){
+					for( int i = 0; i <likeHospitalList.size(); i++){
+						HospitalDto dto = likeHospitalList.get(i);
 						%>
-						
+						<%-- 
 						<script type="text/javascript">
 							$(document).ready(function() {
+								console.log("마이라이크.jsp hospitalId: "+<%=dto.getId()%>);
 								$.ajax({
 									url:"gethosphoto.do",
 									data:{hosid:"<%=dto.getId()%>"},
+									async:false,
 									success:function(url2){
 										//alert("success");
 										//alert(url);
@@ -63,10 +69,10 @@
 								})
 							})
 						</script>
-			
+			 --%>
 						<div class = "hospital">
 							<div class= "ho-left">
-								<img><br> 
+								<img src=<%=hosphotos.get(i) %>><br> 
 								<div class = "ho-left-down">
 									<button type="button" onClick="location.href='hospitalDetail.do?id='+<%=dto.getId()%>">병원 상세 보기</button>
 									<button type="button" onclick="cancleLike(<%=dto.getId() %>)">찜 해제</button>
