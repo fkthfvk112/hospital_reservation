@@ -1,6 +1,8 @@
 <%@page import="utils.HosUtils"%>
 <%@page import="component.dto.UserDto"%>
 <%@page import="component.dto.HospitalDto"%>
+<%@page import="component.dto.SearchDto"%>
+
 <%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="EUC-KR"%>
@@ -9,6 +11,8 @@ List<HospitalDto> dtoList = (List<HospitalDto>) request.getAttribute("hospitalDt
 for(HospitalDto dto:dtoList){
 	System.out.println(dto.toString());
 }
+
+SearchDto searchDto = (SearchDto) request.getAttribute("searchDto");
 %>
 <!DOCTYPE html>
 <html>
@@ -49,6 +53,11 @@ for(HospitalDto dto:dtoList){
 					</div>
 			</form>
 		</div>
+		<%if(searchDto != null && searchDto.getConditionThree().length() >= 1){ %>
+		<div style="margin-top:1em;">
+			<strong><%=searchDto.getConditionThree() %></strong>(으)로 검색한 결과입니다.
+		</div>
+		<%} %>
 	</div>
 
 </div>

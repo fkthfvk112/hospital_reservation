@@ -62,22 +62,9 @@ public class LikeInfoController {
 		return "mypage";
 	}
 	
-	/*
-	@ResponseBody
-	@GetMapping("canclelike.do")
-	public boolean canclelike(LikeInfoDto dto) {
-		System.out.println("LikeInfoController canclelike() " + new Date());
-		System.out.println("컨트롤러로 넘어온 클릭된 병원 정보 : "+dto);
-		// System.out.println("컨트롤러  : "+service.canclelike(dto));
-		return service.canclelike(dto);
-	}
-	*/
-	
 	@GetMapping("canclelike.do")
 	public String canclelike(LikeInfoDto dto,Model model) {
 		System.out.println("LikeInfoController canclelike() " + new Date());
-		System.out.println("컨트롤러로 넘어온 클릭된 병원 정보 : "+dto);
-		// System.out.println("컨트롤러  : "+service.canclelike(dto));
 		boolean isS = service.canclelike(dto);
 
 		String result="NO"; 
@@ -94,16 +81,9 @@ public class LikeInfoController {
 		 return "alert"; 
 	}
 	
-	/*
+	@GetMapping("cntThisHosLike.do")
 	@ResponseBody
-	@GetMapping("gethosphoto.do")
-	public String gethosphoto(int hosid) {
-		System.out.println("LikeInfoController gethosphoto() " + new Date());
-		
-		String url2 = service.gethosphoto(hosid);
-		//System.out.println("url: "+url);
-		
-		return url2;
+	public int cntThisHosLike(LikeInfoDto dto) {
+		return service.cntThisHosLike(dto);
 	}
-	*/
 }

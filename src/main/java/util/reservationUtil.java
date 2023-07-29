@@ -43,7 +43,7 @@ public class reservationUtil {
 				if(dto.getWdate().substring(0,10).equals(dates)) {
 					str += "<tr>";
 					str += "	<td style='padding:0px'>";
-					// str += "		<a href='reservationdetail.do?reservationId="+dto.getId() + "'>"; // 상세 일정볼 땐 일정 고유값 seq 가져가면 일정 정보를 띄울 수 있음
+					// str += "		<a class = "clickitem" href='reservationdetail.do?reservationId="+dto.getId() + "'>"; // 상세 일정볼 땐 일정 고유값 seq 가져가면 일정 정보를 띄울 수 있음
 																									  // a는 링크? 페이지 이동됨?
 					str += "		<a href='myreservation.do?year="+year+"&month="+month+"&reservationId="+dto.getId() + "'>"; 
 					str += "			<font style='font-size:10px; color:blue;'> ";

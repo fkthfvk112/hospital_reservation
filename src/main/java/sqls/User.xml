@@ -58,7 +58,7 @@
   	</update>
   	
   	
-	<!-- 우지예 -->
+<!-- 우지예 -->
 	
 	<update id="changepw" parameterType="component.dto.UserDto">
 		update user

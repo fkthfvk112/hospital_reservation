@@ -3,8 +3,6 @@
     pageEncoding="UTF-8"%> 
 <%
 	UserDto dto = (UserDto)session.getAttribute("login");
-	System.out.println(dto.getId()); // ID는 찍힘
-	System.out.println(dto.getPw()); // PW는 NULL이라 찍힘..
 %>
 <!DOCTYPE html>
 <html>
@@ -27,6 +25,8 @@
 	
 	/* #modal css처리만 하면 바탕에 있는 내용과 모달 내용이 겹쳐져서 표시됨 그래서 #modal>#content 처리 해줌*/
 	#modal>#content{
+		border-radius:0.5em;
+		padding:1em;
 		width:300px;
 		margin:100px auto;
 		padding:20px;
@@ -51,33 +51,88 @@
 	  cursor :pointer;
 	}	
 
+	.clickitem{
+		margin-top:0.5em;
+		cursor: pointer;
+		border: none;
+	    background-color: #8f8f8f;
+	    border-radius: 0.5em;
+	    padding: 0.5em;
+	    color: white;
+	    transition: 0.2s;
+		
+	}
+	.clickitem:hover{
+		background-color: black;
+	}
+	
+	.profileTable{
+		border-collapse : collapse;
+		border-spacing : 0;
+		border:1px solid #e1e1e1;
+		background-color: white;
+	}
+	
+	.profileTable th{
+		 background-color: #e1e1e1;
+	}
+
+	.profileTable td{
+		padding:0.5em;
+	}
+	
+	#mymenuitemA{
+		background-color: #595a5c;
+	}
+	
+	#mymenuitemA > .myPageNavA{
+		color:white;
+	}
+	
+	
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
  
 </head>
 <body>
- 
-<div>
-	<div> 아이디 : <%=dto.getId() %></div>
-	<div> 이름 : <%=dto.getName() %></div>
-	<div> 이메일 : <%=dto.getEmail() %></div>
-	<div> 비밀번호 <button type="button" id="modalOpen">변경하기</button></div>
-	<!-- <div> <button id = "delUser" type="button" onclick="delUser()">회원 탈퇴하기</button></div> -->
-</div>
+ <h2 style="margin:2em;">사용자 정보</h3>
+ <table class="profileTable">
+ 	<col width="100"/><col width="300"/>
+ 	<tr>
+ 		<th>아이디</th>
+ 		<td><%=dto.getId() %></td>
+ 	</tr>
+ 	<tr>
+ 		<th>이름</th>
+ 		<td><%=dto.getName() %></td>
+ 	</tr>
+ 	<tr>
+ 		<th>이메일</th>
+ 		<td><%=dto.getEmail() %></td>
+ 	</tr>
+ </table>
+<button class = "clickitem" class="cpBtn" type="button" id="modalOpen">비밀번호 변경</button>
 
 <div id="modal">
 	<div id="content">
 		<form action="changepw.do" method="post">
 			<input type='button' value='X' class="close" id='modalClose'/>
-			<p> 비밀번호 변경 </p>
-			현재 비밀번호 : <input type="password" id="originpw"/>
-			바꿀 비밀번호 : <input type="password" id="newpw"/>
-			비밀번호 확인 : <input type="password" id="checkpw"/>
-			<button type="button" value='open' onClick="pwCheck()">비밀번호 변경하기</button>
+			<h2> 비밀번호 변경 </h2>
+			<div style="margin-top:0.5em;">
+				현재 비밀번호 : <input style="width:auto;" type="password" id="originpw"/>
+			</div>
+			<div style="margin-top:0.5em;">
+				새 비밀번호 : &nbsp;&nbsp;&nbsp;<input style="width:auto;" type="password" id="newpw" placeholder="영문, 숫자, 특수문자 조합 9자리 이상"/>
+			</div>
+			<div style="margin-top:0.5em;">
+				비밀번호 확인 : <input style="width:auto;" type="password" id="checkpw"/>
+			</div>
+			<button style="margin-top:1em;" type="button" value='open' onClick="pwCheck()">비밀번호 변경</button>
 		</form>
 	</div>
 </div>
+
 <script type="text/javascript">
 	var modalOpen  = document.getElementById('modalOpen');
 	var modalClose = document.getElementById('modalClose');
@@ -85,91 +140,7 @@
 	var originpw = document.getElementById('originpw');
 	var newpw = document.getElementById('newpw');
 	var checkpw = document.getElementById('checkpw');
-	
-	// modal 창을 감춤
-	var closeRtn = function(){
-	  var modal = document.getElementById('modal');
-	  modal.style.display = 'none';
-	}
-	
-	// 비밀번호 체크
-	function pwCheck(){
-		$(document).ready(function() {
-			$.ajax({
-				url: "checkoriginpw.do",
-				type:"post",
-				data:{originpw: originpw.value, userid:"<%=dto.getId()%>"},
-				success:function(result){
 
-					if(result=="No"){
-						alert('잘못된 비밀번호입니다.');
-						outCondition = true;
-						console.log(originpw.value);
-						console.log("<%=dto.getPw()%>");
-						// 입력받은 값들 다시 초기화
-						originpw.value = null; 
-						newpw.value = null;
-						checkpw.value = null;
-						return; // 비번 틀리면 함수 나감
-					}
-				}
-			})
-		})
-		
-		
-		
-		// 변경할 비번과 확인 비번이 같은지 확인
-		if(newpw.value != checkpw.value){ 
-			alert('새 비밀번호가 일치하지 않습니다.');
-			// 입력받은 값들 다시 초기화
-			originpw.value = null; 
-			newpw.value = null;
-			checkpw.value = null;
-			return; // 비번 틀리면 함수 나감
-		}
-		
-		
-		$(document).ready(function() {
-			// newpw 비밀번호 조합 확인 해야함
-			$.ajax({
-				url: "checknewpw.do",
-				type:"post",
-				data:{pw:newpw.value}, // pw에 새 비번 대입
-				success:function(result){					
-					if(result == false){
-						alert("비밀번호는 하나 이상의 영문자+숫자+특문(특수문자는 ~!@#$%^&* 중 하나)로 구성되어야합니다.");
-						originpw.value = null; 
-						newpw.value = null;
-						checkpw.value = null;
-						return; // 조합 안 맞으면 함수 나감
-					}
-				}, error: function(){
-					alret("error");
-				}				
-			})
-			
-			// ajax로 화면 전환 없이 디비에 접근해서 비밀번호 변경 처리
-			$.ajax({
-				url: "changepw.do",
-				type:"post",
-				data:{id:<%=dto.getId()%>, pw:newpw.value}, // pw에 새 비번 대입
-				success:function(result){
-					alert('success');
-					
-					if(result == true){
-						alert("비밀번호가 변경되었습니다.");
-					}else{
-						alert("비밀번호가 변경을 실패했습니다.");
-					}
-					
-					// 모달 창 꺼짐
-					closeRtn;
-				}, error: function(){
-					alret("error");
-				}				
-			})
-		})
-	}
 	
 	// modal 창을 보여줌
 	modalOpen.onclick = function(){
@@ -177,12 +148,68 @@
 	  modal.style.display = 'block';
 	}
 	
-	// pwCheck.onclick = closeRtn;
+	
+	// modal 창을 감춤
+	var closeRtn = function(){
+	  var modal = document.getElementById('modal');
+	  modal.style.display = 'none';
+	}
+	
+	function initPw() { // 잘못 입력시 초기화 시키는 기능은 유저가 선호하지 않음
+		originpw.value = null; 
+		newpw.value = null;
+		checkpw.value = null;
+	}
+	
+	
+	// 비밀번호 체크
+	function pwCheck(){
+		let userID = "<%=dto.getId()%>";
+		var pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*])[A-Za-z\d@$!%*#?&]{9,}$/;
+		
+		if (originpw.value==="" || newpw.value==="" || checkpw.value=="") {
+			alert("모든 정보를 입력해주세요.");
+		} else if (newpw.value!=checkpw.value) {
+			alert("변경할 새 비밀번호와 확인 비밀번호가 일치하지 앖습니다.");
+		} else if (!pwPattern.test(newpw.value)) {
+        	alert("새 비밀번호가 유효하지 않은 비밀번호 형식입니다.");
+        }else {
+			$.ajax({ 
+				url: "changePassword.do",
+				type:"post",
+				data:{ userId:userID, originPw: originpw.value , newPw: newpw.value},
+				success:function(result){
+					if(result == "originErr"){
+						alert("기존 비밀번호를 잘 못 입력하였습니다.");
+					}else if(result == "success"){
+						alert("비밀번호가 변경되었습니다.");
+						initPw();
+						// 모달 창 꺼짐
+						closeRtn();
+					}else {
+						alert("비밀번호 변경 실패");
+						initPw();
+					}
+					
+				},
+				error: function(){
+					alert("ajax error");
+				}
+			})
+		}
+	}
+	
 	modalClose.onclick = closeRtn;	
 	
-	// 회원 탈퇴하기 <- ajax로 구현
 </script>
-
-
 </body>
+<style>
+ #profileContainer{
+ 	background-color:#e1e1e1;
+ 	padding:2em;
+ 	margin:1px solid black;
+ 	border-radius:0.5em;
+ 	
+ }
+</style>
 </html>

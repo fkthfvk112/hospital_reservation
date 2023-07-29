@@ -86,11 +86,8 @@
             <div class="contentSection">
                 <div class="content">
                     <div style="text-align: right;">
-                        <button class="m-3">
-                        	<object style="cursor:pointer;" data="resorces/kakao.svg" width="38" height="38" type="image/svg+xml"></object>
-                        </button>
                         <button type="button" onclick="likeSet()" class="m-3 heartBtn">
-                        	<object data="resorces/heart.svg" width="38" height="38" type="image/svg+xml"></object>
+                        	<object class="heartCsv" data="resorces/heart.svg" width="38" height="38" type="image/svg+xml" fill="red"></object>
                         </button>
                     </div>
                     <div><%=hosDto.getTitle() %></div>
@@ -376,6 +373,7 @@
 	$(document).ready(()=>{
 		countHosLike();
 		avgHosStar();
+		setMyHeart();
 	})
 	
 	$("#modalSubmmitBtn").on('click', ()=>{
@@ -530,13 +528,14 @@
             success: function(response) {
                 console.log("성공", response);
                 countHosLike();//좋아요 띄우기
+        		setMyHeart();
             },
             error: function(error) {
                 
                 console.error("실패", error);
             }
         });
-	}
+			}
 	//--------------------로그인 안 했을 시 처리-----------
 	function handleNotLogin(){
 		alert("로그인을 해주세요!");
@@ -585,7 +584,35 @@
     
     
     //---------------------
-    
+    //내 like여부
+    function setMyHeart(){
+    	let hosId = "<%=hosDto.getId()%>";
+    	let userId = "<%=userId%>";
+    	data = {
+    			userId:userId,
+    			hospitalId:hosId
+    	};
+    	
+		$.ajax({
+            url: 'cntThisHosLike.do',
+            type: 'GET',
+            data:data,
+            dataType: 'json',
+            success: function(response) {
+            	if(Number(response) >= 1){
+            		$(".heartCsv")[0].data = "resorces/redHeart.svg"
+                        console.log("붉게");
+            	}
+            	else{
+            		$(".heartCsv")[0].data = "resorces/heart.svg"
+            	}
+            },
+            error: function(error) {
+                
+                console.error("실패", error);
+            }
+        });
+    }
     	//like 집계
 	function countHosLike(){
     	let hosId = <%=hosDto.getId()%>

@@ -494,52 +494,33 @@ public class UserController {
 	
 	//TODO 마이페이지 - 기존 비밀번호 확인 (ajax)
 	@ResponseBody
-	@PostMapping("checkoriginpw.do")
-	public String checkoriginpw(String originpw,String userid, HttpServletRequest request) { // 리턴값이 jsp 파일며잉 아니라 ajax의 결과값이기에 리턴자료형이 String이 아니어도 됨
-		System.out.println("UserController checkoriginpw() " + new Date());
+	@PostMapping("changePassword.do")
+	public String changePassword(
+			String userId,
+			String originPw,
+			String newPw,
+			HttpServletRequest request) { // 리턴값이 jsp 파일며잉 아니라 ajax의 결과값이기에 리턴자료형이 String이 아니어도 됨
+		System.out.println("UserController changePassword() " + new Date());
 		
-
+		UserDto login = (UserDto)request.getSession().getAttribute("login"); // 세션에 저장된 UserDto정보(아이디,기존비번,이메일 등)
 		
-		String hashedoriginpw = sha256(originpw); // 비밀번호 변경 페이지에서 입력받은 비밀번호 해쉬화
-		String sessionpw = ((UserDto)request.getSession().getAttribute("login")).getPw(); // 로그인 시 세션에 저장된 유저 비밀번호
+		String hashedoriginpw = sha256(originPw); // 비밀번호 변경 페이지에서 입력받은 비밀번호 해쉬화
+		String sessionpw = login.getPw(); // 로그인 시 세션에 저장된 유저 비밀번호
 		
-		if (hashedoriginpw == sessionpw) {
-			return "YES";
+		if (hashedoriginpw.equals(sessionpw)) {
+			// 세션에 저장된 비번과 입력한 기존 비번이 일치
+			login.setPw(sha256(newPw)); // 해쉬화한 새 비번으로 set한 UserDto
+			boolean isS = service.changepw(login); // 새 비번 암호화시켜서 디비 업데이트
+			if(isS == true) {
+				request.getSession().removeAttribute("login"); // 기존 세션 삭제
+				request.getSession().setAttribute("login", login);	// session에 새로 로그인 정보 저장
+				return "success";
+			}else {
+				return "fail";
+			}
 		}
 		
-		return "No"; // ajax가 있는 jsp파일로 보낼 데이터
-	}
-	
-	//TODO 마이페이지 - 새 비밀번호 조합 확인 (ajax)
-	@ResponseBody
-	@PostMapping("checknewpw.do")
-	public boolean checknewpw(String pw) { // 리턴값이 jsp 파일며잉 아니라 ajax의 결과값이기에 리턴자료형이 String이 아니어도 됨
-		System.out.println("UserController checknewpw() " + new Date());
-		
-		// 비밀번호 조합 검사
-		// 최소 9자리 이상, 하나 이상의 영문자+숫자+특문(특수문자는 ~!@#$%^&* 중 하나)
-	    String pwRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*])[A-Za-z\\d@$!%*#?&]{9,}$";
-	    if (!Pattern.matches(pwRegex,pw.trim())) {
-	        return false; // 비밀번호가 조합 조건을 만족하지 않을 경우 false를 반환
-	    }
-		
-		return true; // ajax가 있는 jsp파일로 보낼 데이터
-	}
-	
-		
-	//TODO 마이페이지 - 비밀번호 변경 (ajax)
-	@ResponseBody
-	@PostMapping("changepw.do")
-	public boolean changepw(UserDto userdto) { // 리턴값이 jsp 파일며잉 아니라 ajax의 결과값이기에 리턴자료형이 String이 아니어도 됨
-		System.out.println("UserController changepw() " + new Date());
-		
-		boolean isS = service.changepw(userdto);
-		
-		if(isS == true) {
-			return true;
-		}else {
-			return false;
-		}
+		return "originErr"; // ajax가 있는 jsp파일로 보낼 데이터
 	}
 	
 }

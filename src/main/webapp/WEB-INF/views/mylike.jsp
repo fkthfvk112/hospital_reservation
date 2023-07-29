@@ -25,8 +25,40 @@
 			<title>Insert title here</title>
 			
 			<style type="text/css">
+			
+			#toDetailBtn{
+				border:none;
+				background-color:#9adafc;
+				border-radius:0.5em;
+				padding:0.5em;
+				color:white;
+				transition:0.2s;
+			}
+			
+			#toDetailBtn:hover{
+				background-color:blue;
+			}
+			
+			#likeDelBtn{
+				border:none;
+				background-color:#8f8f8f;
+				border-radius:0.5em;
+				padding:0.5em;
+				color:white;
+				transition:0.2s;
+			}
+			
+			#likeDelBtn:hover{
+				background-color:black;
+			}
+				
 			.hospital{
-			 	display: flex;
+			 	display: grid;
+			 	grid-template-columns: 1fr 1fr;
+			 	background-color: white;
+			 	border:1px solid black;
+			 	border-radius:0.5em;
+			 	padding:1em;
 			}
 			
 			.ho-left{
@@ -34,11 +66,34 @@
 				
 			}
 			.ho-left-down{
-				align-items:center;
+				text-align:center;
+				grid-column: span 2;
+				border-top:1px solid #e1e1e1;
+				padding:0.5em;
 			}
 			img{
 				width: 12em;
 				height:7em;
+			}
+			
+			.hosinfo{
+				margin:0.3em;
+			}
+			
+			.hosinfo >strong{
+				margin-right:0.5em;
+			}
+			.clickitem{
+				cursor: pointer;
+			}
+			
+
+			#mymenuitemC{
+				background-color: #595a5c;
+			}
+			
+			#mymenuitemC > .myPageNavA{
+				color:white;
 			}
 			</style>
 			
@@ -46,46 +101,35 @@
 			
 			</head>
 			<body>
-			
+			 <h2 style="margin:2em;">내 찜 목록</h3>
 			<div>
 				<%
 					for( int i = 0; i <likeHospitalList.size(); i++){
 						HospitalDto dto = likeHospitalList.get(i);
 						%>
-						<%-- 
-						<script type="text/javascript">
-							$(document).ready(function() {
-								console.log("마이라이크.jsp hospitalId: "+<%=dto.getId()%>);
-								$.ajax({
-									url:"gethosphoto.do",
-									data:{hosid:"<%=dto.getId()%>"},
-									async:false,
-									success:function(url2){
-										//alert("success");
-										//alert(url);
-										console.log("url: "+url2);
-										$("img").attr("src", url2);
-									}
-								})
-							})
-						</script>
-			 --%>
 						<div class = "hospital">
 							<div class= "ho-left">
-								<img src=<%=hosphotos.get(i) %>><br> 
-								<div class = "ho-left-down">
-									<button type="button" onClick="location.href='hospitalDetail.do?id='+<%=dto.getId()%>">병원 상세 보기</button>
-									<button type="button" onclick="cancleLike(<%=dto.getId() %>)">찜 해제</button>
-								</div>
+								<%
+									if(hosphotos.get(i)==null || hosphotos.get(i).equals("")){
+										%>
+										<img src="./images/no_img.jpg" alt="병원 이미지"><br>
+										<%
+									}else{
+									%>
+									<img src=<%=hosphotos.get(i) %> alt="병원 이미지"><br> 
+									<%
+									}
+								%>
 							</div>
 							
 							<div class= "ho-right">
 								<div class="hosinfo" >
-									병원명 &nbsp;&nbsp; <%= dto.getTitle() %>
+									<strong>병원명</strong>
+									<%= dto.getTitle() %>
 								</div>
 								<div class="hosinfo">
-									종류 &nbsp;&nbsp; 
-									<select>
+									<strong>진료과</strong>
+									<select class = "clickitem">
 										<% 
 											String[] sort= dto.getSort().split(",");
 										System.out.println("sort: "+sort);
@@ -93,30 +137,34 @@
 											for(int j = 0; j <sort.length; j++){
 												if(j == 0){
 													%>
-													<option selected disabled><%= sort[j] %></option>
+													<option  selected disabled ><%= sort[j] %></option>
 													<%	
 												}else{
 													%>
-													<option disabled><%= sort[j] %></option>
+													<option  disabled><%= sort[j] %></option>
 													<%
 														System.out.println("srot:"+sort[j]);
 												}
 											}
 										%>
 										</select>
-								
 								</div>
 								<div class="hosinfo">
 									<%
 										String time[] = dto.getOpertime().split(",");
 									%>
-									운영시간 &nbsp;&nbsp; <%= time[0] %>:00시 ~ <%= time[1] %>:00시
+									<strong>운영시간</strong><%= time[0] %>:00시 ~ <%= time[1] %>:00시
 								</div>
 								<div class="hosinfo">
-									설명 &nbsp;&nbsp; <%= dto.getDescription() %>
+									<strong>병원 설명</strong> <%= dto.getDescription() %>
 								</div>
 							</div>
+							<div class = "ho-left-down" >
+								<button id="toDetailBtn" class = "clickitem" type="button" onClick="location.href='hospitalDetail.do?id='+<%=dto.getId()%>">병원 상세 보기</button>
+								<button id="likeDelBtn"class = "clickitem" type="button" onclick="cancleLike(<%=dto.getId() %>)">찜 해제</button>
+							</div>
 						</div>
+						
 						<br><br>
 						<%
 					}
@@ -124,57 +172,7 @@
 			</div>
 			
 			<script type="text/javascript">
-			<%-- 1.jquery로 클릭이벤트 처리
-			       근데 클릭된 병원 아이디를 어케 받아올 수 있는지 몰겠 아래 처럼 하니까 $("#canclelike").value는 null 뜸
-			$(document).ready(function() {
-				
-				$("#canclelike").click(function cancleLike(){
-				    alert('찜 해제를 클릭하셨습니다.');  
-				    console.log("클릭한 병원 아이디 : " + $("#canclelike").value);
-				    $.ajax({
-						url: "canclelike.do",
-						type:"get",
-						data:{userId:<%=logid%>, hospitalId:$("#canclelike").value}, 
-						success:function(result){
-							alert('success');
-							
-							if(result == true){
-								alert("찜이 해제되었습니다.");
-							}else{
-								alert("찜 해제를 실패했습니다.");
-							}
-						}, error: function(){
-							alret("error");
-						}
-					})
-				})
-			});
-			 --%>	
-			<%--  해당 코드로도 해제는 가능하나 ajax로 하면 찜 해제 직후 찜한 병원 목록이 바로 업데이트가 안 됨
-			function cancleLike(hospId){
-				console.log("클릭한 병원 아이디 : " + hospId);
-				$(document).ready(function() {
-					
-					 $.ajax({
-							url: "canclelike.do",
-							type:"get",
-							data:{userId:"<%=logid%>", hospitalId: hospId}, 
-							success:function(result){
-								alert('success');
-								
-								if(result == true){
-									alert("찜이 해제되었습니다.");
-								}else{
-									alert("찜 해제를 실패했습니다.");
-								}
-							}, error: function(){
-								alret("error");
-							}
-						})
-				});
-				
-			}
-			 --%>
+
 			function cancleLike(hospId){
 				console.log("클릭한 병원 아이디 : " + hospId);
 				

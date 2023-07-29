@@ -12,4 +12,6 @@ public interface LikeInfoDao {
 	int canclelike(LikeInfoDto dto);
 	
 	String gethosphoto(int hosid);
+	
+	int cntThisHosLike(LikeInfoDto dto);
 }

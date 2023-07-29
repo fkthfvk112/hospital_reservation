@@ -30,6 +30,9 @@ public class LikeInfoServiceImpl implements LikeInfoService{
 		return dao.gethosphoto(hosid);
 	}
 
-	
+	@Override
+	public int cntThisHosLike(LikeInfoDto dto) {
+		return dao.cntThisHosLike(dto);
+	}
 	
 }

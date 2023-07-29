@@ -56,35 +56,6 @@ public class HospitalController {
 		
 		return "hospitalDetail";
 	}
-	/*
-	 @GetMapping("hospitalDetail.do")
-	public String hospitalDetail(Model model, int id) {
-		System.out.println("-----hospitalDetail 1:2---------");
-		
-		HospitalDto dto = service.hospitalDetail(id);
-		model.addAttribute("hospitalDto", dto);
-		
-		System.out.println("-----hospitalDetail 2:2---------");
-		
-		return "hospitalDetail";
-	}
-	 */
-	/*
-	 @GetMapping("hospitalDetail.do")
-	public String hospitalDetail(
-			Model model, 
-			int id,
-			@RequestParam(required=false, defaultValue = "recent") String type) {
-		System.out.println("-----hospitalDetail 1:2---------");
-		
-		HospitalDto dto = service.hospitalDetail(id);
-		model.addAttribute("hospitalDto", dto);
-		model.addAttribute("sort_type", type);
-		System.out.println("-----hospitalDetail 2:2---------");
-		
-		return "hospitalDetail";
-	}
-	 */
 	
 	@GetMapping("toHosCreate.do")
 	public String toHosCreate() {
@@ -179,6 +150,7 @@ public class HospitalController {
 		System.out.println("--------searchHospital Controller----------------");
 		List<HospitalDto> dtoList = service.searchHospital(searchDto); 
 		model.addAttribute("hospitalDtoList", dtoList);
+		model.addAttribute("searchDto", searchDto);
 		
 		return "hosList";
 	}
