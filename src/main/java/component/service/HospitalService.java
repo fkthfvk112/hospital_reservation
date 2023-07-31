@@ -6,11 +6,12 @@ import component.dto.HospitalDto;
 import component.dto.LikeDto;
 import component.dto.SearchDto;
 import component.dto.UpdateSelector;
+import component.dto.UserDto;
 
 public interface HospitalService {
 	HospitalDto hospitalDetail(int id);
 	List<HospitalDto>  getAllHospital();
-	int createHospital(HospitalDto dto);
+	public int createHospital(HospitalDto dto);
 	int handleLike(LikeDto dto);
 	int countHosLike(int hosId);
 	int updateHospital(UpdateSelector dto);

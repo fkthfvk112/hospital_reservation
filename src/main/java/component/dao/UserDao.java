@@ -1,5 +1,7 @@
 package component.dao;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 import component.dto.UserDto;
@@ -14,6 +16,7 @@ public interface UserDao {
 	
 	UserDto login(UserDto dto);
 	UserDto getUserById(String id);
+	int updateHosIdToUser(Map<String, String> userId_hosId);
 	
 	// 메일
 	UserDto findUserByNameIdEmail(@Param("name") String name, @Param("id") String id, @Param("email") String email);

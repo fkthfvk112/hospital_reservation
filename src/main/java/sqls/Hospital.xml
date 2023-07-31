@@ -37,7 +37,7 @@
 	</insert>
 	
 	<!-- 수정 -->
-	<update id="updateDescription" parameterType="java.util.Map">
+	<update id="updateHosIdToUser" parameterType="java.util.Map">
 		update hospital 
 		set description = #{content}
 		where id = #{hosId}

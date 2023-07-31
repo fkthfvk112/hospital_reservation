@@ -8,11 +8,19 @@ UserDto userDto =  (UserDto)session.getAttribute("login");
 String userId = null;
 if(userDto != null){
 	userId = userDto.getId();
+	if(userDto.getMyHospital_id() != 0){
+		%>
+		<script>
+		alert("이미 이 아이디로 생성된 병원이 있습니다.");
+		window.location.href = "home.do";
+		</script>
+		<%
+	}
 }
 else{
 %>
 <script>
-alert("병원 생성 권한이 없습니다!");
+alert("병원 생성 권한이 없습니다.");
 window.location.href = "home.do";
 </script>
 <%

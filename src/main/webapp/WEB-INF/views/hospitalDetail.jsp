@@ -613,7 +613,7 @@
             }
         });
     }
-    	//like 집계
+    //like 집계
 	function countHosLike(){
     	let hosId = <%=hosDto.getId()%>
   

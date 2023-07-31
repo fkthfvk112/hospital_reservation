@@ -36,10 +36,6 @@ List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalRe
 <body>
     <div class="ownerPageContainer">
         <div class="p-3" id="titleContainer">
-            <div>
-                <span class="me-3">하트</span>
-                <span class="ms-3">댓글</span>
-            </div>
             <a href="hospitalDetail.do?id=<%=hosId %>" class="ms-3">내 병원 페이지</a>
         </div>
         <section id="reservShowSection">
@@ -75,9 +71,8 @@ List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalRe
 <style>
 
     #titleContainer{
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
+    	width:100%;
+        text-align: right;
     }
     #reservConfirmBtn{
         border-radius: 1em;
@@ -111,6 +106,7 @@ List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalRe
     }
     #reservShowSection{
         display: flex;
+        width:95%;
         flex-direction: row;
         justify-content: center;
         align-items: start;
@@ -164,14 +160,12 @@ List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalRe
 		let time = wdateArr[1];
 		let ele = "<div id='reserOne'>" +
 					    "<div style='padding: 1em;'>" +
-					        "<div>ID : " + userId + "</div>" +
+					        "<div>작성자 <strong>" + userId + "</strong></div>" +
 					        "<hr>" +
-					        "<div>시간 : " + time + "</div>" +
+					        "<div>작성 시간 " + time + "</div>" +
 					    "</div>" +
 					    "<div style='text-align: left; padding: 1em; border-left: 1.8px solid #e1e1e1;'>" + description + "</div>" +
 					    "<div style='grid-column-end: span 2; text-align: center; padding: 0.3em;'>" +
-					      	"<button class='btn m-2' type='button' id='reservConfirmBtn'>예약 확정</button>" +
-					       	"<button class='btn m-2' type='button' id='reservCancleBtn'>예약 취소</button>" +
 					    "</div>" +
 					"</div>";
 		

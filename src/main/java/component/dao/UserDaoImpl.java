@@ -68,4 +68,9 @@ public class UserDaoImpl implements UserDao{
 		return session.update(ns+"changepw", dto);
 	}
 
+	@Override
+	public int updateHosIdToUser(Map<String, String> userId_hosId) {
+		return session.update(ns+"updateDescription", userId_hosId);
+	}
+
 }

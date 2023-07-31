@@ -9,14 +9,14 @@ public class UserDto implements Serializable{
 	private String email;
 	private int auth;
 	private int warning;
-	private int myHopital_id;
+	private int myHospital_id;
 	
 	private String newPassword;
 	
 	public UserDto() {
 	}
 	
-	public UserDto(String id, String pw, String name, String email, int auth, int warning, int myHopital_id) {
+	public UserDto(String id, String pw, String name, String email, int auth, int warning, int myHospital_id) {
 		super();
 		this.id = id;
 		this.pw = pw;
@@ -24,7 +24,7 @@ public class UserDto implements Serializable{
 		this.email = email;
 		this.auth = auth;
 		this.warning = warning;
-		this.myHopital_id = myHopital_id;
+		this.myHospital_id = myHospital_id;
 	}
 
 	public String getId() {
@@ -75,18 +75,12 @@ public class UserDto implements Serializable{
 		this.warning = warning;
 	}
 
-	public int getMyHopital_id() {
-		return myHopital_id;
+	public int getMyHospital_id() {
+		return myHospital_id;
 	}
 
-	public void setMyHopital_id(int myHopital_id) {
-		this.myHopital_id = myHopital_id;
-	}
-
-	@Override
-	public String toString() {
-		return "UserDto [id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + ", auth=" + auth
-				+ ", warning=" + warning + ", myHopital_id=" + myHopital_id + "]";
+	public void setMyHospital_id(int myHospital_id) {
+		this.myHospital_id = myHospital_id;
 	}
 
 	public String getNewPassword() {
@@ -96,4 +90,12 @@ public class UserDto implements Serializable{
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDto [id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + ", auth=" + auth
+				+ ", warning=" + warning + ", myHospital_id=" + myHospital_id + ", newPassword=" + newPassword + "]";
+	}
+
+	
 }

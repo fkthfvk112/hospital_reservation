@@ -109,7 +109,7 @@
 		padding:0em 2em 2em 2em;
 		
 		position:fixed;
-		top:30vh;
+		top:10vh;
 	}
 	
 	#managerModalCloseBtn{
@@ -146,7 +146,7 @@
  	<%if(dto !=null && dto.getAuth() != 2) {%>
  	<button type="button" class="managerBtn" id="managerAppliBtn">병원 관리자 신청</button>
  	<%} else{%>
- 	<button type="button" class="managerBtn">병원 관리자 페이지</button>
+ 	<button type="button" class="managerBtn" id="toManagerPage">병원 관리자 페이지</button>
  	<%} %>
  </div>
  <table class="profileTable">
@@ -191,8 +191,10 @@
 				<button type="button" id="managerModalCloseBtn">X</button>
 			</div>
 			<h3 style="margin:0.5em;">병원 관리자 신청</h3>
-			<form id="managerForm" action="applyManager.do" method="post">
-				<input name="userId" type="hidden"><%=dto.getId() %></input>
+			<p>병원 이름, 간략한 설명 등을 포함해 관련 서류를 동봉해주세요.</br>
+			승인이 완료된 후 자신의 병원 페이지를 생성할 수 있습니다.</p>
+			<form id="managerForm" action="applyManager.do" method="post" enctype="multipart/form-data">
+				<input name="userId" type="hidden" value="<%=dto.getId() %>"/>
 				<input name="title" id="managerInputTitle" class="form-control mb-3" type="text" placeholder="제목"></input>
 				<textarea name="content" id="managerInputContent" placeholder="내용을 입력하세요." type="text" name="content" class="form-control mb-3" ></textarea>
 				<div align="center">관련 서류</div>
@@ -216,9 +218,11 @@
 			})
 			
 			let managerAppliBtn = document.querySelector("#managerAppliBtn");
-			managerAppliBtn.addEventListener("click", ()=>{
-				openModal();
-			})
+			if(managerAppliBtn != null && managerAppliBtn != undefined){
+				managerAppliBtn.addEventListener("click", ()=>{
+					openModal();
+				})
+			}
 			
 			$("#applyBtn").on("click", ()=>{
 				if($("#managerInputTitle").val().length <3){
@@ -234,6 +238,10 @@
 					return;
 				}
 				$("#managerForm").submit();	
+			})
+			
+			$("#toManagerPage").on("click", ()=>{
+				location.href = "ownerPage.do";
 			})
 			
 </script>

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -23,9 +25,12 @@ import component.dto.ReviewDto;
 import component.dto.SearchDto;
 import component.dto.UpdateSelector;
 import component.dto.UploadPhotoDto;
+import component.dto.UserDto;
 import component.service.HospitalService;
 import component.service.PhotoService;
 import component.service.ReviewService;
+import component.service.UserService;
+
 import com.cloudinary.*;
 import com.cloudinary.utils.ObjectUtils;
 
@@ -38,6 +43,9 @@ public class HospitalController {
 	
 	@Autowired
 	PhotoService photoService;
+	
+	@Autowired
+	UserService userService;
 
 	//-----------이동----------------------
 	@GetMapping("hospitalDetail.do")
@@ -100,14 +108,19 @@ public class HospitalController {
     private String apiSecret;
     
 	@PostMapping("createHospital.do")
-	public String createHospital(HospitalDto dto, List<MultipartFile> imgFiles) {
+	public String createHospital(HospitalDto dto, List<MultipartFile> imgFiles, HttpServletRequest request) {
 
 		System.out.println("--------createHospital----------------");
-		
+        UserDto userDto = (UserDto) request.getSession().getAttribute("login");
+
 		service.createHospital(dto);
 		HospitalDto createdDto = service.getHospitalIdByName(dto.getTitle());
 		int createdHosId = createdDto.getId();
+		dto.setId(createdHosId);
 		
+		userService.updateHosIdToUser(userDto, dto);
+		
+
 		//-------------------이미지 처리 ---------------------
 		
 		Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
@@ -133,6 +146,11 @@ public class HospitalController {
 				e.printStackTrace();
 			}
 		}
+		//-----생성 후 처리----------
+		request.getSession().removeAttribute("login");
+		userDto.setMyHospital_id(createdHosId);
+		request.getSession().setAttribute("login", userDto);
+		
 		
 		return "redirect:hospitalDetail.do?id=" + createdHosId;
 	}

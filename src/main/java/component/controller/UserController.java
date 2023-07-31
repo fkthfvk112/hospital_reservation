@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import component.dto.ApplyManagerDto;
 import component.dto.HospitalDto;
 import component.dto.ReservDto;
 import component.dto.UserDto;
@@ -65,6 +66,8 @@ public class UserController {
 		System.out.println("UserController login() " + new Date());
 		
 		UserDto dto = service.login(user);
+		System.out.println("유저------" + dto);
+		
 		String loginmsg = "LOGIN_NO";
 		if(dto != null) {
 			request.getSession().setAttribute("login", dto);	// session에 저장			
@@ -452,13 +455,8 @@ public class UserController {
 		
 		System.out.println("-------user id--" + dto.toString());
 
-		//수정:주석 없애기
-//		if(dto == null || dto.getAuth() != 2) {//validation check
-//			System.out.println("------ownerPage::not log in--------");
-//			return "home";
-//		}
-		//int hosId = dto.getMyHopital_id();
-		int hosId = 7;//수정 :: 삭제
+		int hosId = dto.getMyHospital_id();
+		
 		HospitalDto hosDto = hosService.hospitalDetail(hosId);
 		model.addAttribute("myHospitalDto", hosDto);
 		
@@ -467,10 +465,6 @@ public class UserController {
 		System.out.println("------ownerPage--------");
 		return "ownerPage";
 	}
-	
-	
-	
-	
 	
 	// 우지예
 	
@@ -523,4 +517,12 @@ public class UserController {
 		return "originErr"; // ajax가 있는 jsp파일로 보낼 데이터
 	}
 	
+	@PostMapping("applyManager.do")
+	public String applyManager(ApplyManagerDto dto) {
+		System.out.println("--------------applyManager---------");
+
+		emailService.sendManagerAppliEmail(dto);
+		return "redirect:/mypage.do";
+	}
+
 }
