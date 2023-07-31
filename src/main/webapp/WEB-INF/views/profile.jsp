@@ -296,6 +296,7 @@
 	var closeRtn = function(){
 	  var modal = document.getElementById('modal');
 	  modal.style.display = 'none';
+	  initPw();
 	}
 	
 	function initPw() { // 잘못 입력시 초기화 시키는 기능은 유저가 선호하지 않음
@@ -326,7 +327,7 @@
 						alert("기존 비밀번호를 잘 못 입력하였습니다.");
 					}else if(result == "success"){
 						alert("비밀번호가 변경되었습니다.");
-						initPw();
+						// initPw(); <- 해당 메소드를 closeRtn()안에 넣음
 						// 모달 창 꺼짐
 						closeRtn();
 					}else {

@@ -16,3 +16,12 @@ values ('asdf', '1234', 'testName', 'testEmail@naver.com', 1, 0, 0);
 select * from user;
 
 delete from user;
+
+-- 일반 유저가 병원 관계자 신청 -> 관리자가 체크 후 승인 -> 디비에 해당 유저 auth 변경 
+update user
+set auth = 2
+where id = "1234qwer";
+
+update user
+set auth = 2
+where id = "patient1";
