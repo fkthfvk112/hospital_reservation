@@ -132,14 +132,14 @@
 								<option value="17">17:00</option>
 							</select> 부터
 							<select id="closeTime">
-								<option value="10">10:00</option>
-								<option value="11">11:00</option>
-								<option value="13">13:00</option>
-								<option value="14">14:00</option>
-								<option value="15">15:00</option>
-								<option value="16">16:00</option>
-								<option value="17">17:00</option>
-								<option value="18">18:00</option>
+								<option value="9">10:00</option>
+								<option value="10">11:00</option>
+								<option value="12">13:00</option>
+								<option value="13">14:00</option>
+								<option value="14">15:00</option>
+								<option value="15">16:00</option>
+								<option value="16">17:00</option>
+								<option value="17">18:00</option>
 							</select> 까지
 							<br />
                     	<button class="editCompleteBtn" id="timeCompleteBtn">수정 완료</button>
@@ -319,7 +319,7 @@
 	        <hr />
 	        <table class="timeTable" border="1">
 	        	<col width="300" ><col width="500">
-		        	<tr class="t9" accessable="true">
+		        	<!-- <tr class="t9" accessable="true">
 		        		<td>09:00 ~ 10:00</td>
 		        		<td>예약 가능</td>
 		        	</tr>
@@ -350,7 +350,7 @@
 		        	<tr class="t17" accessable="true">
 		        		<td>17:00 ~ 18:00</td>
 		        		<td>예약 가능</td>
-		        	</tr>
+		        	</tr> -->
 		        </table>
 		        <hr />
 	          <textarea class="form-control" placeholder="예약 내용을 입력해주세요." rows="3" name="description"></textarea>
@@ -374,7 +374,28 @@
 		countHosLike();
 		avgHosStar();
 		setMyHeart();
+		initTableRows(setClickEvt);
 	})
+	
+	function initTableRows(callback){
+		let times = "<%=hosDto.getOpertime()%>";
+		let [startTime, endTime] = times.split(',');
+		console.log("시작", startTime);
+		console.log("끝", endTime);
+		let tableRows = [];
+		for(let i = Number(startTime); i <= Number(endTime); i++){
+			let className = "t" + i;
+			num = i< 10? "0" + i:i;
+			let tableData = "<tr class='" + className + "' accessable='true'>" +
+    							"<td>" + num + ":00 ~ " +  (i+1)+ ":00</td>" +
+    							"<td>예약 가능</td>" +
+    						"</tr>";
+    		console.log("데이터요 " , tableData);
+    		if(tableData != null)
+			$(".timeTable").append(tableData);					
+		}
+		callback();
+	}
 	
 	$("#modalSubmmitBtn").on('click', ()=>{
 		if($(".dateInput").val().length == 0){
@@ -414,7 +435,6 @@
 		rows.forEach(row=>{//초기화
 			let accessability = row.getAttribute("accessable");
 			if(accessability == "false"){
-				console.log("여기여기")
 	            row.style.backgroundColor = "gray";
 				row.setAttribute("disabled", true);
 				row.querySelector('td:last-child').innerText ="예약 불가";
@@ -435,30 +455,39 @@
 			let time = Number(time_s);
 			switch(time){
 				case 9:
+					if(document.querySelector(".t9") != null && document.querySelector(".t9") != undefined)
 					document.querySelector(".t9").setAttribute("accessable", false);
 					break;
 				case 10:
+					if(document.querySelector(".t10") != null && document.querySelector(".t10") != undefined)
 					document.querySelector(".t10").setAttribute("accessable", false);
 					break;
 				case 11:
+					if(document.querySelector(".t11") != null && document.querySelector(".t11") != undefined)
 					document.querySelector(".t11").setAttribute("accessable", false);
 					break;
 				case 12:
+					if(document.querySelector(".t12") != null && document.querySelector(".t12") != undefined)
 					document.querySelector(".t12").setAttribute("accessable", false);
 					break;
 				case 13:
+					if(document.querySelector(".t13") != null && document.querySelector(".t13") != undefined)
 					document.querySelector(".t13").setAttribute("accessable", false);
 					break;
 				case 14:
+					if(document.querySelector(".t14") != null && document.querySelector(".t14") != undefined)
 					document.querySelector(".t14").setAttribute("accessable", false);
 					break;
 				case 15:
+					if(document.querySelector(".t15") != null && document.querySelector(".t15") != undefined)
 					document.querySelector(".t15").setAttribute("accessable", false);
 					break;
 				case 16:
+					if(document.querySelector(".t16") != null && document.querySelector(".t16") != undefined)
 					document.querySelector(".t16").setAttribute("accessable", false);
 					break;
 				case 17:
+					if(document.querySelector(".t17") != null && document.querySelector(".t17") != undefined)
 					document.querySelector(".t17").setAttribute("accessable", false);
 					break;
 			}
@@ -483,26 +512,28 @@
         });
 	});
 
-    const rows = document.querySelectorAll('.timeTable tr');//예약 가능 불가능
-    let selectedTime = null;
-    rows.forEach(row => {
-      row.addEventListener('click', function() {
-	        const time = row.querySelector('td:first-child').innerText;
-	        const status = row.querySelector('td:last-child').innerText;
-	        let startingTime = time.substr(0, 2);
-	        if(status == "예약 불가"){
-	        	alert("예약 불가능한 시간입니다. 다른 시간을 선택해주세요.");
-	        }
-	        else{
-	        	selectedTime = startingTime;
-	        	console.log("선택한 시간", selectedTime);
-	        	 document.querySelector(".startingTime").value = (String(selectedTime) + ":00");
-	        }
-	        console.log(time, status);
-	        // 이곳에 클릭 시 동작할 코드를 작성합니다.
-	        // 예를 들어, 특정 시간대를 클릭하면 예약을 진행하거나 상세 정보를 표시할 수 있습니다.
-      });
-    });
+	function setClickEvt(){
+	    const rows = document.querySelectorAll('.timeTable tr');//예약 가능 불가능
+	    let selectedTime = null;
+	    rows.forEach(row => {
+	      row.addEventListener('click', function() {
+		        const time = row.querySelector('td:first-child').innerText;
+		        const status = row.querySelector('td:last-child').innerText;
+		        let startingTime = time.substr(0, 2);
+		        if(status == "예약 불가"){
+		        	alert("예약 불가능한 시간입니다. 다른 시간을 선택해주세요.");
+		        }
+		        else{
+		        	selectedTime = startingTime;
+		        	console.log("선택한 시간", selectedTime);
+		        	 document.querySelector(".startingTime").value = (String(selectedTime) + ":00");
+		        }
+		        console.log(time, status);
+		        // 이곳에 클릭 시 동작할 코드를 작성합니다.
+		        // 예를 들어, 특정 시간대를 클릭하면 예약을 진행하거나 상세 정보를 표시할 수 있습니다.
+	      });
+	    });
+	}
 	
 	function likeSet(){
 		let hosId = Number(<%=hosDto.getId()%>);
@@ -654,7 +685,7 @@
         });
     }
 </script>
-<script src="./jsComponents/hospitalDetailEdit.js" type="text/javascript"></script>
+<script src="./jsComponents/hospitalDetailEdit2.js" type="text/javascript"></script>
 
 <style>
 	body{

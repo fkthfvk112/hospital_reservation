@@ -48,11 +48,10 @@
             <img src="./image/·Î°í.png" height="100"/>
         </div>
         <div class="">
-            <h1>HOSPITAL MATE</h1>
+            <a href="home.do">
+            	<h1>HOSPITAL MATE</h1>
+            </a>
         </div>
     </header>
-
- 
-   
 </body>
 </html>

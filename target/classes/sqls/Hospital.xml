@@ -43,6 +43,12 @@
 		where id = #{hosId}
 	</update>
 	
+	<update id="updateDescription" parameterType="java.util.Map">
+		update hospital 
+		set description = #{content}
+		where id = #{hosId}
+	</update>
+	
 	<update id="updateOperTime" parameterType="java.util.Map">
 		update hospital 
 		set opertime = #{content}
