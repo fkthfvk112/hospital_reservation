@@ -89,11 +89,11 @@
 			
 
 			#mymenuitemC{
-				background-color: #595a5c;
+				background-color: #EDDEA4;
 			}
 			
 			#mymenuitemC > .myPageNavA{
-				color:white;
+				color:black;
 			}
 			</style>
 			

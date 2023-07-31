@@ -19,17 +19,18 @@
 <head>
 <meta charset="UTF-8">
 <title>내 예약 내역</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 <style type="text/css">
 	.clickitem{
 		cursor: pointer;
 	}
 	#mymenuitemB{
-		background-color: #595a5c;
+		background-color: #EDDEA4;
 	}
 	
 	#mymenuitemB > .myPageNavA{
-		color:white;
+		color:black;
 	}
 	
 	.myReservTable{
@@ -127,7 +128,7 @@
 %>
 <div align="center">
 	<h2 style="margin:2em;">내 예약</h2>
-	<table border="1">
+	<table border="1" class="table table-bordered"s>
 		<col width="120"><col width="120"><col width="120"><col width="120"><col width="120"><col width="120"><col width="120">
 		<tr height="80">
 			<td colspan='7' align='center'>
@@ -255,6 +256,7 @@
 		<%
 	}
 %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
 </body>
 </html>

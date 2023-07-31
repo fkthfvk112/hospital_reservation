@@ -59,11 +59,11 @@
 			}
 			
 			#mymenuitemD{
-				background-color: #595a5c;
+				background-color: #EDDEA4;
 			}
 			
 			#mymenuitemD > .myPageNavA{
-				color:white;
+				color:black;
 			}
 		</style>
 		</head>
@@ -125,9 +125,9 @@
 				$.ajax({
 					url:"reviewDelete.do?id="+reviewid,
 					success:function(result){
-						
 						if(JSON.parse(result).success == "success"){
 							alert("리뷰 삭제 성공");
+							location.reload();
 						}else{
 							alert("리뷰 삭제 실패");
 						}
