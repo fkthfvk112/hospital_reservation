@@ -31,15 +31,49 @@
 			.clickitem{
 				cursor: pointer;
 			}
+			
+			.reviewTable{
+				border-collapse : collapse;
+				border-spacing : 0;
+			}
+			
+			.reviewTable td{
+				padding:1em;
+			}
+			.reviewBody{
+				background-color: white;
+				padding:2em;
+				border: solid 1px #e1e1e1;
+			}
+			
+			#reviewDelBtn{
+				border: none;
+			    background-color: #8f8f8f;
+			    border-radius: 0.5em;
+			    padding: 0.5em;
+			    color: white;
+			    transition: 0.2s;
+			}
+			#reviewDelBtn:hover{
+				background-color: black;
+			}
+			
+			#mymenuitemD{
+				background-color: #595a5c;
+			}
+			
+			#mymenuitemD > .myPageNavA{
+				color:white;
+			}
 		</style>
 		</head>
 		<body>
-		
+		<h2 style="margin:2em;">내가 쓴 리뷰</h2>
 		<div>
-		<table>
-			<col width="50"><col width="150"><col width="100"><col width="100"><col width="40"><col width="300">
+		<table class="reviewTable">
+			<col width="50"><col width="200"><col width="130"><col width="50"><col width="300"><col width="80">
 			<thead>
-				<th>번호</th><th>병원명</th><th>종류</th>
+				<th>번호</th><th>병원명</th><!-- <th>종류</th> -->
 				<th>작성일</th><th>평점</th><th>내용</th><th>삭제</th> <!-- 위치 어케 표기? -->
 			</thead>
 			<%
@@ -47,11 +81,11 @@
 					MyReviewDto reviewDto = likeReviewDtoList.get(i);
 					System.out.println("likeReviewDtoList "+i+"번 돌음");
 					%>
-					<tbody>
+					<tbody class="reviewBody">
 						<tr> 
 							<td><%= i+1 %></td>
 							<td id="hospitalName" class = "clickitem" onClick="location.href='hospitalDetail.do?id='+<%=reviewDto.getHospital_id()%>"><%=reviewDto.getHtitle()%></td> <!-- 병원 상세 페이지로 링크 수정하기 -->
-							<td>
+<%-- 							<td>
 								<select class = "clickitem">
 								<% 
 									String[] sort= reviewDto.getHsort().split(",");
@@ -71,11 +105,11 @@
 									}
 								%>
 								</select>
-							</td>
+							</td> --%>
 							<td><%=reviewDto.getRwdate().substring(0,10)%></td>
 							<td><%=reviewDto.getRscore()%></td>
 							<td class = "clickitem" onClick="location.href='hospitalDetail.do?id='+<%=reviewDto.getHospital_id()%>"><%=reviewDto.getRcontent()%></td>
-							<td><button class = "clickitem" onclick="delreview(<%=reviewDto.getRid()%>)">삭제</button></td>
+							<td><button id="reviewDelBtn" class = "clickitem" onclick="delreview(<%=reviewDto.getRid()%>)">삭제</button></td>
 						</tr>
 							
 					</tbody>

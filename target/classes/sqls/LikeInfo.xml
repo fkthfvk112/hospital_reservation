@@ -18,6 +18,11 @@
 		delete from likeinfo
 		where user_id=#{userId} and hospital_id=#{hospitalId}
 	</delete>
+	
+	<select id="cntThisHosLike"  parameterType="component.dto.LikeInfoDto" resultType="java.lang.Integer">
+		select count(*) from likeinfo
+		where user_id=#{userId} and hospital_id=#{hospitalId}
+	</select>
 
 	<!-- 마이페이지 - 찜한 병원 - 병원 대표 사진 추출 -->
 	<select id="gethosphoto" parameterType="int" resultType="String">

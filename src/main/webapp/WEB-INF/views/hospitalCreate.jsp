@@ -8,11 +8,19 @@ UserDto userDto =  (UserDto)session.getAttribute("login");
 String userId = null;
 if(userDto != null){
 	userId = userDto.getId();
+	if(userDto.getMyHospital_id() != 0 || userDto.getAuth() != 2){
+		%>
+		<script>
+		alert("이미 이 아이디로 생성된 병원이 있거나 생성 권한이 없습니다\n(마이페이지에서 병원 관리자 신청을 해주세요.).");
+		window.location.href = "home.do";
+		</script>
+		<%
+	}
 }
 else{
 %>
 <script>
-alert("병원 생성 권한이 없습니다!");
+alert("병원 생성 권한이 없습니다.");
 window.location.href = "home.do";
 </script>
 <%
@@ -31,7 +39,7 @@ window.location.href = "home.do";
 <body>
 	<div class="createContainer">
 		<h1 class="m-3">병원 생성 페이지</h1>
-		<form id="createForm" class="createFrom" action="createHospital.do" method="post">
+		<form id="createForm" class="createFrom" action="createHospital.do" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="staff_id" value="<%=userId %>" />
 			<div style="width:100%">
 				<lable class="mt-3">병원 이름</lable>
@@ -42,6 +50,10 @@ window.location.href = "home.do";
 				<div class='mt-3' id="map" style="width:100%;height:10rem;"></div>
 				<input type="hidden" id="inputLatitude" name="location_latitude" />
 				<input type="hidden" id="inputlongitude" name="location_longitude" />
+			</div>
+			<div class="mt-3" algin="left" style="width:100%">
+				<div class="mt-3">병원 사진</div>
+				<input id="fileInput" type="file" multiple="multiple" name="imgFiles" accept="image/*">
 			</div>
 			<div class="mt-3" algin="left" style="width:100%">
 				<lable class="mt-3">병원 소개</lable>
@@ -263,6 +275,12 @@ window.location.href = "home.do";
 	    if($("#hosNameInput").val().length === 0){
 	    	alert("병원 이름을 기입해주세요.");
 	    	$("#hosNameInput")[0].focus();
+	    	return;
+	    }
+	    
+	    if(!$("#fileInput")[0].files[0]){
+	    	alert("병원 사진을 입력해주세요.");
+	    	$("#fileInput")[0].focus();
 	    	return;
 	    }
 	    

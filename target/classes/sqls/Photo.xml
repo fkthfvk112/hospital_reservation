@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="Photo">
+ 	<insert id="insertPhoto" parameterType="component.dto.UploadPhotoDto">
+		insert into photo(hospital_id, url, newfilename)
+		values(#{hospital_id}, #{url}, #{newfilename})
+	</insert>
+	
+	<select id="getAllPhotoUrlByHosId" parameterType="java.lang.Integer" resultType="component.dto.UploadPhotoDto">
+		select *
+		from photo
+		where hospital_id = #{hosId}
+	</select>
+</mapper>

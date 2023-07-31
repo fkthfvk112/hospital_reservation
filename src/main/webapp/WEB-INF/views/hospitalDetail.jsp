@@ -1,8 +1,10 @@
+<%@page import="component.dto.UploadPhotoDto"%>
+<%@page import="java.util.List"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="utils.HosUtils"%>
 <%@page import="component.dto.UserDto"%>
 <%@page import="component.dto.HospitalDto"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
+<%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="UTF-8"%>
     
 <%
@@ -19,6 +21,9 @@
 	if(userDto != null){
 		userId = userDto.getId();
 	}
+	
+	List<UploadPhotoDto> photoDtos = (List<UploadPhotoDto>)request.getAttribute("photoDtos");
+	System.out.println("포토스" + photoDtos);
 	
 	
 	//System.out.println(hosDto.toString());
@@ -50,17 +55,39 @@
     <div id="mainSection">
             <div class="mainContents">
             <div class="imgAndMapSection">
-                <div class="imgOne">이미지</div>
+                <!-- 카루셀 -->
+                <div id="carouselExampleIndicators" class="carousel slide">
+				  <div class="carousel-indicators">
+				    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+				    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+				    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+				  </div>
+				  <div class="carousel-inner">
+				  <%if(photoDtos != null){ %>
+				  	<%for(UploadPhotoDto photoDto:photoDtos){ %>
+				    <div class="carousel-item active">
+				      <img class="uploadPhoto" src="<%=photoDto.getUrl() %>" class="d-block" alt="...">
+				    </div>
+				    <% } %>
+				    <%} %>
+				  </div>
+				  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+				    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				    <span class="visually-hidden">Previous</span>
+				  </button>
+				  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+				    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+				    <span class="visually-hidden">Next</span>
+				  </button>
+				</div>
+                <!-- 카루셀 -->
                 <div class='mt-3' id="map" style="width:25em;height:25em;"></div>
             </div>
             <div class="contentSection">
                 <div class="content">
                     <div style="text-align: right;">
-                        <button class="m-3">
-                        	<object style="cursor:pointer;" data="resorces/kakao.svg" width="38" height="38" type="image/svg+xml"></object>
-                        </button>
                         <button type="button" onclick="likeSet()" class="m-3 heartBtn">
-                        	<object data="resorces/heart.svg" width="38" height="38" type="image/svg+xml"></object>
+                        	<object class="heartCsv" data="resorces/heart.svg" width="38" height="38" type="image/svg+xml" fill="red"></object>
                         </button>
                     </div>
                     <div><%=hosDto.getTitle() %></div>
@@ -248,7 +275,9 @@
                     </div>
 					<div id="sortContainer" class="mt-3">
 						<% for(String sort:HosUtils.getStringList_seperByDelim(hosDto.getSort(), ",")){ %>
-							<span class="sortBadge" style="border:2px solid <%=HosUtils.getColorFromAscii(sort) %>"><%=sort %></span>
+							<a class="sortAtag" href="searchHospital.do?userLocation=&conditionOne=default&conditionTwo=-1&conditionThree=<%=sort %>">
+								<span class="sortBadge" style="border:2px solid <%=HosUtils.getColorFromAscii(sort) %>"><%=sort %></span>
+							</a>
 						<%} %>
 					</div>
                 </div>
@@ -272,7 +301,7 @@
 
 	<!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <form action=reservation.do method="post" accept-charset="UTF-8">
+  <form id="reservationForm" action=reservation.do method="post" accept-charset="UTF-8">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -329,12 +358,13 @@
       
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	        <button type="submimt" class="btn btn-primary">예약하기</button>	        
+	        <button type="button" id="modalSubmmitBtn" class="btn btn-primary">예약하기</button>	        
 	      </div>
 	    </div>
 	  </div>
 	</form>	
 </div>
+
 <jsp:include page="footer.jsp" flush="false"/>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
@@ -343,8 +373,28 @@
 	$(document).ready(()=>{
 		countHosLike();
 		avgHosStar();
+		setMyHeart();
+	})
+	
+	$("#modalSubmmitBtn").on('click', ()=>{
+		if($(".dateInput").val().length == 0){
+			alert("예약 날짜를 선택해주세요.");
+			$(".dateInput")[0].focus();
+			return;
+		}
+		
+		if($(".startingTime").val().length == 0){
+			alert("예약 시간을 선택해주세요.");
+			$(".startingTime")[0].focus();
+			return;
+		}
+		
+		$("#reservationForm").submit();
 	})
 
+	$(".dateInput").on("change", ()=>{
+		$(".startingTime").val("");
+	})
 
 	//데이터 받아와서 예약 가능한지 표시하기
 	const dateInput = document.querySelector(".dateInput");
@@ -478,13 +528,14 @@
             success: function(response) {
                 console.log("성공", response);
                 countHosLike();//좋아요 띄우기
+        		setMyHeart();
             },
             error: function(error) {
                 
                 console.error("실패", error);
             }
         });
-	}
+			}
 	//--------------------로그인 안 했을 시 처리-----------
 	function handleNotLogin(){
 		alert("로그인을 해주세요!");
@@ -533,8 +584,36 @@
     
     
     //---------------------
-    
-    	//like 집계
+    //내 like여부
+    function setMyHeart(){
+    	let hosId = "<%=hosDto.getId()%>";
+    	let userId = "<%=userId%>";
+    	data = {
+    			userId:userId,
+    			hospitalId:hosId
+    	};
+    	
+		$.ajax({
+            url: 'cntThisHosLike.do',
+            type: 'GET',
+            data:data,
+            dataType: 'json',
+            success: function(response) {
+            	if(Number(response) >= 1){
+            		$(".heartCsv")[0].data = "resorces/redHeart.svg"
+                        console.log("붉게");
+            	}
+            	else{
+            		$(".heartCsv")[0].data = "resorces/heart.svg"
+            	}
+            },
+            error: function(error) {
+                
+                console.error("실패", error);
+            }
+        });
+    }
+    //like 집계
 	function countHosLike(){
     	let hosId = <%=hosDto.getId()%>
   
@@ -605,13 +684,16 @@
 		align-items:center;
 		flex-direction:column;
 		margin:1em;
-		flex-basis: 400px;
+		min-width:450px;
+		width:400px;
 	}
 	
 	.contentSection{
 		align-self: flex-start;
 		margin:1em;
-		flex-basis: 400px;
+		width:400px;
+		min-width:450px;
+		
 	}
 	.imgOne{
 		width:250px;
@@ -695,7 +777,8 @@
    	   	border-radius: 0.5em;
 	   	background-color: blue;
 	   	border:none;
-	   	margin:0.3em 0.3em 0em 0.3em;
+	   	margin:0.5em;
+	   	padding:0em 0.3em 0em 0.3em;
 	   	color:white;
    }
    
@@ -709,5 +792,28 @@
    	border:none;
    	background-color: white;
    }
+   
+   .carousel{
+   	width:25em;
+   	height:18em;
+   }
+   .uploadPhoto{
+	  width:100%;
+   	  object-fit: contain;
+   	  object-position: center;
+ 
+   }
+   
+	.sortAtag{
+		margin:0.2em 0em 0.2em 0em;
+		text-decoration: none;
+		color:black;
+		transition: transform 0.2s ease;
+	}
+
+	.sortAtag:hover {
+	  transform: scale(1.02);
+	}
+	
 </style>
 </html>

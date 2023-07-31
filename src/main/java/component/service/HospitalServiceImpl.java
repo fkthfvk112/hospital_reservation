@@ -1,23 +1,30 @@
 package component.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import component.dao.HospitalDao;
 import component.dao.HospitalDaoImpl;
+import component.dao.UserDao;
 import component.dto.HospitalDto;
 import component.dto.LikeDto;
 import component.dto.SearchDto;
 import component.dto.UpdateSelector;
+import component.dto.UserDto;
 import utils.HosUtils;
 
 @Service
 public class HospitalServiceImpl implements HospitalService{
 	@Autowired
 	HospitalDao dao;
+	
+	@Autowired
+	UserDao userDao;
 
 	@Override
 	public HospitalDto hospitalDetail(int id) {
@@ -36,7 +43,6 @@ public class HospitalServiceImpl implements HospitalService{
 	@Override
 	public int createHospital(HospitalDto dto) {
 		System.out.println("-----createHospital service---------");
-
 		return dao.createHospital(dto);
 	}
 	

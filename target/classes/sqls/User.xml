@@ -31,7 +31,7 @@
 
 	<select id="login" parameterType="component.dto.UserDto"
 		resultType="component.dto.UserDto">
-		select id, pw, name, email, auth, warning, myHospital_id
+		select *
 		from user
 		where id=#{id} and pw=SHA2(#{pw}, 256)
 	</select>
@@ -65,5 +65,11 @@
 		set pw = #{pw}
 		where id = #{id}
 	</update>
+	
+	<update id="updateDescription" parameterType="java.util.Map">
+		update user
+		set myHospital_id = ${hosId}
+		where id = '${userId}';
+	</update> 
 
 </mapper>

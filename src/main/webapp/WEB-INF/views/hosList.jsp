@@ -1,14 +1,18 @@
 <%@page import="utils.HosUtils"%>
 <%@page import="component.dto.UserDto"%>
 <%@page import="component.dto.HospitalDto"%>
+<%@page import="component.dto.SearchDto"%>
+
 <%@ page import="java.util.List" %>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
+<%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="EUC-KR"%>
 <%
 List<HospitalDto> dtoList = (List<HospitalDto>) request.getAttribute("hospitalDtoList");
 for(HospitalDto dto:dtoList){
 	System.out.println(dto.toString());
 }
+
+SearchDto searchDto = (SearchDto) request.getAttribute("searchDto");
 %>
 <!DOCTYPE html>
 <html>
@@ -25,29 +29,35 @@ for(HospitalDto dto:dtoList){
 		<div id="searchContainer">
 			<form action="searchHospital.do" method="get" id="searchFrom" accept-charset="UTF-8">
 					<input type="hidden" id ="userLocation" name="userLocation"/>
-					<div>
-						<select name="conditionOne">
-							<option value="default" selected>최신순</option>
-							<option value="highScore">평점 높은 순</option>
-							<option value="lowScore">평점 낮은 순</option>
-							<option value="highReview">리뷰 많은 순</option>
-							<option value="lowReview">리뷰 적은 순</option>
-						</select>
-						<select name="conditionTwo" id ="conditionTwo">
-							<option value="-1" selected>상관 없음</option>
-							<option value="1">거리 1km 이하</option>
-							<option value="3">거리 3km 이하 </option>
-							<option value="10">거리 10km 이하</option>
-							<option value="30">거리 30km 이하</option>
-							<option value="100">거리 100km 이하</option>
-						</select>
-					</div>
+
 					<div>
 						<input id="conditionThreeInput" placeholder='이름, 진료과, 설명' type="text" name="conditionThree""/>
 						<button type="button" id="filterBtn">검색</button>
+						<div style="text-align:left; margin-left:0.3em;">
+							<select name="conditionOne" id="conditionOne">
+								<option value="default" selected>최신순</option>
+								<option value="highScore">평점 높은 순</option>
+								<option value="lowScore">평점 낮은 순</option>
+								<option value="highReview">리뷰 많은 순</option>
+								<option value="lowReview">리뷰 적은 순</option>
+							</select>
+							<select name="conditionTwo" id ="conditionTwo">
+								<option value="-1" selected>상관 없음</option>
+								<option value="1">거리 1km 이하</option>
+								<option value="3">거리 3km 이하 </option>
+								<option value="10">거리 10km 이하</option>
+								<option value="30">거리 30km 이하</option>
+								<option value="100">거리 100km 이하</option>
+							</select>
+						</div>
 					</div>
 			</form>
 		</div>
+		<%if(searchDto != null && searchDto.getConditionThree().length() >= 1){ %>
+		<div style="margin-top:1em;">
+			<strong><%=searchDto.getConditionThree() %></strong>(으)로 검색한 결과입니다.
+		</div>
+		<%} %>
 	</div>
 
 </div>
@@ -55,12 +65,14 @@ for(HospitalDto dto:dtoList){
 <%if(dtoList != null) {%>
 
 <% for(HospitalDto dto:dtoList){ %>
-	<a href="hospitalDetail.do?id=<%=dto.getId()%>">
-		<div id="card">
+<%-- 	<a href="hospitalDetail.do?id=<%=dto.getId()%>">
+ --%>		<div id="card">
 			<div id="upperSide"> <!-- 위쪽 영역 -->
-				<img src="" alt="no img" class="hosImg"/>
+				<img src="<%=dto.getRepreImgUrl() %>" alt="no img" class="hosImg"/>
 				<div id="upperSideRight">
-					<strong class="mt-1"><%=dto.getTitle() %></strong>
+					<a style="padding:0.3em 0.3em 0em 0.3em;" href="hospitalDetail.do?id=<%=dto.getId()%>">
+						<strong class="mt-1"><%=dto.getTitle() %></strong>
+					</a>
 					<div class="mt-2">
 						<span style="color:#FFCB12; font-size:1.2em">★</span>
 						<%if(dto.getStarAvg() != null){ %>
@@ -75,7 +87,9 @@ for(HospitalDto dto:dtoList){
 					</div>
 					<div id="sortContainer" class="mt-3">
 						<% for(String sort:HosUtils.getStringList_seperByDelim(dto.getSort(), ",")){ %>
-							<span class="sortBadge" style="border:2px solid <%=HosUtils.getColorFromAscii(sort) %>"><%=sort %></span>
+							<a class="sortAtag" href="searchHospital.do?userLocation=&conditionOne=default&conditionTwo=-1&conditionThree=<%=sort %>">
+								<span class="sortBadge" style="border:2px solid <%=HosUtils.getColorFromAscii(sort) %>"><%=sort %></span>
+							</a>
 						<%} %>
 					</div>
 	
@@ -87,8 +101,8 @@ for(HospitalDto dto:dtoList){
 				</div>
 			</div>
 		</div>
-	</a>
-	<%} %>	
+<!-- 	</a>
+ -->	<%} %>	
 <%}%>
 </section>
 
@@ -157,6 +171,10 @@ for(HospitalDto dto:dtoList){
 		margin:0.2em;
 		font-size:0.8rem;
 	}
+	
+	.sortAtag{
+		margin:0.2em 0em 0.2em 0em;
+	}
 	#sortContainer{
 		display:flex;
 		flex-wrap: wrap;
@@ -176,17 +194,46 @@ for(HospitalDto dto:dtoList){
 	}
 	#conditionThreeInput{
 		border:5px solid #F7A072;
-		margin:1em 0em 1em 1em;
+		margin:0.5em 0em 0em 0em;
 		width:23em;
 		padding:0.5em 1.3em 0.5em 1.3em;
 	}
 	
 	#filterBtn{
 		border:none;
+		color:white;
+		font-weight:400;
 		border-radius: 0.5em;
 		padding:0.5em 1em 0.5em 1em;
 		background-color: #F7A072;
+		transition:0.2s;
 	}
+	
+	#filterBtn:hover{
+		background-color: orange;
+	}
+	
+	#conditionOne{
+		padding:0.3em;
+		border:none;
+				background-color: transparent;
+		
+	}
+	#conditionTwo{
+		padding:0.3em;
+		border:none;
+		background-color: transparent;
+		
+	}
+	
+	.hosImg{
+		width: 200px;
+		height:200px;
+		object-fit: contain;
+		object-position: center;
+		background-color: white;
+	}
+	
 </style>
 
 <script>

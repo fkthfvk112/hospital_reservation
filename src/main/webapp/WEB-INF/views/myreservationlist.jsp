@@ -24,6 +24,63 @@
 	.clickitem{
 		cursor: pointer;
 	}
+	#mymenuitemB{
+		background-color: #595a5c;
+	}
+	
+	#mymenuitemB > .myPageNavA{
+		color:white;
+	}
+	
+	.myReservTable{
+		border-collapse : collapse;
+		border-spacing : 0;
+	}
+	.myReservTable td{
+		padding:0.5em;
+		border:1px solid #e1e1e1;
+	}
+	
+	.myReservTable th{
+		background-color: gray;
+		color:white;
+	}
+	
+	#reservTableContainer{
+		display:flex;
+		justify-content:center;
+		flex-direction:column;
+		align-items:center;
+		background-color:white;
+		border:1px solid #e1e1e1;
+		border-radius: 0.5em;
+		padding:0em 2em 2em 2em;
+		
+		position:fixed;
+		top:30vh;
+	}
+	
+	#modalCloseBtn{
+		background-color: transparent;
+		border:none;
+		font-size: 1.2em;
+		  cursor: pointer;
+	}
+	
+	#removeReserv{
+	    border: none;
+	    background-color: #8f8f8f;
+	    border-radius: 0.5em;
+	    padding: 0.5em;
+	    color: white;
+	    transition: 0.2s;
+	    cursor: pointer;
+	}
+	
+	#removeReserv:hover{
+		background-color: black;
+	}
+	
 </style>
 		
 </head>
@@ -69,6 +126,7 @@
 	
 %>
 <div align="center">
+	<h2 style="margin:2em;">내 예약</h2>
 	<table border="1">
 		<col width="120"><col width="120"><col width="120"><col width="120"><col width="120"><col width="120"><col width="120">
 		<tr height="80">
@@ -142,8 +200,12 @@
 <%
 	if( reservationId != 0){
 		%>
-		<div>
-			<table border="1" align="center" valign="middle">
+		<div id="reservTableContainer">
+			<div style="text-align: right; width:100%; margin:0.5em;">
+				<button type="button" id="modalCloseBtn">X</button>
+			</div>
+			<h2 style="margin:0.5em;">예약 정보</h2>
+			<table class="myReservTable" align="center" valign="middle">
 				<col width="100" height="80"><col width="500" height="80">
 				<tr><th>예약 병원</th><td><%=rDto.getHtitle() %>[<%=rDto.getHsort() %>]</td></tr>
 				<tr><th>예약 날짜</th><td><%=rDto.getRdate().substring(0,10)%>  
@@ -159,7 +221,7 @@
 										&nbsp;<%=kday[eday]%></td></tr>
 				<tr><th>일정 시간</th><td><%=rDto.getRdate().substring(11,16) %></td></tr>
 				<tr><th>예약 내용</th><td><%=rDto.getRdescription() %></td></tr>
-				<tr><td colspan="2">
+				<tr><td colspan="2" style="text-align: center;" class="btnTd">
 						<%
 						if(rDto.getRstate() == 1){
 							%>
@@ -179,6 +241,16 @@
 			function deleteReserv(reservId){
 				location.href="deletereserv.do?reservId="+reservId;
 			}
+			
+			let reservTableContainer =  document.querySelector("#reservTableContainer");
+			let closeModal = ()=>{
+				  reservTableContainer.style.display = "none";
+			}
+			
+			let modalCloseBtn = document.querySelector("#modalCloseBtn");
+			modalCloseBtn.addEventListener('click', ()=>{
+				closeModal();
+			})
 		</script>
 		<%
 	}

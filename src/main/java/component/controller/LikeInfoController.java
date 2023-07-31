@@ -48,7 +48,7 @@ public class LikeInfoController {
 			String url = service.gethosphoto(hosid);
 			hosphotos.add(url);
 			
-			int a = hservice.createHospital(hosdto);
+			//int a = hservice.createHospital(hosdto);
 		}
 		
 		
@@ -80,4 +80,9 @@ public class LikeInfoController {
 		 return "alert"; 
 	}
 	
+	@GetMapping("cntThisHosLike.do")
+	@ResponseBody
+	public int cntThisHosLike(LikeInfoDto dto) {
+		return service.cntThisHosLike(dto);
+	}
 }

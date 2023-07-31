@@ -34,5 +34,11 @@ public class LikeInfoDaoImpl implements LikeInfoDao{
 		return session.selectOne(ns+"gethosphoto", hosid);
 	}
 
+	@Override
+	public int cntThisHosLike(LikeInfoDto dto) {
+		
+		return session.selectOne(ns + "cntThisHosLike", dto);
+	}
+
 	
 }

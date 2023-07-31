@@ -34,10 +34,10 @@ public class ReservationController {
 	public String reservation(ReservDto dto, Model model) {
 		System.out.println("------reservation-------");
 		System.out.println(dto.toString());
-		
+		int hosId = dto.getHospitalId();
 		service.reservation(dto);
 		
-		return "/"; //수정
+		return "redirect:hospitalDetail.do?id=" + hosId;
 	}
 	
 	@GetMapping("getReservByDate.do")

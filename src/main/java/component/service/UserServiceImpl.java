@@ -1,9 +1,13 @@
 package component.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import component.dao.UserDao;
+import component.dto.HospitalDto;
 import component.dto.UserDto;
 
 @Service
@@ -55,6 +59,14 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void updatePassword(UserDto dto) {
 		dao.updatePassword(dto);
+	}
+
+	@Override
+	public int updateHosIdToUser(UserDto userDto, HospitalDto hosDto) {
+		Map<String, String> map = new HashMap<>();
+		map.put("userId", userDto.getId());
+		map.put("hosId", Integer.toString(hosDto.getId()));
+		return dao.updateHosIdToUser(map);
 	}
 
 }
