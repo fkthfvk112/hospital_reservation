@@ -12,7 +12,7 @@ alter table photo
 add
 constraint fk_photo_hosp
 foreign key(hospital_id)
-references user(id);
+references hospital(id);
 
 insert into photo(hospital_id,url)
 values (1,"http://www.dentalnews.or.kr/data/photos/20180937/art_15368133845175_2f0190.jpg");

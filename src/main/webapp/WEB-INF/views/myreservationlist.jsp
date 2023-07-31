@@ -132,7 +132,7 @@
 %>
 <div align="center">
 	<h2 style="margin:2em;">내 예약</h2>
-	<table border="1" class="table table-bordered"s>
+	<table border="1" class="table table-bordered">
 		<col width="120"><col width="120"><col width="120"><col width="120"><col width="120"><col width="120"><col width="120">
 		<tr height="80">
 			<td colspan='7' align='center'>

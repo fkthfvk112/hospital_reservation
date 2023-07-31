@@ -10,6 +10,12 @@ create table user(
 	myHospital_id int
 );
 
+alter table user
+add
+constraint fk_user_hosp
+foreign key(myHospital_id)
+references hospital(id);
+
 insert into user(id, pw, name, email, auth, warning, myHospital_id)
 values ('asdf', '1234', 'testName', 'testEmail@naver.com', 1, 0, 0);
 
