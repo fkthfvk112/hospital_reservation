@@ -41,7 +41,6 @@ public class LikeInfoController {
 		List<HospitalDto>  likeHospitalList = service.gethospitaldetaillist(userid);
 		
 		
-		
 		List<String> hosphotos = new ArrayList<String>();
 		
 		for(HospitalDto hosdto: likeHospitalList) {
