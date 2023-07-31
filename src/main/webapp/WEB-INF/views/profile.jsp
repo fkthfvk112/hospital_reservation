@@ -56,15 +56,16 @@
 		margin-top:0.5em;
 		cursor: pointer;
 		border: none;
-	    background-color: #8f8f8f;
+	    background-color: #EDDEA4;
 	    border-radius: 0.5em;
 	    padding: 0.5em;
-	    color: white;
+	    color: black;
 	    transition: 0.2s;
 		
 	}
 	.clickitem:hover{
 		background-color: black;
+		color: white;
 	}
 	
 	.profileTable{
@@ -75,7 +76,7 @@
 	}
 	
 	.profileTable th{
-		 background-color: #e1e1e1;
+		 background-color: #EDDEA4;
 	}
 
 	.profileTable td{
@@ -83,11 +84,11 @@
 	}
 	
 	#mymenuitemA{
-		background-color: #595a5c;
+		background-color: #EDDEA4;
 	}
 	
 	#mymenuitemA > .myPageNavA{
-		color:white;
+		color:black;
 	}
 	
 	.managerBtn{

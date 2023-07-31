@@ -59,11 +59,11 @@
 			}
 			
 			#mymenuitemD{
-				background-color: #595a5c;
+				background-color: #EDDEA4;
 			}
 			
 			#mymenuitemD > .myPageNavA{
-				color:white;
+				color:black;
 			}
 		</style>
 		</head>
