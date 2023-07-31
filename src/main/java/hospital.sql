@@ -30,3 +30,5 @@ values("강철본드 정형외과","한번 붙은 뼈는 다시 안 부러지도
 
 insert into hospital(title,description,sort,location_latitude,location_longitude,opertime,staff_id,del_date)
 values("만능 종합병원","여기저기 아플 땐 만능병원으로","정형외과,치과,이비인후과","20","30","10,17","banana",null);
+
+delete from hospital;
