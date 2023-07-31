@@ -53,6 +53,7 @@
 			    padding: 0.5em;
 			    color: white;
 			    transition: 0.2s;
+			    white-space:no-wrap;
 			}
 			#reviewDelBtn:hover{
 				background-color: black;
@@ -65,16 +66,20 @@
 			#mymenuitemD > .myPageNavA{
 				color:black;
 			}
+			
+			.rh{
+				text-align: center;
+			}
 		</style>
 		</head>
 		<body>
 		<h2 style="margin:2em;">내가 쓴 리뷰</h2>
 		<div>
 		<table class="reviewTable">
-			<col width="50"><col width="200"><col width="130"><col width="50"><col width="300"><col width="80">
-			<thead>
-				<th>번호</th><th>병원명</th><!-- <th>종류</th> -->
-				<th>작성일</th><th>평점</th><th>내용</th><th>삭제</th> <!-- 위치 어케 표기? -->
+			<col width="50"><col width="200"><col width="130"><col width="50"><col width="300"><col width="100">
+			<thead class="reviewTh">
+				<th class="rh">번호</th><th class="rh">병원명</th><!-- <th>종류</th> -->
+				<th class="rh">작성일</th><th class="rh">평점</th><th class="rh">내용</th><th class="rh">삭제</th> <!-- 위치 어케 표기? -->
 			</thead>
 			<%
 				for(int i=0; i< likeReviewDtoList.size(); i++){
