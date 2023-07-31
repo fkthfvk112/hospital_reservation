@@ -27,11 +27,12 @@
 	#modal>#content{
 		border-radius:0.5em;
 		padding:1em;
-		width:300px;
+		width:350px;
 		margin:100px auto;
 		padding:20px;
 		position: relative;
 		background-color:#fff; /* 모달 배경색 줘서 겹쳐진 바탕창의 내용은 안 보이게 함 */
+		text-align:center;
 	}
 	
 	/* 종료 버튼을 오른쪼 상단으로, 종료 버튼의 배경색을 모달창 색과 같게 하여 x만 뜨게 */
@@ -133,7 +134,33 @@
 	    background-color: #F7A072;
 	    transition: 0.2s;
 	}
+	
+	#applyBtn:hover{
+		background-color: orange;
+	}
 
+	#changePwComBtn{
+		border: none;
+	    color: white;
+	    font-weight: 400;
+	    border-radius: 0.5em;
+	    padding: 0.5em 1em 0.5em 1em;
+	    background-color: #F7A072;
+	    transition: 0.2s;
+	}
+	
+	#changePwComBtn:hover{
+		background-color: orange;
+	}
+	
+	
+	#changepwFrom{
+		justify-content:center;
+		flex-direction:column;
+		align-items:center;
+		background-color:white;
+		border-radius: 0.5em;
+	}
 
 </style>
 
@@ -168,19 +195,22 @@
 
 <div id="modal">
 	<div id="content">
-		<form action="changepw.do" method="post">
+		<form action="changepw.do" method="post" id="changepwFrom">
 			<input type='button' value='X' class="close" id='modalClose'/>
 			<h2> 비밀번호 변경 </h2>
 			<div style="margin-top:0.5em;">
-				현재 비밀번호 : <input style="width:auto;" type="password" id="originpw"/>
+				<div style="text-align: left">현재 비밀번호 </div>
+				<input class="form-control" type="password" id="originpw"/>
 			</div>
 			<div style="margin-top:0.5em;">
-				새 비밀번호 : &nbsp;&nbsp;&nbsp;<input style="width:auto;" type="password" id="newpw" placeholder="영문, 숫자, 특수문자 조합 9자리 이상"/>
+				<div style="text-align: left">새 비밀번호</div>
+				<input class="form-control" type="password" id="newpw" placeholder="영문, 숫자, 특수문자 조합 9자리 이상"/>
 			</div>
 			<div style="margin-top:0.5em;">
-				비밀번호 확인 : <input style="width:auto;" type="password" id="checkpw"/>
+				<div style="text-align: left">비밀번호 확인</div>
+				<input class="form-control" type="password" id="checkpw"/>
 			</div>
-			<button style="margin-top:1em;" type="button" value='open' onClick="pwCheck()">비밀번호 변경</button>
+			<button id="changePwComBtn" style="margin-top:1em;" type="button" value='open' onClick="pwCheck()">비밀번호 변경</button>
 		</form>
 	</div>
 </div>
@@ -197,7 +227,6 @@
 				<input name="userId" type="hidden" value="<%=dto.getId() %>"/>
 				<input name="title" id="managerInputTitle" class="form-control mb-3" type="text" placeholder="제목"></input>
 				<textarea name="content" id="managerInputContent" placeholder="내용을 입력하세요." type="text" name="content" class="form-control mb-3" ></textarea>
-				<div align="center">관련 서류</div>
 				<input type="file" id="managerFile" name="file" title="관련 서류를 업로드해주세요." class="mb-3" multiple="multiple"></input>
 				<button type="button" id="applyBtn">신청</button>
 			</form>

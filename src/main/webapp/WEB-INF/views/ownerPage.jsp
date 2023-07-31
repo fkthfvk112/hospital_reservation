@@ -34,13 +34,16 @@ List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalRe
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
+	 <jsp:include page="header.jsp" flush="false"/>
+	 <jsp:include page="nav.jsp" flush="false"/>
+	 
     <div class="ownerPageContainer">
         <div class="p-3" id="titleContainer">
             <a href="hospitalDetail.do?id=<%=hosId %>" class="ms-3">내 병원 페이지</a>
         </div>
         <section id="reservShowSection">
             <div id="reservDateSection">
-                <h3>예약 확인</h3>
+                <h3 style="font-weight: bold;" class="m-3">예약 확인</h3>
                 <div>
                 	<input id="reserDateInput" type="date">
                 	<button id="reserDateShowBtn" type="button">확인</button>
@@ -66,6 +69,7 @@ List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalRe
             </div>
         </section>
     </div>
+    <jsp:include page="footer.jsp" flush="false"/>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 <style>
@@ -126,7 +130,7 @@ List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalRe
 
     #reserOne{
         background-color: white;
-        border: 1.5px solid #0FA3B1;
+        border: 1.5px solid #e1e1e1;
         border-radius:1.5em;
         margin:2em;
         display: grid;
@@ -143,6 +147,20 @@ List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalRe
     	text-decoration: none;
     	color:black;
     }
+    
+    #reserDateShowBtn{
+	    background-color: white;
+	    border-radius: 1em;
+	    color: blak;
+	    padding: 0.5em 1.3em 0.5em 1.3em;
+	    margin-top:1em;
+	    transition:0.2s;
+	}
+	
+	#reserDateShowBtn:hover{
+		background-color: skyblue;
+		color:black;
+	}
 </style>
 <script>
 
@@ -159,14 +177,9 @@ List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalRe
 		let wdateArr = wdate.split(" ");
 		let time = wdateArr[1];
 		let ele = "<div id='reserOne'>" +
-					    "<div style='padding: 1em;'>" +
-					        "<div>작성자 <strong>" + userId + "</strong></div>" +
-					        "<hr>" +
-					        "<div>작성 시간 " + time + "</div>" +
-					    "</div>" +
-					    "<div style='text-align: left; padding: 1em; border-left: 1.8px solid #e1e1e1;'>" + description + "</div>" +
-					    "<div style='grid-column-end: span 2; text-align: center; padding: 0.3em;'>" +
-					    "</div>" +
+					    "<div style='padding:1em;'>예약자 <strong>" + userId + "</strong></div>" +
+				        "<div style='padding:1em; color:gray;'>" + time + "</div>" +
+					    "<div style='border-top:1px solid #e1e1e1; grid-column-end: span 2; text-align: center; padding: 0.3em;'>" + description + "</div>" +
 					"</div>";
 		
 
