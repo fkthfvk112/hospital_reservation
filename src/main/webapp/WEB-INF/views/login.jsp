@@ -24,6 +24,7 @@ body {
 	height: 700px;
 	border: 0;
 	background-color : white;
+	margin-top:15em;
 }
 .centerTr{
 	display: flex;

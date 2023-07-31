@@ -55,7 +55,10 @@ descCompleteBtn.addEventListener('click', ()=>{
 	console.log("0")
 	updateSelector.selection = 0;
 	updateSelector.content = $("#descEditTextAtrea").val();
-	console.log(updateSelector.content);
+	if(updateSelector.content.length <= 10 || updateSelector.content.length >= 250 ){
+		alert("내용이 너무 짧거나 깁니다. (10자 이상 250자 이하)");
+		return;
+	}
 	doAjax(updateSelector);
 	console.log(updateSelector)
 })
@@ -88,13 +91,16 @@ timeEditBtn.addEventListener('click', ()=>{//토글
 })
 
 timeCompleteBtn.addEventListener('click', ()=>{
-	console.log("1")
-	let timeString = $("#startTime").val() + "," + $("#closeTime").val()
+	let timeString = $("#startTime").val() + "," + ($("#closeTime").val());
+	if (Number($("#startTime").val()) >= Number($("#closeTime").val())) {
+	  alert("근무 시작 시간이 종료 시간보다 같거나 큽니다.");
+	  return;
+	}
+	console.log("압데이트 타임", timeString);
 	updateSelector.selection = 1;
 	updateSelector.content = timeString;
 	
 	doAjax(updateSelector);
-	console.log(updateSelector)
 })
 
 

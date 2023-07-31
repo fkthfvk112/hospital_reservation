@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%
+String error = (String) request.getAttribute("error");
+%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,6 +90,13 @@ body {
         </table>
     </form>
 </div>
+
+<%-- 에러 메시지가 있을 경우 JavaScript 함수 호출 --%>
+    <% if (error != null) { %>
+        <script>
+        	alert('<%= error %>');
+        </script>
+    <% } %>
 
 
 </body>
