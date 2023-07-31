@@ -9,7 +9,7 @@
 <head>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <style>
 	#modal{
 		display : none; /* 처음 profile파일 들어왔을 땐 모달창이 안 보이게 하기 */
@@ -89,7 +89,52 @@
 		color:white;
 	}
 	
+	.managerBtn{
+		background-color: #0FA3B1;
+	    border: none;
+	    border-radius: 1em;
+	    color: white;
+	    padding: 0.5em 1.3em 0.5em 1.3em;
+	    margin:1em;
+	}
 	
+	#managerModal{
+		display:none; <!--flex-->
+		justify-content:center;
+		flex-direction:column;
+		align-items:center;
+		background-color:white;
+		border:1px solid #e1e1e1;
+		border-radius: 0.5em;
+		padding:0em 2em 2em 2em;
+		
+		position:fixed;
+		top:30vh;
+	}
+	
+	#managerModalCloseBtn{
+		background-color: transparent;
+		border:none;
+		font-size: 1.2em;
+		  cursor: pointer;
+	}
+	
+	#managerForm{
+		display:flex;
+		flex-direction: column;
+	}
+	
+	#applyBtn {
+	    border: none;
+	    color: white;
+	    font-weight: 400;
+	    border-radius: 0.5em;
+	    padding: 0.5em 1em 0.5em 1em;
+	    background-color: #F7A072;
+	    transition: 0.2s;
+	}
+
+
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -97,6 +142,13 @@
 </head>
 <body>
  <h2 style="margin:2em;">사용자 정보</h3>
+ <div style="text-align: right; width:100%;">
+ 	<%if(dto !=null && dto.getAuth() != 2) {%>
+ 	<button type="button" class="managerBtn" id="managerAppliBtn">병원 관리자 신청</button>
+ 	<%} else{%>
+ 	<button type="button" class="managerBtn">병원 관리자 페이지</button>
+ 	<%} %>
+ </div>
  <table class="profileTable">
  	<col width="100"/><col width="300"/>
  	<tr>
@@ -133,6 +185,59 @@
 	</div>
 </div>
 
+<!-- 매니저 신청 모달 -->
+		<div id="managerModal">
+			<div style="text-align: right; width:100%; margin:0.5em;">
+				<button type="button" id="managerModalCloseBtn">X</button>
+			</div>
+			<h3 style="margin:0.5em;">병원 관리자 신청</h3>
+			<form id="managerForm" action="applyManager.do" method="post">
+				<input name="userId" type="hidden"><%=dto.getId() %></input>
+				<input name="title" id="managerInputTitle" class="form-control mb-3" type="text" placeholder="제목"></input>
+				<textarea name="content" id="managerInputContent" placeholder="내용을 입력하세요." type="text" name="content" class="form-control mb-3" ></textarea>
+				<div align="center">관련 서류</div>
+				<input type="file" id="managerFile" name="file" title="관련 서류를 업로드해주세요." class="mb-3" multiple="multiple"></input>
+				<button type="button" id="applyBtn">신청</button>
+			</form>
+			
+		</div>
+<script>
+			let managerModal =  document.querySelector("#managerModal");
+			let closeModal = ()=>{
+				  managerModal.style.display = "none";
+			}
+			let openModal = ()=>{
+				  managerModal.style.display = "flex";
+			}
+			
+			let managerModalCloseBtn = document.querySelector("#managerModalCloseBtn");
+			managerModalCloseBtn.addEventListener('click', ()=>{
+				closeModal();
+			})
+			
+			let managerAppliBtn = document.querySelector("#managerAppliBtn");
+			managerAppliBtn.addEventListener("click", ()=>{
+				openModal();
+			})
+			
+			$("#applyBtn").on("click", ()=>{
+				if($("#managerInputTitle").val().length <3){
+					alert("제목을 3자 이상 입력해주세요.");
+					return;
+				}
+				if($("#managerInputContent").val().length < 10){
+					alert("신청 내용을 10자 이상 입력해주세요.");
+					return;
+				}
+				if(!$("#managerFile").val()){
+					alert("관련 파일(증명서 등)을 등록해주세요.");
+					return;
+				}
+				$("#managerForm").submit();	
+			})
+			
+</script>
+		
 <script type="text/javascript">
 	var modalOpen  = document.getElementById('modalOpen');
 	var modalClose = document.getElementById('modalClose');
@@ -202,6 +307,7 @@
 	modalClose.onclick = closeRtn;	
 	
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 <style>
  #profileContainer{

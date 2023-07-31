@@ -65,7 +65,6 @@
 		border:none;
 		font-size: 1.2em;
 		  cursor: pointer;
-		
 	}
 	
 	#removeReserv{

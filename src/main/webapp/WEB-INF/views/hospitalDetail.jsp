@@ -777,7 +777,8 @@
    	   	border-radius: 0.5em;
 	   	background-color: blue;
 	   	border:none;
-	   	margin:0.3em 0.3em 0em 0.3em;
+	   	margin:0.5em;
+	   	padding:0em 0.3em 0em 0.3em;
 	   	color:white;
    }
    

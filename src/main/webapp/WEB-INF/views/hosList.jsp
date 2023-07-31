@@ -68,7 +68,7 @@ SearchDto searchDto = (SearchDto) request.getAttribute("searchDto");
 <%-- 	<a href="hospitalDetail.do?id=<%=dto.getId()%>">
  --%>		<div id="card">
 			<div id="upperSide"> <!-- 위쪽 영역 -->
-				<img src="" alt="no img" class="hosImg"/>
+				<img src="<%=dto.getRepreImgUrl() %>" alt="no img" class="hosImg"/>
 				<div id="upperSideRight">
 					<a style="padding:0.3em 0.3em 0em 0.3em;" href="hospitalDetail.do?id=<%=dto.getId()%>">
 						<strong class="mt-1"><%=dto.getTitle() %></strong>
@@ -225,6 +225,15 @@ SearchDto searchDto = (SearchDto) request.getAttribute("searchDto");
 		background-color: transparent;
 		
 	}
+	
+	.hosImg{
+		width: 200px;
+		height:200px;
+		object-fit: contain;
+		object-position: center;
+		background-color: white;
+	}
+	
 </style>
 
 <script>

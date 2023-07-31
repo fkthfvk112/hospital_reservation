@@ -49,7 +49,7 @@ public class LikeInfoController {
 			String url = service.gethosphoto(hosid);
 			hosphotos.add(url);
 			
-			int a = hservice.createHospital(hosdto);
+			//int a = hservice.createHospital(hosdto);
 		}
 		
 		

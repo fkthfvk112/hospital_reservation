@@ -207,7 +207,7 @@ body {
 	                    data: { "access_token": accessToken },
 	                    success: function() {
 	                        // 로그인 성공 후 메인 페이지로 이동
-	                        window.location.href = "main.do";
+	                        window.location.href = "home.do";
 	                    },
 	                    error: function() {
 	                        alert("카카오 로그인에 실패했습니다.");

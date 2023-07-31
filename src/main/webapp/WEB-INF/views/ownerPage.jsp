@@ -10,7 +10,7 @@
 UserDto userDto =  (UserDto)session.getAttribute("login");
 HospitalDto hosDto = (HospitalDto)request.getAttribute("myHospitalDto");
 int hosId = 0;
-if(hosDto == null ){//로그인 안 했을 시 처리하는 코드 추가
+if(userDto == null ){//로그인 안 했을 시 처리하는 코드 추가
 	%>
 	<script>
 		alert("병원을 생성해주세요!");
@@ -19,7 +19,9 @@ if(hosDto == null ){//로그인 안 했을 시 처리하는 코드 추가
 	<% 
 }
 else{
-	hosId = hosDto.getId();
+	if(hosDto != null){
+		hosId = hosDto.getId();
+	}
 }
 List<ReservDto> reservDtos = (List<ReservDto>)request.getAttribute("myHospitalReservDtos");
 %>

@@ -11,8 +11,14 @@
 	</select>
 	<!-- 병원 여러개 개 get -->
 	<select id="getAllHospital" resultType="component.dto.HospitalDto">
-		select *
-		from hospital
+		select id, title, description, sort, location_latitude, location_longitude, opertime,
+		(
+			select url
+			from photo as p
+			where h.id = p.hospital_id
+			limit 1
+		) as repreImgUrl
+		from hospital as h
 	</select>
 
 	<!-- 병원 생성 -->
@@ -84,6 +90,12 @@
 	<select id="searchHospitalStarDesc" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
 		select h.id, h.title, h.description, h.sort, 
 				h.location_latitude, h.location_longitude, h.del_date, 
+				(
+					select url
+					from photo as p
+					where h.id = p.hospital_id
+					limit 1
+				) as repreImgUrl,
 		        h.opertime, h.staff_id, avg(r.score) as avgScore
 		from hospital as h
 		join review as r on h.id = r.hospital_id
@@ -96,7 +108,13 @@
 	
 	<select id="searchHospitalStarAsc" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
 		select h.id, h.title, h.description, h.sort, 
-				h.location_latitude, h.location_longitude, h.del_date, 
+				h.location_latitude, h.location_longitude, h.del_date,
+				(
+					select url
+					from photo as p
+					where h.id = p.hospital_id
+					limit 1
+				) as repreImgUrl,
 		        h.opertime, h.staff_id, avg(r.score) as avgScore
 		from hospital as h
 		join review as r on h.id = r.hospital_id
@@ -109,7 +127,13 @@
 	
 	<select id="searchHospitalReviewDesc" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
 		select h.id, h.title, h.description, h.sort, 
-				h.location_latitude, h.location_longitude, h.del_date, 
+				h.location_latitude, h.location_longitude, h.del_date,
+				(
+					select url
+					from photo as p
+					where h.id = p.hospital_id
+					limit 1
+				) as repreImgUrl,
 		        h.opertime, h.staff_id, count(r.id) as reviewCnt
 		from hospital as h
 		join review as r on h.id = r.hospital_id
@@ -123,6 +147,12 @@
 	<select id="searchHospitalReviewAsc" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
 		select h.id, h.title, h.description, h.sort, 
 				h.location_latitude, h.location_longitude, h.del_date, 
+				(
+					select url
+					from photo as p
+					where h.id = p.hospital_id
+					limit 1
+				) as repreImgUrl,
 		        h.opertime, h.staff_id, count(r.id) as reviewCnt
 		from hospital as h
 		join review as r on h.id = r.hospital_id
@@ -134,10 +164,17 @@
 	</select>
 	
 	<select id="searchHospitalDefault" parameterType="component.dto.SearchDto"  resultType="component.dto.HospitalDto">
-		select * from hospital as h
-		  where h.sort like concat('%', #{conditionThree}, '%')
-		    or h.title like concat('%', #{conditionThree}, '%')
-		    or h.description like concat('%', #{conditionThree}, '%')		
+		select id, title, description, sort, location_latitude, location_longitude, opertime,
+		(
+			select url
+			from photo as p
+			where h.id = p.hospital_id
+			limit 1
+		) as repreImgUrl
+		 from hospital as h
+		 where h.sort like concat('%', #{conditionThree}, '%')
+			 or h.title like concat('%', #{conditionThree}, '%')
+			 or h.description like concat('%', #{conditionThree}, '%')		
 	</select>
 	
 	<select id="getHospitalIdByName" parameterType="java.lang.String" resultType="component.dto.HospitalDto">
