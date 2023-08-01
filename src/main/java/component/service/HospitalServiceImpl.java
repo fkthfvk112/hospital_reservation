@@ -84,11 +84,12 @@ public class HospitalServiceImpl implements HospitalService{
 				
 				Double hosLatitude = Double.parseDouble(hosLatitude_s);
 				Double hosLongitude = Double.parseDouble(hosLongitude_s);
+				Double haverDis = HosUtils.haversineDistance(userLatitude, userLongitude, hosLatitude, hosLongitude);
+
+				//Double uclidienDis = HosUtils.getUclidienDistance(userLatitude, userLongitude, hosLatitude, hosLongitude);
+				//System.out.println("거리 ㅣㅣㅣㅣㅣ" + uclidienDis);
 				
-				Double uclidienDis = HosUtils.getUclidienDistance(userLatitude, userLongitude, hosLatitude, hosLongitude);
-				System.out.println("거리 ㅣㅣㅣㅣㅣ" + uclidienDis);
-				
-				if(uclidienDis <= searchDto.getConditionTwo()) {
+				if(haverDis <= searchDto.getConditionTwo()) {
 					System.out.println("추가 되는 것" + hosDto.toString());
 					processedDto.add(hosDto);
 				}
